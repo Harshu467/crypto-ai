@@ -16,18 +16,14 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+.login-button {
+  background-color: #1565c0;
+}
+.login-button:hover {
+  background-color: #0d47a1;
 }
