@@ -39,30 +39,12 @@ const Hero = () => {
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <section className="sm:max-w-[19.5rem] md:max-w-[24.5rem] tab:max-w-[28rem] lg:max-w-[30rem]">
             <div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.8,
-                type: "spring",
-                stiffness: 110,
-                delay: 0,
-              }}
               className="text-4xl font-bold sm:text-[5vw] md:text-5xl lg:leading-[5.5rem] lg:text-[5rem] text-white"
             >
               Learn.Invest. Grow.
             </div>
 
             <p
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                type: "spring",
-                stiffness: 110,
-                delay: 0.1,
-              }}
               className="mt-4 text-xl text-gray-400 tracking-wide "
             >
               Stay updated and informed with CryptoMarketHub – your go-to
@@ -70,15 +52,6 @@ const Hero = () => {
             </p>
 
             <div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                type: "spring",
-                stiffness: 110,
-                delay: 0.2,
-              }}
               className="mt-14 my-1"
             >
               <Link
@@ -96,15 +69,6 @@ const Hero = () => {
               <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                 {images.slice(0, 2).map((image, index) => (
                   <div
-                    initial={{ opacity: 0, y: -640 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.5,
-                      type: "spring",
-                      stiffness: 110,
-                      delay: Math.random(),
-                    }}
                     key={index}
                     className="floating-image h-52 w-36 md:h-64 md:w-44 overflow-hidden rounded-lg"
                   >
@@ -121,15 +85,6 @@ const Hero = () => {
               <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-5">
                 {images.slice(2, 5).map((image, index) => (
                   <div
-                    initial={{ opacity: 0, y: -640 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.5,
-                      type: "spring",
-                      stiffness: 110,
-                      delay: Math.random(),
-                    }}
                     key={index}
                     className="floating-image h-52 w-36 md:h-64 md:w-44 overflow-hidden rounded-lg "
                   >
@@ -146,15 +101,6 @@ const Hero = () => {
               <div className="hidden xl:grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                 {images.slice(5).map((image, i) => (
                   <div
-                    initial={{ opacity: 0, y: -640 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.5,
-                      type: "spring",
-                      stiffness: 110,
-                      delay: Math.random(),
-                    }}
                     key={i}
                     className="floating-image h-52 w-36 md:h-64 md:w-44 overflow-hidden rounded-lg"
                   >

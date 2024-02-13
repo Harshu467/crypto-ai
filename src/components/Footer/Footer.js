@@ -71,12 +71,12 @@ const Footer = () => {
     {
       title: "LinkedIn",
       icon: <LinkedIn />,
-      goTo: "",
+      goTo: "/",
     },
     {
       title: "Youtube",
       icon: <YouTube />,
-      goTo: "",
+      goTo: "/",
     },
   ];
 
@@ -105,7 +105,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className="pt-[60px] text-white px-[20px] md:px-[10px] py-[20px] md:w-[90%] w-[95%] m-auto">
+      <div className="pt-[60px] border-t border-gray-800 text-white px-[20px] md:px-[10px] py-[20px] md:w-[90%] w-[95%] m-auto">
         <div className="flex flex-col md:flex-row gap-[20px] justify-between md:pb-[40px] pb-[20px]">
           <div>
             <Link
@@ -160,13 +160,10 @@ const Footer = () => {
               <p className="footer_heading">Home</p>
               <ul className="list-none text-[grey] pt-[24px]  flex flex-col justify-center items-start gap-[16px] pl-[0px]">
                 <li className="footer_listitem">
-                  <Link href={"/cases/resume"}>About</Link>
+                  <Link href={"/"}>About</Link>
                 </li>
                 <li className="footer_listitem">
-                  <Link href={"/cases/notes"}>Contact</Link>
-                </li>
-                <li className="footer_listitem">
-                  <Link href={"/cases/travel"}>Plan Trip</Link>
+                  <Link href={"/"}>Contact</Link>
                 </li>
               </ul>
             </div>
@@ -174,10 +171,10 @@ const Footer = () => {
               <p className="footer_heading">Support</p>
               <ul className="list-none text-[grey] pt-[24px]  flex flex-col justify-center items-start gap-[16px] pl-[0px]">
                 <li className="footer_listitem">
-                  <Link href={"/ai-learning-tool-for-students"}>FAQ</Link>
+                  <Link href={"/"}>FAQ</Link>
                 </li>
                 <li className="footer_listitem">
-                  <Link href={"/ai-productivity-tool-for-professionals"}>
+                  <Link href={"/"}>
                     Help Center
                   </Link>
                 </li>
@@ -187,13 +184,13 @@ const Footer = () => {
               <p className="footer_heading">Other</p>
               <ul className="list-none text-[grey] pt-[24px] flex flex-col justify-center items-start gap-[16px] pl-[0px]">
                 <li className="footer_listitem">
-                  <Link href="/about">Privacy Policy</Link>
+                  <Link href="/">Privacy Policy</Link>
                 </li>
                 <li className="footer_listitem">
-                  <Link href="/features">Terms and Condition</Link>
+                  <Link href="/">Terms and Condition</Link>
                 </li>
                 <li className="footer_listitem">
-                  <Link href={"/faq"}>Services</Link>
+                  <Link href={"/"}>Services</Link>
                 </li>
               </ul>
             </div>
@@ -219,7 +216,7 @@ const Footer = () => {
           </div>
         )}
 
-        <div className="md:pt-[40px] pt-[20px] border-t border-[#E8ECEF]">
+        <div className="md:pt-[40px] pt-[20px] border-t border-gray-800">
           {/* socials */}
           <div className="lg:flex sm:flex flex-col items-center text-center md:flex-row md:justify-between text-[#E8ECEF] text-[14px] Satoshi400 sm:justify-between md:items-start">
             <div className="copyright md:m-auto flex flex-col md:flex-row items-center text-[#E8ECEF]">

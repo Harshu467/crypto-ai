@@ -12,16 +12,16 @@ const Navbar = () => {
       path: "/",
     },
     {
-      name: "About",
+      name: "Market",
+      path: "/docs",
+    },
+    {
+      name: "Trending",
       path: "/about",
     },
     {
       name: "Contact",
       path: "/contact-us",
-    },
-    {
-      name: "Market",
-      path: "/docs",
     },
   ];
   return (
