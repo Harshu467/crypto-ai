@@ -4,7 +4,6 @@ import Head from "next/head";
 import { CryptoProvider } from "../context/CryptoContext";
 import { StorageProvider } from "../context/StorageContext";
 import { TrendingContext } from "../context/TrendingContext";
-import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 

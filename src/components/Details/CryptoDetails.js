@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import { CryptoContext } from "../contexts/CryptoContext";
-import Chart from "./Chart";
+import { CryptoContext } from "../../context/CryptoContext";
+import Chart from "../Chart/Chart/Chart";
 const Indicator =({currentPrice,high,low})=>{
     const [green, setgreen] = useState();
     useEffect(() => {

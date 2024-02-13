@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { CryptoContext } from "../contexts/CryptoContext";
-import { StorageContext } from "../contexts/StorageContext";
-import Pagination from "./Pagination";
+import { CryptoContext } from "../../contexts/CryptoContext";
+import { StorageContext } from "../../contexts/StorageContext";
+import Pagination from "../Pagination/Paginationn";
 
 const SaveBtn = ({ data }) => {
   const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);

@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { CryptoContext } from "../contexts/CryptoContext";
+import { CryptoContext } from "../../contexts/CryptoContext";
 function CustomTooltip({ payload, label, active, currency = "usd" }) {
   if (active && payload && payload.length > 0) {
     return (
