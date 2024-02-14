@@ -1,184 +1,99 @@
-import React, { useContext, useRef } from "react";
-import paginationArrow from "../assets/pagination-arrow.svg";
-import { CryptoContext } from "../../contexts/CryptoContext";
-import submitIcon from "../assets/submit-icon.svg";
-
-const PerPage = () => {
-  const { setPerPage } = useContext(CryptoContext);
-  const inputRef = useRef(null);
-
+import React, { useContext, useState } from "react";
+import debounce from "lodash.debounce";
+import { CryptoContext } from "@/context/CryptoContext";
+// import SearchImg from "../assets/search-icon.svg";
+const SearchInput = ({ handleSearch }) => {
+  const [searchText, setSearchText] = useState("");
+  let { searchData, setCoinSearch, setSearchData } = useContext(CryptoContext);
+  let handleInput = (e) => {
+    e.preventDefault();
+    let query = e.target.value;
+    setSearchText(query);
+    handleSearch(query);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    let val = inputRef.current.value;
-    if (val !== 0) {
-      setPerPage(val);
-      inputRef.current.value = val;
-    }
+    handleSearch(searchText);
   };
-
+  const selectCoin = (coin) => {
+    setCoinSearch(coin);
+    setSearchText("");
+    setSearchData();
+  };
   return (
-    <form
-      className="relative flex items-center  font-nunito mr-6"
-      onSubmit={handleSubmit}
-    >
-      <label
-        htmlFor="perpage"
-        className="relative flex justify-center items-center"
-      >
-        <span className="mr-2 lowercase" >
-        per page:{" "}
-        </span>
-      </label>
-      <input
-        type="number"
-        name="perpage"
-        min={1}
-        max={250}
-        ref={inputRef}
-        placeholder="10"
-        className="hover:appearance-none appearance-none w-8 h-6 rounded bg-gray-200 placeholder:text-gray-100 placeholder:text-sm required outline-0 
-        border border-transparent focus:border-cyan leading-4  text-center text-sm"
-      />
-      <button type="submit" className="ml-1 cursor-pointer">
-        <img src={submitIcon} alt="submit" className="w-full h-auto" />
-      </button>
-    </form>
+    <>
+        <form
+          className="xl:w-96 lg:w-60 w-full relative flex items-center  lg:ml-7  font-nunito"
+          onSubmit={handleSubmit}
+        >
+          <input
+            type="text"
+            name="search"
+            onChange={handleInput}
+            value={searchText}
+            className="w-full rounded bg-gray-200 placeholder:text-gray-100 pl-2 placeholder:text-base required outline-0 
+            border border-transparent focus:border-cyan"
+            placeholder="Search here..."
+          />
+          <button type="submit" className="absolute right-1 cursor-pointer">
+            {/* <img src={SearchImg} className="w-full h-auto" alt="search" /> */}
+          </button>
+        </form>
+        {searchText.length > 0 ? (
+          <ul
+            className="absolute top-11 left-0 w-96 h-96 rounded
+overflow-x-hidden py-2 bg-gray-200 bg-opacity-60 
+backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-200
+"
+          >
+            {searchData ? (
+              searchData.map((coin) => {
+                return (
+                  <li
+                    className="flex items-center ml-4 my-2 cursor-pointer"
+                    key={coin.id}
+                    onClick={() => selectCoin(coin.id)}
+                  >
+                    <img
+                      className="w-[1rem] h-[1rem] mx-1.5"
+                      src={coin.thumb}
+                      alt={coin.name}
+                    />
+                    <span>{coin.name}</span>
+                  </li>
+                );
+              })
+            ) : (
+              <div
+                className="w-full h-full flex justify-center items-center
+             "
+              >
+                <div
+                  className="w-8 h-8 border-4 border-cyan rounded-full
+             border-b-gray-200 animate-spin
+             "
+                  role="status"
+                />
+                <span className="text-white ml-2">Searching...</span>
+              </div>
+            )}
+          </ul>
+        ) : null}
+      </>
   );
 };
 
-const Pagination = () => {
-  let { page, setPage, totalPages, perPage, cryptoData } =
-    useContext(CryptoContext);
+const Search = () => {
+  let { getSearchResult } = useContext(CryptoContext);
+  const debounceFunc = debounce(function (val) {
+    getSearchResult(val);
+  }, 2000);
 
-  const TotalNumber = Math.ceil(totalPages / perPage);
-
-  const next = () => {
-    if (page === TotalNumber) {
-      return null;
-    } else {
-      setPage(page + 1);
-    }
-  };
-
-  const prev = () => {
-    if (page === 1) {
-      return null;
-    } else {
-      setPage(page - 1);
-    }
-  };
-
-  const multiStepNext = () => {
-    if (page + 3 >= TotalNumber) {
-      setPage(TotalNumber - 1);
-    } else {
-      setPage(page + 3);
-    }
-  };
-
-  const multiStepPrev = () => {
-    if (page - 3 <= 1) {
-      setPage(TotalNumber + 1);
-    } else {
-      setPage(page - 2);
-    }
-  };
-
-  if (cryptoData && cryptoData.length >= perPage) {
-    return (
-      <div className="flex md:flex-row flex-col items-center md:mt-0 mt-4 ">
-        <PerPage />
-        <ul className="flex items-center justify-end  text-sm sm:mt-0 mt-4">
-          <li className="flex items-center">
-            <button className="outline-0 hover:text-cyan w-8" onClick={prev}>
-              <img
-                className="w-full h-auto rotate-180"
-                src={paginationArrow}
-                alt="left"
-              />
-            </button>
-          </li>
-
-          {page + 1 === TotalNumber || page === TotalNumber ? (
-            <li>
-              {" "}
-              <button
-                onClick={multiStepPrev}
-                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg    "
-              >
-                ...
-              </button>
-            </li>
-          ) : null}
-
-          {page - 1 !== 0 ? (
-            <li>
-              <button
-                onClick={prev}
-                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
-              >
-                {" "}
-                {page - 1}{" "}
-              </button>
-            </li>
-          ) : null}
-          <li>
-            <button
-              disabled
-              className="ouline-0  rounded-full w-8 h-8 flex items-center justify-center bg-cyan text-gray-300 mx-1.5"
-            >
-              {page}
-            </button>
-          </li>
-
-          {page + 1 !== TotalNumber && page !== TotalNumber ? (
-            <li>
-              <button
-                onClick={next}
-                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
-              >
-                {page + 1}
-              </button>
-            </li>
-          ) : null}
-
-          {page + 1 !== TotalNumber && page !== TotalNumber ? (
-            <li>
-              {" "}
-              <button
-                onClick={multiStepNext}
-                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg    "
-              >
-                ...
-              </button>
-            </li>
-          ) : null}
-
-          {page !== TotalNumber ? (
-            <li>
-              <button
-                onClick={() => setPage(TotalNumber)}
-                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
-              >
-                {TotalNumber}
-              </button>
-            </li>
-          ) : null}
-          <li>
-            <button className="outline-0 hover:text-cyan w-8" onClick={next}>
-              <img
-                className="w-full h-auto"
-                src={paginationArrow}
-                alt="right"
-              />
-            </button>
-          </li>
-        </ul>
-      </div>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <div className="relative">
+      <SearchInput handleSearch={debounceFunc} />
+    </div>
+  );
 };
 
-export default Pagination
+export default Search;

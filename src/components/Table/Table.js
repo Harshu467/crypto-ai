@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
+"use client";
 import { Link } from "react-router-dom";
-import { CryptoContext } from "../../contexts/CryptoContext";
-import { StorageContext } from "../../contexts/StorageContext";
-import Pagination from "../Pagination/Paginationn";
-
+// import { CryptoContext } from "@/context/CryptoContext";
+// import { StorageContext } from "@/context/StorageContext";
+import Pagination from "../Pagination/Pagination";
+import { useState, useLayoutEffect } from "react";
 const SaveBtn = ({ data }) => {
-  const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
+  // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
 
   const handleClick = (e) => {
     e.preventDefault();
-    saveCoin(data.id);
-    if (allCoins.includes(data.id)) {
-      removeCoin(data.id);
-    } else {
-      saveCoin(data.id);
-    }
+    // saveCoin(data.id);
+    // if (allCoins.includes(data.id)) {
+    //   removeCoin(data.id);
+    // } else {
+    //   saveCoin(data.id);
+    // }
   };
   return (
     <button
@@ -49,10 +49,78 @@ const SaveBtn = ({ data }) => {
 };
 
 const Table = () => {
-  let { cryptoData, currency } = useContext(CryptoContext);
+  const [cryptoData, setCryptoData] = useState();
+  const [searchData, setSearchData] = useState();
+  const [coinData, setCoinData] = useState();
+  const [coinSearch, setCoinSearch] = useState("");
+  const [currency, setCurrency] = useState("usd");
+  const [sortBy, setSortBy] = useState("market_cap_desc");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(250);
+  const [perPage, setPerPage] = useState(10);
+  const [error, setError] = useState({ data: "", coinData: "", search: "" });
+  const getCryptoData = async () => {
+    setError({ ...error, data: "" });
+    setCryptoData();
+    setTotalPages(13220);
+    try {
+      const data = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${coinSearch}&order=${sortBy}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
+      )
+        .then(async (res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          let errorResponse = await res.json();
+          setError({ ...error, data: errorResponse.error });
+          throw new Error(errorResponse.error);
+        })
+        .then((json) => json);
+      setCryptoData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCoinData = async (coinid) => {
+    setCoinData();
+    try {
+      const data = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${coinid}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=true&sparkline=false`
+      )
+        .then((res) => res.json())
+        .then((json) => json);
+      setCoinData(data);
+      console.log("DATA", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSearchResult = async (query) => {
+    try {
+      const data = await fetch(
+        `https://api.coingecko.com/api/v3/search?query=${query}`
+      )
+        .then((res) => res.json())
+        .then((json) => json);
+      setSearchData(data.coins);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const resetFunction = () => {
+    setPage(1);
+    setCoinSearch("");
+  };
+
+  useLayoutEffect(() => {
+    getCryptoData();
+  }, [coinSearch, currency, sortBy, page, perPage]);
   return (
-    <>
-      <div className="flex flex-col mt-9 border border-gray-100 rounded ">
+    <div className="items-center w-full mx-auto">
+      <div className="flex items-center flex-col mt-9 border border-gray-100 rounded ">
         {cryptoData ? (
           <table className="w-full table-auto">
             <thead className="capitalize text-base text-gray-100 font-medium border-b border-gray-100 ">
@@ -75,7 +143,7 @@ const Table = () => {
                     className="text-center text-base border-b border-gray-100  hover:bg-gray-200 last:border-b-0"
                   >
                     <td className="py-4 uppercase flex items-center">
-                      <SaveBtn data={data} />
+                      {/* <SaveBtn data={data} /> */}
                       <Link to={`/${data.id}`} className="cursor-pointer">
                         <img
                           className="w-[3.2rem] h-[3.2rem] mx-1.5"
@@ -100,7 +168,9 @@ const Table = () => {
                         currency: currency,
                       }).format(data.current_price)}
                     </td>
-                    <td className="py-4 sm:table-cell hidden">{data.total_volume}</td>
+                    <td className="py-4 sm:table-cell hidden">
+                      {data.total_volume}
+                    </td>
                     <td
                       className={
                         data.market_cap_change_percentage_24h > 0
@@ -152,21 +222,18 @@ const Table = () => {
               })}
             </tbody>
           </table>
-        ) : <div
-        className="w-full min-h-[60vh] flex justify-center items-center
-     "
-      >
-        <div
-          className="w-8 h-8 border-4 border-cyan rounded-full
-     border-b-gray-200 animate-spin
-     "
-          role="status"
-        />
-        <span className="ml-2">Please Wait...</span>
-      </div>}
+        ) : (
+          <div className="w-full min-h-[60vh] flex justify-center items-center">
+            <div
+              className="w-8 h-8 border-4 border-cyan rounded-full border-b-gray-200 animate-spin"
+              role="status"
+            />
+            <span className="ml-2 text-white">Please Wait...</span>
+          </div>
+        )}
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between  mt-4 capitalize h-[2rem] ">
-        <span>
+        {/* <span>
           Project Created by{" "}
           <a
             className="text-cyan"
@@ -176,10 +243,10 @@ const Table = () => {
           >
             Harsh Upadhye
           </a>
-        </span>
+        </span> */}
         <Pagination />
       </div>
-    </>
+    </div>
   );
 };
 

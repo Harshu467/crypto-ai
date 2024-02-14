@@ -1,7 +1,7 @@
+import { CryptoContext } from "@/context/CryptoContext";
 import React, { useContext, useRef } from "react";
-import paginationArrow from "../assets/pagination-arrow.svg";
-import { CryptoContext } from "../../contexts/CryptoContext";
-import submitIcon from "../assets/submit-icon.svg";
+// import paginationArrow from "../assets/pagination-arrow.svg";
+// import submitIcon from "../assets/submit-icon.svg";
 
 const PerPage = () => {
   const { setPerPage } = useContext(CryptoContext);
@@ -40,7 +40,7 @@ const PerPage = () => {
         border border-transparent focus:border-cyan leading-4  text-center text-sm"
       />
       <button type="submit" className="ml-1 cursor-pointer">
-        <img src={submitIcon} alt="submit" className="w-full h-auto" />
+        {/* <img src={submitIcon} alt="submit" className="w-full h-auto" /> */}
       </button>
     </form>
   );
@@ -91,11 +91,11 @@ const Pagination = () => {
         <ul className="flex items-center justify-end  text-sm sm:mt-0 mt-4">
           <li className="flex items-center">
             <button className="outline-0 hover:text-cyan w-8" onClick={prev}>
-              <img
+              {/* <img
                 className="w-full h-auto rotate-180"
                 src={paginationArrow}
                 alt="left"
-              />
+              /> */}
             </button>
           </li>
 
@@ -166,11 +166,11 @@ const Pagination = () => {
           ) : null}
           <li>
             <button className="outline-0 hover:text-cyan w-8" onClick={next}>
-              <img
+              {/* <img
                 className="w-full h-auto"
                 src={paginationArrow}
                 alt="right"
-              />
+              /> */}
             </button>
           </li>
         </ul>

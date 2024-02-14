@@ -1,10 +1,12 @@
+import { useRouter } from 'next/navigation';
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const TrendingCoin = ({data}) => {
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
+    let router = useRouter()
     const getCoinsDetails = (id) =>{
-        navigate(`${id}`);
+      router.push(`/trending/${id}`)
     };
   return (
     <div className='lg:w-[40%] sm:w-[60%] w-[80%] bg-gray-200 mb-12 last:mb-0 rounded-lg p-4 relative cursor-pointer

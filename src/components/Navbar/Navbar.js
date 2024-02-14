@@ -13,11 +13,11 @@ const Navbar = () => {
     },
     {
       name: "Market",
-      path: "/docs",
+      path: "/market",
     },
     {
       name: "Trending",
-      path: "/about",
+      path: "/trending",
     },
     {
       name: "Contact",
@@ -33,7 +33,7 @@ const Navbar = () => {
               href="/"
               className="inline-flex h-10 items-start text-white rounded-lg font-extrabold text-[2rem]"
             >
-              Crypto <span className="text-primary">-Stock</span>
+              Crypto
             </Link>
           </div>
 

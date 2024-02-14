@@ -1,8 +1,8 @@
 import React, { useContext, useRef } from "react";
-import Search from "../Search/Search/Search";
-import submitIcon from "../assets/submit-icon.svg";
-import selectIcon from "../assets/select-icon.svg";
+// import submitIcon from "../assets/submit-icon.svg";
+// import selectIcon from "../assets/select-icon.svg";
 import { CryptoContext } from "../../context/CryptoContext";
+import Search from "../Search/Search";
 const Filter = () => {
   let { setCurrency, setSortBy, resetFunction } = useContext(CryptoContext);
   const currencyRef = useRef(null);
@@ -21,7 +21,7 @@ const Filter = () => {
   };
 
   return (
-    <div className=" w-full lg:h-12 h-full lg:border-2 rounded-lg border-solid lg:border-gray-100 border-0 flex lg:flex-row flex-col lg:items-center lg:justify-between relative align-start justify-between">
+    <div className="mt-[24px] m-auto lg:h-12 h-full lg:border-2 rounded-lg border-solid lg:border-gray-100 border-0 flex lg:flex-row flex-col lg:items-center lg:justify-between relative align-start justify-between">
       <Search />
       <div className="flex lg:mr-7 justify-between mt-4 lg:mt-0 sm:flex-row flex-col relative">
         <form
@@ -50,7 +50,7 @@ const Filter = () => {
      "
           />
           <button type="submit" className="ml-1 cursor-pointer">
-            <img src={submitIcon} alt="submit" className="w-full h-auto" />
+            {/* <img src={submitIcon} alt="submit" className="w-full h-auto" /> */}
           </button>
         </form>
 
@@ -74,12 +74,12 @@ const Filter = () => {
             <option value="gecko_desc">gecko desc</option>
             <option value="gecko_asc">gecko asc</option>
           </select>
-          <img
+          {/* <img
             src={selectIcon}
             alt="submit"
             className="w-[1rem] absolute right-1 top-2 pointer-events-none
          "
-          />
+          /> */}
         </label>
         <button
           className="w-[2rem] ml-4 hover:scale-110 transition-all transition-ease absolute right-0 top-0 sm:relative 

@@ -45,7 +45,7 @@ export function CryptoProvider ({children}){
             .then((res) => res.json())
             .then((json) => json);
           setCoinData(data);
-          console.log(data)
+          console.log("DATA",data)
         } catch (error) {
           console.log(error);
         }
