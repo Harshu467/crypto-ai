@@ -1,3 +1,5 @@
+'use client';
+import { useContext } from "react";
 import { app, db } from "../../firebase";
 import {
   addDoc,
@@ -16,8 +18,10 @@ import {
   serverTimestamp,
   onSnapshot,
 } from "firebase/firestore";
+import { UserContext } from "@/context/UserContext";
 
 //Create a function which add data to firestore users collection and uid create in realtime database
+
 export const addToFirebaseUsers = async (uid, email, name) => {
   try {
     const userRef = await addDoc(collection(db, "users"), {
@@ -47,3 +51,4 @@ export const checkEmailExists = async (email) => {
     console.error("Error checking email: ", error);
   }
 };
+

@@ -1,9 +1,8 @@
 "use client";
 import { Link } from "react-router-dom";
-// import { CryptoContext } from "@/context/CryptoContext";
-// import { StorageContext } from "@/context/StorageContext";
 import Pagination from "../Pagination/Pagination";
-import { useState, useLayoutEffect } from "react";
+import { useContext, useEffect } from "react";
+import { UserContext } from "@/context/UserContext";
 const SaveBtn = ({ data }) => {
   // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
 
@@ -49,23 +48,35 @@ const SaveBtn = ({ data }) => {
 };
 
 const Table = () => {
-  const [cryptoData, setCryptoData] = useState();
-  const [searchData, setSearchData] = useState();
-  const [coinData, setCoinData] = useState();
-  const [coinSearch, setCoinSearch] = useState("");
-  const [currency, setCurrency] = useState("usd");
-  const [sortBy, setSortBy] = useState("market_cap_desc");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(250);
-  const [perPage, setPerPage] = useState(10);
-  const [error, setError] = useState({ data: "", coinData: "", search: "" });
+  let {
+    cryptoData,
+    currency,
+    perPage,
+    page,
+    setCryptoData,
+    setTotalPages,
+    error,
+    setError,
+    coinSearch,
+  } = useContext(UserContext);
   const getCryptoData = async () => {
+    console.log("Fetching data");
     setError({ ...error, data: "" });
+    console.log("Error", error);
     setCryptoData();
     setTotalPages(13220);
     try {
+      const API_KEY = "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          x_cg_demo_api_key: API_KEY,
+        },
+      };
       const data = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${coinSearch}&order=${sortBy}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${coinSearch}&order=${sortBy}&per_page=${perPage}&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=${API_KEY}`,
+        options
       )
         .then(async (res) => {
           if (res.ok) {
@@ -73,51 +84,19 @@ const Table = () => {
           }
           let errorResponse = await res.json();
           setError({ ...error, data: errorResponse.error });
+          console.log("Err", errorResponse.error, error);
           throw new Error(errorResponse.error);
         })
         .then((json) => json);
       setCryptoData(data);
+      console.log("Data", data);
     } catch (error) {
-      console.log(error);
+      console.log("ERROR", error);
     }
   };
-
-  const getCoinData = async (coinid) => {
-    setCoinData();
-    try {
-      const data = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinid}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=true&sparkline=false`
-      )
-        .then((res) => res.json())
-        .then((json) => json);
-      setCoinData(data);
-      console.log("DATA", data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getSearchResult = async (query) => {
-    try {
-      const data = await fetch(
-        `https://api.coingecko.com/api/v3/search?query=${query}`
-      )
-        .then((res) => res.json())
-        .then((json) => json);
-      setSearchData(data.coins);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const resetFunction = () => {
-    setPage(1);
-    setCoinSearch("");
-  };
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     getCryptoData();
-  }, [coinSearch, currency, sortBy, page, perPage]);
+  }, [currency]);
   return (
     <div className="items-center w-full mx-auto">
       <div className="flex items-center flex-col mt-9 border border-gray-100 rounded ">
@@ -136,7 +115,7 @@ const Table = () => {
               </tr>
             </thead>
             <tbody>
-              {cryptoData.map((data) => {
+              {cryptoData?.map((data) => {
                 return (
                   <tr
                     key={data.id}
@@ -233,7 +212,8 @@ const Table = () => {
         )}
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between  mt-4 capitalize h-[2rem] ">
-        {/* <span>
+        <span
+        className="text-white">
           Project Created by{" "}
           <a
             className="text-cyan"
@@ -243,8 +223,8 @@ const Table = () => {
           >
             Harsh Upadhye
           </a>
-        </span> */}
-        <Pagination />
+        </span>
+        {cryptoData && <Pagination />}
       </div>
     </div>
   );

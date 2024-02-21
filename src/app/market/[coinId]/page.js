@@ -1,9 +1,8 @@
 'use client';
 import { useParams } from "next/navigation";
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ReactDOM from "react-dom";
+import {useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
+import { UserContext } from "@/context/UserContext";
 const Indicator = ({ currentPrice, high, low }) => {
   const [green, setgreen] = useState();
   useEffect(() => {
@@ -31,16 +30,30 @@ const Indicator = ({ currentPrice, high, low }) => {
 };
 const page = () => {
   let { coinId } = useParams();
-  console.log(coinId);
-  let navigate = useNavigate();
-  let { coinData: data, getCoinData, currency } = useContext(CryptoContext);
-  useLayoutEffect(() => {
+  let { coinData: data, currency,setCoinData } = useContext(UserContext);
+
+  console.log("1", coinData, currency,data);
+  const getCoinData = async (coinid) => {
+    setCoinData();
+    try {
+      const data = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${coinid}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=true&sparkline=false`
+      )
+        .then((res) => res.json())
+        .then((json) => json);
+      setCoinData(data);
+      console.log(data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     getCoinData(coinId);
   }, [coinId]);
   const close = () => {
-    navigate("..");
+    router.push("/market");
   };
-  return ReactDOM.createPortal(
+  return (
     <div
       className="fixed top-0 w-full h-full bg-gray-200 bg-opacity-30 first-letter:
       backdrop-blur-sm flex items-center justify-center font-nunito "
@@ -48,7 +61,7 @@ const page = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="xl:w-[65%] lg:w-[75%] md:w-[90%] sm:w-[75%] w-[90%] lg:h-[75%] md:h-[70%] h-[90vh]  
+        className="xl:w-[65%] lg:w-[75%] md:w-[90%] sm:w-[75%] w-[90%] lg:h-[85%] md:h-[80%] h-[100vh]  
           scrollbar-thin md:overflow-hidden scrollbar-thumb-gray-100 scrollbar-track-gray-200 
           overflow-x-hidden  bg-gray-300 bg-opacity-75 rounded-lg text-white relative"
       >
@@ -234,7 +247,7 @@ const page = () => {
                     <a
                       target={"_blank"}
                       rel="noreferrer"
-                      className="text-sm bg-gray-200 text-gray-100 px-1.5 py-0.5 my-1 rounded cursor-pointer"
+                      className="text-sm bg-gray-200 text-gray-100 px-1.5 py-0.5 my-2 rounded cursor-pointer"
                       href={data?.links?.official_forum_url[0]}
                     >
                       {data?.links?.official_forum_url[0].substring(0, 30)}
@@ -301,19 +314,19 @@ const page = () => {
                   <span className="text-gray-100 capitalize mr-1">
                     Market Cap Rank :{" "}
                   </span>
-                  {data.market_cap_rank}
+                  {(data?.market_cap_rank && data?.market_cap_rank !== undefined) ? data?.market_cap_rank : "N/A"}
                 </h3>
                 <h3 className="text-white py-1">
                   <span className="text-gray-100 capitalize mr-1">
                     CoinGecko Rank :{" "}
                   </span>
-                  {data.coingecko_rank}
+                  {(data?.coingecko_rank && data?.coingecko_rank !== undefined) ? data?.coingecko_rank : "N/A"}
                 </h3>
                 <h3 className="text-white py-1">
                   <span className="text-gray-100 capitalize mr-1">
                     CoinGecko Score :{" "}
                   </span>
-                  {data.coingecko_score}
+                  {(data?.coingecko_score && data?.coingecko_score !== undefined) ? data?.coingecko_score : "N/A"}
                 </h3>
               </div>
             </div>
@@ -449,8 +462,7 @@ const page = () => {
           </div>
         )}
       </div>
-    </div>,
-    document.getElementById("model")
+    </div>
   );
 };
 

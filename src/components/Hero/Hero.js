@@ -39,13 +39,13 @@ const Hero = () => {
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <section className="sm:max-w-[19.5rem] md:max-w-[24.5rem] tab:max-w-[28rem] lg:max-w-[30rem]">
             <div
-              className="text-4xl font-bold sm:text-[5vw] md:text-5xl lg:leading-[5.5rem] lg:text-[5rem] text-white"
-            >
+              className="text-4xl font-bold sm:text-[5vw] md:text-[2px] lg:leading-[5.5rem] lg:text-[5rem] text-white"
+           >
               Learn.Invest. Grow.
             </div>
 
             <p
-              className="mt-4 text-xl text-gray-400 tracking-wide "
+              className="mt-4 text-[20px] text-gray-400 tracking-wide "
             >
               Stay updated and informed with CryptoMarketHub – your go-to
               platform for all things crypto.
@@ -55,7 +55,7 @@ const Hero = () => {
               className="mt-14 my-1"
             >
               <Link
-                href="/projects"
+                href="/market"
                 className="p-3 rounded-md border border-gray-600 hover:bg-gray-200 ease-in duration-200 text-white hover:text-gray-900 "
                 type="button"
                 aria-label="link to projects section"

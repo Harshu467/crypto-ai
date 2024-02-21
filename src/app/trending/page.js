@@ -2,7 +2,7 @@
 import { data } from "autoprefixer";
 import TrendingCoin from "@/components/Trending/TrendingCoin";
 // import { TrendingContext } from "@/context/TrendingContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";

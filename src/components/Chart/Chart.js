@@ -1,4 +1,5 @@
-import React, { useContext, useLayoutEffect, useState } from "react";
+import { UserContext } from "@/context/UserContext";
+import { useContext, useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -9,7 +10,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { CryptoContext } from "../../contexts/CryptoContext";
 function CustomTooltip({ payload, label, active, currency = "usd" }) {
   if (active && payload && payload.length > 0) {
     return (
@@ -55,30 +55,31 @@ const Graph = ({ data, currency, type }) => {
 };
 const Chart = ({ id }) => {
   const [chartData, setchartData] = useState();
-  let { currency } = useContext(CryptoContext);
+  let { currency } = useContext(UserContext);
+  console.log("3",currency);
   const [type, settype] = useState("prices");
   const [days, setdays] = useState(7);
-  useLayoutEffect(() => {
-    const getChartData = async (id) => {
-      try {
-        const data = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}&interval=daily`
-        )
-          .then((res) => res.json())
-          .then((json) => json);
-        console.log(data);
-        let convertedData = data[type].map((item) => {
-          return {
-            date: new Date(item[0]).toLocaleDateString(),
-            [type]: item[1],
-          };
-        });
-        console.log(convertedData);
-        setchartData(convertedData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const getChartData = async (id) => {
+    try {
+      const data = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}&interval=daily`
+      )
+        .then((res) => res.json())
+        .then((json) => json);
+      console.log(data);
+      let convertedData = data[type].map((item) => {
+        return {
+          date: new Date(item[0]).toLocaleDateString(),
+          [type]: item[1],
+        };
+      });
+      console.log(convertedData);
+      setchartData(convertedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     getChartData(id);
   }, [id, type, days]);
   return (
