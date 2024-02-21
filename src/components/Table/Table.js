@@ -66,7 +66,7 @@ const Table = () => {
     setCryptoData();
     setTotalPages(13220);
     try {
-      const API_KEY = "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
+      const API_KEY = process.env.GECKO_API_KEY;
       const options = {
         headers: {
           "Content-Type": "application/json",
