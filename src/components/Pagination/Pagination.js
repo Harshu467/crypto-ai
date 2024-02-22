@@ -47,7 +47,7 @@ const PerPage = () => {
 const Pagination = () => {
   let { page, setPage, totalPages, perPage, cryptoData } =
     useContext(UserContext);
-    console.log("7",page, setPage, totalPages, perPage, cryptoData);
+    // console.log("7",page, setPage, totalPages, perPage, cryptoData);
   const TotalNumber = Math.ceil(totalPages / perPage);
   // console.log("Pagination",cryptoData);
 

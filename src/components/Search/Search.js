@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+'use client'
+import React, { useContext, useState } from "react";
 import debounce from "lodash.debounce";
 import { SearchIcon } from "@/helpers/icons";
-// import SearchImg from "../assets/search-icon.svg";
+import { UserContext } from "@/context/UserContext";
 const SearchInput = ({ handleSearch }) => {
-  const [searchText, setSearchText] = useState("");
-  const [searchData, setSearchData] = useState();
-  const [coinSearch, setCoinSearch] = useState("");
+  let {setSearchData, setCoinSearch,setSearchText,searchText,searchData} = useContext(UserContext);
+  
 
   let handleInput = (e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-20
             searchData.map((coin) => {
               return (
                 <li
-                  className="flex items-center ml-4 my-2 cursor-pointer"
+                  className="flex text-white items-center ml-4 my-2 cursor-pointer"
                   key={coin.id}
                   onClick={() => selectCoin(coin.id)}
                 >
@@ -86,6 +86,7 @@ backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-20
 };
 
 const Search = () => {
+  let { setSearchData } = useContext(UserContext);
   const getSearchResult = async (query) => {
     try {
       const data = await fetch(

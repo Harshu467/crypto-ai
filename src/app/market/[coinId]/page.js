@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/router";
 const Indicator = ({ currentPrice, high, low }) => {
   const [green, setgreen] = useState();
   useEffect(() => {
@@ -28,8 +29,10 @@ const Indicator = ({ currentPrice, high, low }) => {
     </>
   );
 };
-let { coinId } = useParams();
-const page = () => {
+const MarketCoin = () => {
+  const router = useRouter();
+  const { coinId } = useParams(); 
+  console.log("COINID",coinId);
   let { coinData: data, currency, setCoinData } = useContext(UserContext);
 
   console.log("1", coinData, currency, data);
@@ -472,4 +475,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default MarketCoin;

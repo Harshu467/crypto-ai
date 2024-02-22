@@ -28,8 +28,9 @@ const Indicator = ({ currentPrice, high, low }) => {
     </>
   );
 };
-const page = () => {
-  let { coinId } = useParams();
+const TrendingCoin = () => {
+  let router = useRouter();
+  let {coinId} = useParams();
   let {coinData:data, currency,setCoinData} = useContext(UserContext);
   console.log("2",coinId,data,currency);
   const getCoinData = async (coinid) => {
@@ -46,7 +47,6 @@ const page = () => {
       console.log(error);
     }
   };
-  const router = useRouter();
   useEffect(() => {
     getCoinData(coinId);
   }, [coinId]);
@@ -466,4 +466,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default TrendingCoin;

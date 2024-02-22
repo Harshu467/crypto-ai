@@ -12,17 +12,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <UserProvider>
-      <html lang="en">
-        <Head>
-          <meta charSet="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-        </Head>
-        <body className={inter.className}>{children}</body>
-      </html>
-    </UserProvider>
+    <html lang="en">
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <UserProvider>
+        <body className={inter.className}>
+          <main>{children}</main>
+        </body>
+      </UserProvider>
+    </html>
   );
 }

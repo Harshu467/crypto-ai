@@ -1,10 +1,9 @@
-import  { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import Search from "../Search/Search";
 import { DropDown, Submit } from "@/helpers/icons";
 import { UserContext } from "@/context/UserContext";
 const Filter = () => {
-  let {setCurrency,setSortBy} = useContext(UserContext);
-  console.log("5",setCurrency,setSortBy);
+  let { setCurrency, setSortBy } = useContext(UserContext);
   const resetFunction = () => {
     setPage(1);
     setCoinSearch("");
@@ -62,7 +61,7 @@ const Filter = () => {
           </span>
           <select
             name="sortby"
-            className="rounded bg-gray-200 sm:text-base text-sm pl-2 pr-10 py-1.5 focus:outline-0
+            className="rounded text-white bg-gray-200 sm:text-base text-sm pl-2 pr-10 py-1.5 focus:outline-0
             text-transparent appearance-none capitalize leading-4 w-full sm:w-48 "
             onClick={handleSort}
           >

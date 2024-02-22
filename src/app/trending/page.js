@@ -1,13 +1,12 @@
 "use client";
 import { data } from "autoprefixer";
 import TrendingCoin from "@/components/Trending/TrendingCoin";
-// import { TrendingContext } from "@/context/TrendingContext";
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
-const page = () => {
+const Trending = () => {
   const [trendData, setTrendData] = useState();
   const getTrendData = async () => {
     try {
@@ -66,22 +65,9 @@ const page = () => {
         </div>
         <Outlet />
       </section>
-      {/* <div className="flex items-center justify-between mt-4 capitalize h-[2rem]">
-        <span>
-          Project Created by{" "}
-          <a
-            className="text-cyan"
-            href="https://github.com/Harshu467"
-            rel="noreferrer"
-            target={"_blank"}
-          >
-            Harsh Upadhye
-          </a>
-        </span>
-      </div> */}
       <Footer />
     </>
   );
 };
 
-export default page;
+export default Trending;

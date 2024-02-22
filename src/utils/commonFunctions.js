@@ -1,5 +1,3 @@
-'use client';
-import { useContext } from "react";
 import { app, db } from "../../firebase";
 import {
   addDoc,
@@ -18,7 +16,6 @@ import {
   serverTimestamp,
   onSnapshot,
 } from "firebase/firestore";
-import { UserContext } from "@/context/UserContext";
 
 //Create a function which add data to firestore users collection and uid create in realtime database
 
