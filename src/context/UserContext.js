@@ -1,9 +1,15 @@
 "use client";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
+import { auth } from "../../firebase";
+import { getUserData } from "@/utils/commonFunctions";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
+  const router = useRouter();
   const [currency, setCurrency] = useState("usd");
   const [perPage, setPerPage] = useState(10);
   const [cryptoData, setCryptoData] = useState(null);
@@ -15,6 +21,11 @@ export function UserProvider({ children }) {
   const [searchText, setSearchText] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [error, setError] = useState({ data: "", coinData: "", search: "" });
+  const [uid, setUid] = useState('');
+  const [token, setToken] = useState('');
+  const [login, setLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const getCryptoData = async () => {
     console.log("Fetching data");
     setError({ ...error, data: "" });
@@ -52,11 +63,61 @@ export function UserProvider({ children }) {
       console.log("ERROR", error);
     }
   };
-
+  const userAuth = async (user) => {
+    if(user){
+      console.log("User", user);
+      try {
+        setToken(user.accessToken);
+        setUid(user.uid);
+        const userData = await getUserData(user.uid);
+        if(!userData.success){
+          setLogin(false);
+          console.log("Error", userData.error);
+        }
+        let cookie = Cookies.get('userData');
+        if(cookie === undefined || userData){
+          const {name, email,uid} = userData.data;
+          Cookies.set('userData', JSON.stringify({name, email, uid}));
+          setLogin(true);
+          setEmail(email);
+          setName(name);
+          setUid(uid);
+        } else {
+          const userData = JSON.parse(cookie);
+          setEmail(userData.email);
+          setName(userData.name);
+          setUid(userData.uid);
+          setLogin(true);
+        }
+      } catch (error) {
+        console.log("Error", error);
+        setLogin(false);
+      }
+    } else {
+      setLogin(false);
+    }
+  }
+  const handleLogout = () => {
+    signOut(auth)
+    .then(() => {
+      setToken('');
+      setUid('');
+      setEmail('');
+      setName('');
+      setLogin(false);
+      Cookies.remove('userData');
+      router.push('/login');
+    })
+  }
   useEffect(() => {
     getCryptoData();
   },[coinSearch, currency, sortBy, page, perPage]);
 
+  useEffect(()=>{
+    onAuthStateChanged(auth, async(user) => {
+      userAuth(user);
+    });
+  },[])
   return (
     <UserContext.Provider
       value={{
@@ -82,6 +143,11 @@ export function UserProvider({ children }) {
         setSearchText,
         searchData,
         setSearchData,
+        uid,
+        name,
+        email,
+        login,
+        handleLogout,
       }}
     >
       {children}

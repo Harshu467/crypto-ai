@@ -49,3 +49,22 @@ export const checkEmailExists = async (email) => {
   }
 };
 
+export const getUserData = async (uid) => {
+  try {
+    if (uid.length > 0) {
+      let data;
+      const userRef = await query(
+        collection(db, "users"),
+        where("uid", "==", uid)
+      );
+      const userSnapshot = await getDocs(userRef);
+      userSnapshot.forEach((doc) => {
+        data = doc.data();
+      });
+      return {success:true,data:data};
+    }
+  } catch (error) {
+    console.error("Error getting user data: ", error);
+    return  {success: false, error: error};
+  }
+};

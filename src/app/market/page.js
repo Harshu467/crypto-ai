@@ -6,7 +6,7 @@ import Table from "@/components/Table/Table";
 import { UserProvider } from "@/context/UserContext";
 import { Outlet } from "react-router-dom";
 
-const Market = () => {
+function Market(){
   return (
     <UserProvider>
       <Navbar />

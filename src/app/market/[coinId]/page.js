@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
-const Indicator = ({ currentPrice, high, low }) => {
+function Indicator ({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
   useEffect(() => {
     let total = high - low;
@@ -29,7 +29,7 @@ const Indicator = ({ currentPrice, high, low }) => {
     </>
   );
 };
-const MarketCoin = () => {
+function MarketCoin() {
   const router = useRouter();
   const { coinId } = useParams(); 
   console.log("COINID",coinId);
