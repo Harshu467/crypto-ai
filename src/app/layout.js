@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 import { UserProvider } from "@/context/UserContext";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,8 @@ export default function RootLayout({ children }) {
       </Head>
       <UserProvider>
         <body className={inter.className}>
-          <main>{children}</main>
+          {children}
+          <Analytics />
         </body>
       </UserProvider>
     </html>
