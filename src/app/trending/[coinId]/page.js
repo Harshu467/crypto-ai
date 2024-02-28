@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import { useParams, useRouter } from "next/navigation";
-import {useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
 const Indicator = ({ currentPrice, high, low }) => {
@@ -30,9 +30,9 @@ const Indicator = ({ currentPrice, high, low }) => {
 };
 const TrendingCoin = () => {
   let router = useRouter();
-  let {coinId} = useParams();
-  let {coinData:data, currency,setCoinData} = useContext(UserContext);
-  console.log("2",coinId,data,currency);
+  let { coinId } = useParams();
+  let { coinData: data, currency, setCoinData } = useContext(UserContext);
+  console.log("2", coinId, data, currency);
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
@@ -42,7 +42,7 @@ const TrendingCoin = () => {
         .then((res) => res.json())
         .then((json) => json);
       setCoinData(data);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -314,20 +314,31 @@ const TrendingCoin = () => {
                   <span className="text-gray-100 capitalize mr-1">
                     Market Cap Rank :{" "}
                   </span>
-                  {(data?.market_cap_rank && data?.market_cap_rank !== undefined) ? data?.market_cap_rank : "N/A"}
+                  {data?.market_cap_rank && data?.market_cap_rank !== undefined
+                    ? data?.market_cap_rank
+                    : "N/A"}
                 </h3>
                 <h3 className="text-white py-1">
                   <span className="text-gray-100 capitalize mr-1">
                     CoinGecko Rank :{" "}
                   </span>
-                  {(data?.coingecko_rank && data?.coingecko_rank !== undefined) ? data?.coingecko_rank : "N/A"}
+                  {data?.coingecko_rank && data?.coingecko_rank !== undefined
+                    ? data?.coingecko_rank
+                    : "N/A"}
                 </h3>
                 <h3 className="text-white py-1">
                   <span className="text-gray-100 capitalize mr-1">
                     CoinGecko Score :{" "}
                   </span>
-                  {(data?.coingecko_score && data?.coingecko_score !== undefined) ? data?.coingecko_score : "N/A"}
+                  {data?.coingecko_score && data?.coingecko_score !== undefined
+                    ? data?.coingecko_score
+                    : "N/A"}
                 </h3>
+              </div>
+              <div className="flex justify-center mt-4">
+                <button className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold py-2 px-4 rounded-lg">
+                  Add to Cart
+                </button>
               </div>
             </div>
             <div className="absolute bottom-4 right-4 flex items-center md:bottom-8 sm:right-8 md:flex-row">

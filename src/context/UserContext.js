@@ -23,7 +23,7 @@ export function UserProvider({ children }) {
   const [error, setError] = useState({ data: "", coinData: "", search: "" });
   const [uid, setUid] = useState('');
   const [token, setToken] = useState('');
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const getCryptoData = async () => {
