@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
+import { Add } from "@/helpers/icons";
 const Indicator = ({ currentPrice, high, low }) => {
   const [green, setgreen] = useState();
   useEffect(() => {
@@ -335,9 +336,22 @@ const TrendingCoin = () => {
                     : "N/A"}
                 </h3>
               </div>
-              <div className="flex justify-center mt-4">
-                <button className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold py-2 px-4 rounded-lg">
-                  Add to Cart
+              <div className="text-[#e94560] flex gap-4">
+                <h4>
+                  <span className="text-gray-100 capitalize">
+                    Add to Cart :{" "}
+                  </span>{" "}
+                  {new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: `${currency}`,
+                    maximumSignificantDigits: 5,
+                  }).format(data.market_data.current_price[currency])}
+                </h4>
+                <button
+                  title="Add to Cart"
+                  className="bg-transparent hover:cursor-pointer hover:border-[white] hover:bg-red-500 hover:text-white text-red-500  transition duration-500 border-[3px] border-opacity-50 border-[#e94560] rounded-md"
+                >
+                  <Add />
                 </button>
               </div>
             </div>

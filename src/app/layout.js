@@ -3,8 +3,7 @@ import "./globals.css";
 import Head from "next/head";
 import { UserProvider } from "@/context/UserContext";
 import { Analytics } from "@vercel/analytics/react";
-
-const inter = Inter({ subsets: ["latin"] });
+import MainSection from "@/components/mainSection";
 
 export const metadata = {
   title: "Crypto Stock",
@@ -19,8 +18,8 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <UserProvider>
-        <body className={inter.className}>
-          {children}
+        <body>
+          <MainSection children={children} />
           <Analytics />
         </body>
       </UserProvider>
