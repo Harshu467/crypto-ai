@@ -1,8 +1,8 @@
 "use client";
-import { Link } from "react-router-dom";
 import Pagination from "../Pagination/Pagination";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
+import Link from "next/link";
 
 const Table = () => {
   // let { currency ,setError,setTotalPages,sortBy,perPage,page,error} = useContext(UserContext);
@@ -22,7 +22,6 @@ const Table = () => {
     console.log("Fetching data");
     setError({ ...error, data: "" });
     console.log("Error", error);
-    setCryptoData();
     setTotalPages(13220);
     try {
       const API_KEY =
@@ -76,94 +75,91 @@ const Table = () => {
                 <th className="py-1 lg:table-cell hidden">7D</th>
               </tr>
             </thead>
-            <tbo1dy>
-              {cryptoData !== null &&
-                cryptoData?.map((data) => {
-                  return (
-                    <tr
-                      key={data.id}
-                      className="text-center text-base border-b border-gray-100  hover:bg-gray-200 last:border-b-0"
+            <tbody>
+              {cryptoData?.map((data) => {
+                return (
+                  <tr
+                    key={data.id}
+                    className="text-center text-white text-base border-b border-gray-100  hover:bg-gray-200 last:border-b-0"
+                  >
+                    <td className="py-4 uppercase flex items-center">
+                      <Link href={`/${data.id}`} className="cursor-pointer">
+                        <img
+                          className="w-[3.2rem] h-[3.2rem] mx-1.5"
+                          src={data.image}
+                          alt={data.name}
+                        />
+                      </Link>
+                      <span>
+                        <Link href={`/${data.id}`} className="cursor-pointer">
+                          {data.symbol}
+                        </Link>
+                      </span>
+                    </td>
+                    <td className="py-4 cursor-pointer sm:table-cell hidden">
+                      <Link href={`/${data.id}`} className="cursor-pointer">
+                        {data.name}
+                      </Link>
+                    </td>
+                    <td className="py-4">
+                      {new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: currency,
+                      }).format(data.current_price)}
+                    </td>
+                    <td className="py-4 sm:table-cell hidden">
+                      {data.total_volume}
+                    </td>
+                    <td
+                      className={
+                        data.market_cap_change_percentage_24h > 0
+                          ? "py-4 text-green md:table-cell hidden"
+                          : "py-4 text-red md:table-cell hidden"
+                      }
                     >
-                      <td className="py-4 uppercase flex items-center">
-                        <Link to={`/${data.id}`} className="cursor-pointer">
-                          <img
-                            className="w-[3.2rem] h-[3.2rem] mx-1.5"
-                            src={data.image}
-                            alt={data.name}
-                          />
-                        </Link>
-                        <span>
-                          <Link to={`/${data.id}`} className="cursor-pointer">
-                            {data.symbol}
-                          </Link>
-                        </span>
-                      </td>
-                      <td className="py-4 cursor-pointer sm:table-cell hidden">
-                        <Link to={`/${data.id}`} className="cursor-pointer">
-                          {data.name}
-                        </Link>
-                      </td>
-                      <td className="py-4">
-                        {new Intl.NumberFormat("en-IN", {
-                          style: "currency",
-                          currency: currency,
-                        }).format(data.current_price)}
-                      </td>
-                      <td className="py-4 sm:table-cell hidden">
-                        {data.total_volume}
-                      </td>
-                      <td
-                        className={
-                          data.market_cap_change_percentage_24h > 0
-                            ? "py-4 text-green md:table-cell hidden"
-                            : "py-4 text-red md:table-cell hidden"
-                        }
-                      >
-                        {Number(data.market_cap_change_percentage_24h).toFixed(
-                          2
-                        )}
-                        %
-                      </td>
-                      <td
-                        className={
-                          data.price_change_percentage_1h_in_currency > 0
-                            ? "py-4 text-green lg:table-cell hidden"
-                            : "py-4 text-red lg:table-cell hidden"
-                        }
-                      >
-                        {Number(
-                          data.price_change_percentage_1h_in_currency
-                        ).toFixed(2)}
-                        %
-                      </td>
-                      <td
-                        className={
-                          data.price_change_percentage_24h_in_currency > 0
-                            ? "py-4 text-green lg:table-cell hidden"
-                            : "py-4 text-red lg:table-cell hidden"
-                        }
-                      >
-                        {Number(
-                          data.price_change_percentage_24h_in_currency
-                        ).toFixed(2)}
-                        %
-                      </td>
-                      <td
-                        className={
-                          data.price_change_percentage_7d_in_currency > 0
-                            ? "py-4 text-green lg:table-cell hidden"
-                            : "py-4 text-red lg:table-cell hidden"
-                        }
-                      >
-                        {Number(
-                          data.price_change_percentage_7d_in_currency
-                        ).toFixed(2)}
-                        %
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbo1dy>
+                      {Number(data.market_cap_change_percentage_24h).toFixed(2)}
+                      %
+                    </td>
+                    <td
+                      className={
+                        data.price_change_percentage_1h_in_currency > 0
+                          ? "py-4 text-green lg:table-cell hidden"
+                          : "py-4 text-red lg:table-cell hidden"
+                      }
+                    >
+                      {Number(
+                        data.price_change_percentage_1h_in_currency
+                      ).toFixed(2)}
+                      %
+                    </td>
+                    <td
+                      className={
+                        data.price_change_percentage_24h_in_currency > 0
+                          ? "py-4 text-green lg:table-cell hidden"
+                          : "py-4 text-red lg:table-cell hidden"
+                      }
+                    >
+                      {Number(
+                        data.price_change_percentage_24h_in_currency
+                      ).toFixed(2)}
+                      %
+                    </td>
+                    <td
+                      className={
+                        data.price_change_percentage_7d_in_currency > 0
+                          ? "py-4 text-green lg:table-cell hidden"
+                          : "py-4 text-red lg:table-cell hidden"
+                      }
+                    >
+                      {Number(
+                        data.price_change_percentage_7d_in_currency
+                      ).toFixed(2)}
+                      %
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         ) : (
           <div className="w-full min-h-[60vh] flex justify-center items-center">

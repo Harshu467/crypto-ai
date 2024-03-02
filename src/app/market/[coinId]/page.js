@@ -1,9 +1,8 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/router";
 function Indicator ({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
   useEffect(() => {
@@ -35,7 +34,7 @@ function MarketCoin() {
   console.log("COINID",coinId);
   let { coinData: data, currency, setCoinData } = useContext(UserContext);
 
-  console.log("1", coinData, currency, data);
+  // console.log("1", coinData, currency, data);
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
