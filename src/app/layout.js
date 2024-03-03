@@ -3,7 +3,6 @@ import "./globals.css";
 import Head from "next/head";
 import { UserProvider } from "@/context/UserContext";
 import { Analytics } from "@vercel/analytics/react";
-import MainSection from "@/components/mainSection";
 
 export const metadata = {
   title: "Crypto Stock",
@@ -19,7 +18,7 @@ export default function RootLayout({ children }) {
       </Head>
       <UserProvider>
         <body>
-          <MainSection children={children} />
+          {children}
           <Analytics />
         </body>
       </UserProvider>

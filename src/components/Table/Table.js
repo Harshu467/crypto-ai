@@ -5,23 +5,10 @@ import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 
 const Table = () => {
-  // let { currency ,setError,setTotalPages,sortBy,perPage,page,error} = useContext(UserContext);
-  const [currency, setCurrency] = useState("usd");
-  const [perPage, setPerPage] = useState(10);
-  const [cryptoData, setCryptoData] = useState(null);
-  const [totalPages, setTotalPages] = useState(250);
-  const [page, setPage] = useState(1);
-  // const [coinSearch, setCoinSearch] = useState(null);
-  const [sortBy, setSortBy] = useState("market_cap_desc");
-  // const [coinData, setCoinData] = useState(null);
-  // const [searchText, setSearchText] = useState("");
-  // const [searchData, setSearchData] = useState(null);
-  const [error, setError] = useState({ data: "", coinData: "", search: "" });
-  // const [uid, setUid] = useState('');
+  let { currency ,setError,setTotalPages,sortBy,perPage,page,error,setCryptoData,cryptoData} = useContext(UserContext);
   const getCryptoData = async () => {
-    console.log("Fetching data");
+    setCryptoData();
     setError({ ...error, data: "" });
-    console.log("Error", error);
     setTotalPages(13220);
     try {
       const API_KEY =
@@ -44,19 +31,17 @@ const Table = () => {
           }
           let errorResponse = await res.json();
           setError({ ...error, data: errorResponse.error });
-          console.log("Err", errorResponse, error);
           throw new Error(errorResponse.error);
         })
-        .then((json) => console.log("JSON", json) || json);
+        .then((json) => json);
       setCryptoData(data);
-      console.log("Data", data);
     } catch (error) {
       console.log("ERROR", error);
     }
   };
   useEffect(() => {
     getCryptoData();
-  }, []);
+  }, [currency, sortBy, perPage, page]);
   console.log("CryptoData", cryptoData);
   return (
     <div className="items-center w-full mx-auto">
