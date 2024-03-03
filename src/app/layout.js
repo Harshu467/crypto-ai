@@ -4,7 +4,7 @@ import Head from "next/head";
 import { UserProvider } from "@/context/UserContext";
 import { Analytics } from "@vercel/analytics/react";
 
-const inter = Inter({subsets:['latin']});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Crypto Stock",
