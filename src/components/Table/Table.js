@@ -4,8 +4,57 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 
+const SaveBtn = ({ data }) => {
+  // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
+  const [allCoins, setAllCoins] = useState([]);
+  const [saveCoin, setSaveCoin] = useState([]);
+  const [removeCoin, setRemoveCoin] = useState([]);
+  const handleClick = (e) => {
+    e.preventDefault();
+    saveCoin(data.id);
+    if (allCoins.includes(data.id)) {
+      removeCoin(data.id);
+    } else {
+      saveCoin(data.id);
+    }
+  };
+  return (
+    <button
+      className="outline-0 border-0 bg-none px-2 cursor-pointer"
+      onClick={(e) => handleClick(e)}
+      title="Add to Cart"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke="gray"
+        stroke-width="1.5"
+        className={`w-[1.5rem] ml-1.5 ${
+          allCoins.includes(data.id) ? "fill-cyan" : "fill-gray-100"
+        } hover:fill-cyan`}
+      >
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+    </button>
+  );
+};
+
 const Table = () => {
-  let { currency ,setError,setTotalPages,sortBy,perPage,page,error,setCryptoData,cryptoData} = useContext(UserContext);
+  let {
+    currency,
+    setError,
+    setTotalPages,
+    sortBy,
+    perPage,
+    page,
+    error,
+    setCryptoData,
+    cryptoData,
+  } = useContext(UserContext);
   const getCryptoData = async () => {
     setCryptoData();
     setError({ ...error, data: "" });
@@ -68,21 +117,22 @@ const Table = () => {
                     className="text-center text-white text-base border-b border-gray-100  hover:bg-gray-200 last:border-b-0"
                   >
                     <td className="py-4 uppercase flex items-center">
-                      <Link href={`/${data.id}`} className="cursor-pointer">
+                      <SaveBtn data={data} />
+                      <Link href={`/market/${data.id}`} className="cursor-pointer">
                         <img
-                          className="w-[3.2rem] h-[3.2rem] mx-1.5"
+                          className="w-[3.2rem] h-[3.2rem] mx-2"
                           src={data.image}
                           alt={data.name}
                         />
                       </Link>
                       <span>
-                        <Link href={`/${data.id}`} className="cursor-pointer">
+                        <Link href={`/market/${data.id}`} className="cursor-pointer">
                           {data.symbol}
                         </Link>
                       </span>
                     </td>
                     <td className="py-4 cursor-pointer sm:table-cell hidden">
-                      <Link href={`/${data.id}`} className="cursor-pointer">
+                      <Link href={`/market/${data.id}`} className="cursor-pointer">
                         {data.name}
                       </Link>
                     </td>

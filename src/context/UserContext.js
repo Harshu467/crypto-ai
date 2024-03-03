@@ -109,9 +109,7 @@ export function UserProvider({ children }) {
       router.push('/login');
     })
   }
-  // useEffect(() => {
-  //   getCryptoData();
-  // },[coinSearch, currency, sortBy, page, perPage]);
+
 
   useEffect(()=>{
     onAuthStateChanged(auth, async(user) => {

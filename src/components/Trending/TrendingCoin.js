@@ -2,11 +2,13 @@
 import { UserContext } from "@/context/UserContext";
 import { Add } from "@/helpers/icons";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 // import { useNavigate } from 'react-router-dom'
-
+import { Badge, Button, ButtonGroup } from "@mui/material";
+import { Remove, ShoppingCart } from "@mui/icons-material";
 const TrendingCoin = ({ data }) => {
   const { currency } = useContext(UserContext);
+  const [itemCount, setItemCount] = useState(0);
   // let navigate = useNavigate();
   let router = useRouter();
   const getCoinsDetails = (id) => {
@@ -53,21 +55,28 @@ const TrendingCoin = ({ data }) => {
                 className="absolute lg:top-2/4 top-4 lg:-right-12 -right-6 -translate-y-2/4  lg:w-[35%] w-[5rem] h-auto rounded-full"
               />
             </div>
-            <div className="text-[#e94560] flex gap-4">
-              <h4>
-                <span className="text-gray-100 capitalize">Add to Cart : </span>{" "}
-                {new Intl.NumberFormat("en-IN", {
-                  style: "currency",
-                  currency: `${currency}`,
-                  maximumSignificantDigits: 5,
-                }).format(data.price_btc)}
-              </h4>
-              <button
-                title="Add to Cart"
-                className="bg-transparent hover:cursor-pointer hover:border-[white] hover:bg-red-500 hover:text-white text-red-500  transition duration-500 border-[3px] border-opacity-50 border-[#e94560] rounded-md"
-              >
-                <Add />
-              </button>
+            <div className="mx-2 items-center justify-center">
+              <Badge className="" color="secondary" badgeContent={itemCount}>
+                <ShoppingCart color="white" />{" "}
+              </Badge>
+              <ButtonGroup className="px-2 mt-2">
+                <Button
+                  onClick={() => {
+                    setItemCount(Math.max(itemCount - 1, 0));
+                  }}
+                >
+                  {" "}
+                  <Remove fontSize="small" />
+                </Button>
+                <Button
+                  onClick={() => {
+                    setItemCount(itemCount + 1);
+                  }}
+                >
+                  {" "}
+                  <Add fontSize="small" />
+                </Button>
+              </ButtonGroup>
             </div>
           </>
         ) : (

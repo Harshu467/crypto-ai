@@ -3,8 +3,12 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
-function Indicator ({ currentPrice, high, low }) {
+import { Badge, Button, ButtonGroup } from "@mui/material";
+import { Remove, ShoppingCart } from "@mui/icons-material";
+import { Add } from "@/helpers/icons";
+function Indicator({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
+  
   useEffect(() => {
     let total = high - low;
     let greenzone = ((high - currentPrice) * 100) / total;
@@ -27,11 +31,11 @@ function Indicator ({ currentPrice, high, low }) {
       </span>
     </>
   );
-};
+}
 function MarketCoin() {
   const router = useRouter();
-  const { coinId } = useParams(); 
-  console.log("COINID",coinId);
+  const { coinId } = useParams();
+  const [itemCount, setItemCount] = useState(0);
   let { coinData: data, currency, setCoinData } = useContext(UserContext);
 
   // console.log("1", coinData, currency, data);
@@ -337,6 +341,29 @@ function MarketCoin() {
                     : "N/A"}
                 </h3>
               </div>
+              <div className="mx-2 items-center justify-center">
+                <Badge className="" color="secondary" badgeContent={itemCount}>
+                  <ShoppingCart />{" "}
+                </Badge>
+                <ButtonGroup className="px-2 mt-2">
+                  <Button
+                    onClick={() => {
+                      setItemCount(Math.max(itemCount - 1, 0));
+                    }}
+                  >
+                    {" "}
+                    <Remove fontSize="small" />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setItemCount(itemCount + 1);
+                    }}
+                  >
+                    {" "}
+                    <Add fontSize="small" />
+                  </Button>
+                </ButtonGroup>
+              </div>
             </div>
             <div className="absolute bottom-4 right-4 flex items-center md:bottom-8 sm:right-8 md:flex-row">
               {data.links.repos_url.github[0] && (
@@ -472,6 +499,6 @@ function MarketCoin() {
       </div>
     </div>
   );
-};
+}
 
 export default MarketCoin;

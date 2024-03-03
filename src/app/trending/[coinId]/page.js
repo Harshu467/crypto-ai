@@ -4,6 +4,9 @@ import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
 import { Add } from "@/helpers/icons";
+import { Badge, Button, ButtonGroup } from "@mui/material";
+import { Remove, ShoppingCart } from "@mui/icons-material";
+
 const Indicator = ({ currentPrice, high, low }) => {
   const [green, setgreen] = useState();
   useEffect(() => {
@@ -33,7 +36,7 @@ const TrendingCoin = () => {
   let router = useRouter();
   let { coinId } = useParams();
   let { coinData: data, currency, setCoinData } = useContext(UserContext);
-  console.log("2", coinId, data, currency);
+  const [itemCount, setItemCount] = useState(0);
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
@@ -336,23 +339,28 @@ const TrendingCoin = () => {
                     : "N/A"}
                 </h3>
               </div>
-              <div className="text-[#e94560] flex gap-4">
-                <h4>
-                  <span className="text-gray-100 capitalize">
-                    Add to Cart :{" "}
-                  </span>{" "}
-                  {new Intl.NumberFormat("en-IN", {
-                    style: "currency",
-                    currency: `${currency}`,
-                    maximumSignificantDigits: 5,
-                  }).format(data.market_data.current_price[currency])}
-                </h4>
-                <button
-                  title="Add to Cart"
-                  className="bg-transparent hover:cursor-pointer hover:border-[white] hover:bg-red-500 hover:text-white text-red-500  transition duration-500 border-[3px] border-opacity-50 border-[#e94560] rounded-md"
-                >
-                  <Add />
-                </button>
+              <div className="mx-2 items-center justify-center" >
+                <Badge className="" color="secondary" badgeContent={itemCount}>
+                  <ShoppingCart />{" "}
+                </Badge>
+                <ButtonGroup className="px-2 mt-2" >
+                  <Button
+                    onClick={() => {
+                      setItemCount(Math.max(itemCount - 1, 0));
+                    }}
+                  >
+                    {" "}
+                    <Remove fontSize="small" />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setItemCount(itemCount + 1);
+                    }}
+                  >
+                    {" "}
+                    <Add fontSize="small" />
+                  </Button>
+                </ButtonGroup>
               </div>
             </div>
             <div className="absolute bottom-4 right-4 flex items-center md:bottom-8 sm:right-8 md:flex-row">
