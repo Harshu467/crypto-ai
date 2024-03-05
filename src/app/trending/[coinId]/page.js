@@ -6,6 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import { Add } from "@/helpers/icons";
 import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
+import toast, { Toaster } from "react-hot-toast";
 
 const Indicator = ({ currentPrice, high, low }) => {
   const [green, setgreen] = useState();
@@ -35,7 +36,12 @@ const Indicator = ({ currentPrice, high, low }) => {
 const TrendingCoin = () => {
   let router = useRouter();
   let { coinId } = useParams();
-  let { coinData: data, currency, setCoinData } = useContext(UserContext);
+  let {
+    coinData: data,
+    currency,
+    setCoinData,
+    login,
+  } = useContext(UserContext);
   const [itemCount, setItemCount] = useState(0);
   const getCoinData = async (coinid) => {
     setCoinData();
@@ -56,6 +62,13 @@ const TrendingCoin = () => {
   }, [coinId]);
   const close = () => {
     router.push("/trending");
+  };
+  const handleCart = () => {
+    if (login) {
+      console.log("Add to cart");
+    } else {
+      toast.error("Please Login First");
+    }
   };
   return (
     <div
@@ -339,14 +352,14 @@ const TrendingCoin = () => {
                     : "N/A"}
                 </h3>
               </div>
-              <div className="mx-2 items-center justify-center" >
+              <div className="mx-2 items-center justify-center">
                 <Badge className="" color="secondary" badgeContent={itemCount}>
                   <ShoppingCart />{" "}
                 </Badge>
-                <ButtonGroup className="px-2 mt-2" >
+                <ButtonGroup className="px-2 mt-2">
                   <Button
                     onClick={() => {
-                      setItemCount(Math.max(itemCount - 1, 0));
+                      handleCart()
                     }}
                   >
                     {" "}
@@ -354,7 +367,7 @@ const TrendingCoin = () => {
                   </Button>
                   <Button
                     onClick={() => {
-                      setItemCount(itemCount + 1);
+                      handleCart()
                     }}
                   >
                     {" "}
@@ -495,6 +508,7 @@ const TrendingCoin = () => {
           </div>
         )}
       </div>
+      <Toaster reverseOrder={false} />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { Remove, ShoppingCart } from "@mui/icons-material";
 import { Add } from "@/helpers/icons";
 function Indicator({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
-  
+
   useEffect(() => {
     let total = high - low;
     let greenzone = ((high - currentPrice) * 100) / total;
@@ -36,7 +36,7 @@ function MarketCoin() {
   const router = useRouter();
   const { coinId } = useParams();
   const [itemCount, setItemCount] = useState(0);
-  let { coinData: data, currency, setCoinData } = useContext(UserContext);
+  let { coinData: data, currency, setCoinData, coinCart } = useContext(UserContext);
 
   // console.log("1", coinData, currency, data);
   const getCoinData = async (coinid) => {
@@ -58,6 +58,13 @@ function MarketCoin() {
   }, [coinId]);
   const close = () => {
     router.push("/market");
+  };
+  const handleCart = () => {
+    if (login) {
+      console.log("Add to Cart");
+    } else {
+      toast.error("Please Login First");
+    }
   };
   return (
     <div
@@ -342,13 +349,13 @@ function MarketCoin() {
                 </h3>
               </div>
               <div className="mx-2 items-center justify-center">
-                <Badge className="" color="secondary" badgeContent={itemCount}>
+                <Badge className="" color="secondary" badgeContent={coinCart.find((x)=>x.id === coinI ) }>
                   <ShoppingCart />{" "}
                 </Badge>
                 <ButtonGroup className="px-2 mt-2">
                   <Button
                     onClick={() => {
-                      setItemCount(Math.max(itemCount - 1, 0));
+                      handleCart();
                     }}
                   >
                     {" "}
@@ -356,7 +363,7 @@ function MarketCoin() {
                   </Button>
                   <Button
                     onClick={() => {
-                      setItemCount(itemCount + 1);
+                      handleCart();
                     }}
                   >
                     {" "}
@@ -497,6 +504,7 @@ function MarketCoin() {
           </div>
         )}
       </div>
+      <Toaster reverseOrder={false} />
     </div>
   );
 }

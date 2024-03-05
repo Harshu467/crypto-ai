@@ -37,13 +37,14 @@ import {
   checkEmailExists,
 } from "../../utils/commonFunctions";
 import { Github, GoogleIcon } from "@/helpers/icons";
+import { useRouter } from "next/navigation";
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const [values, setValues] = useState({
     showPassword: false,
   });
-
+  const router = useRouter();
   const [data, setdata] = useState({
     firstName: "",
     lastName: "",
@@ -123,6 +124,7 @@ export default function SignUp() {
             const uid = await auth.currentUser?.uid;
             await addToFirebaseUsers(uid, email, `${firstName} ${lastName}`);
             toast.success("User added successfully", { duration: 5000 });
+            router.push("/")
           })
           .catch((error) => {
             switch (error.code) {

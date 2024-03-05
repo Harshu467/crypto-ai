@@ -1,18 +1,8 @@
 "use client";
-import React, { Suspense, useContext, useEffect } from "react";
-import { NextPage } from "next";
+import  { Suspense, useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import {
-  Accordion,
-  AccordionItem,
-  Avatar,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
 import UserAvatar from "@/components/UserAvatar/UserAvatar";
 import Loader from "../Loader/Loader";
 const Navbar = () => {

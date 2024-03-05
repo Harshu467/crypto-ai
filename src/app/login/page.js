@@ -34,13 +34,14 @@ import EyeOffOutline from "mdi-material-ui/EyeOffOutline";
 import { auth } from "../../../firebase";
 import { Github, GoogleIcon } from "@/helpers/icons";
 import { addToFirebaseUsers, checkEmailExists } from "@/utils/commonFunctions";
+import { useRouter } from "next/navigation";
 const defaultTheme = createTheme();
 
 export default function Login() {
   const [values, setValues] = useState({
     showPassword: false,
   });
-
+  const router = useRouter();
   const [data, setdata] = useState({
     email: "",
     password: "",
@@ -61,6 +62,7 @@ export default function Login() {
           const user = userCredential.user;
           console.log(user);
           toast.success("Login Success");
+          router.push("/")
         })
         .catch((error) => {
           switch (error.code) {

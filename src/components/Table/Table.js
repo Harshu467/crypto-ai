@@ -3,19 +3,36 @@ import Pagination from "../Pagination/Pagination";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
 const SaveBtn = ({ data }) => {
   // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
-  const [allCoins, setAllCoins] = useState([]);
-  const [saveCoin, setSaveCoin] = useState([]);
-  const [removeCoin, setRemoveCoin] = useState([]);
-  const handleClick = (e) => {
-    e.preventDefault();
-    saveCoin(data.id);
-    if (allCoins.includes(data.id)) {
-      removeCoin(data.id);
+  console.log("DATA Save", data);
+  const { coinCart, SaveCoinCart, login, removeCoinCart } =
+    useContext(UserContext);
+  const handleClick = async (e) => {
+    if (login) {
+      console.log("IS", coinCart);
+      const checkCoinExist = coinCart.some((item) => item.id === data.id);
+      console.log("DOES", checkCoinExist);
+      if (checkCoinExist) {
+        const result = await removeCoinCart(data.id);
+        if (result.success) {
+          toast.success(result.message);
+        } else {
+          console.log("Error", result);
+          toast.error("Coin Not Removed");
+        }
+      } else {
+        const result = await SaveCoinCart(data);
+        if (result.success) {
+          toast.success(result.message);
+        } else {
+          toast.error("Coin Not Added");
+        }
+      }
     } else {
-      saveCoin(data.id);
+      toast.error("Login Require to Add to Cart");
     }
   };
   return (
@@ -32,7 +49,9 @@ const SaveBtn = ({ data }) => {
         stroke="gray"
         stroke-width="1.5"
         className={`w-[1.5rem] ml-1.5 ${
-          allCoins.includes(data.id) ? "fill-cyan" : "fill-gray-100"
+          coinCart.some((item) => item.id === data.id)
+            ? "fill-cyan"
+            : "fill-gray-100"
         } hover:fill-cyan`}
       >
         <circle cx="8" cy="21" r="1" />
@@ -118,7 +137,10 @@ const Table = () => {
                   >
                     <td className="py-4 uppercase flex items-center">
                       <SaveBtn data={data} />
-                      <Link href={`/market/${data.id}`} className="cursor-pointer">
+                      <Link
+                        href={`/market/${data.id}`}
+                        className="cursor-pointer"
+                      >
                         <img
                           className="w-[3.2rem] h-[3.2rem] mx-2"
                           src={data.image}
@@ -126,13 +148,19 @@ const Table = () => {
                         />
                       </Link>
                       <span>
-                        <Link href={`/market/${data.id}`} className="cursor-pointer">
+                        <Link
+                          href={`/market/${data.id}`}
+                          className="cursor-pointer"
+                        >
                           {data.symbol}
                         </Link>
                       </span>
                     </td>
                     <td className="py-4 cursor-pointer sm:table-cell hidden">
-                      <Link href={`/market/${data.id}`} className="cursor-pointer">
+                      <Link
+                        href={`/market/${data.id}`}
+                        className="cursor-pointer"
+                      >
                         {data.name}
                       </Link>
                     </td>
@@ -220,6 +248,7 @@ const Table = () => {
         </span>
         {cryptoData && <Pagination />}
       </div>
+      <Toaster reverseOrder={false} />
     </div>
   );
 };

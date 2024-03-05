@@ -6,13 +6,20 @@ import React, { useContext, useState } from "react";
 // import { useNavigate } from 'react-router-dom'
 import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
+import toast, { Toaster } from "react-hot-toast";
 const TrendingCoin = ({ data }) => {
-  const { currency } = useContext(UserContext);
+  const { currency, login } = useContext(UserContext);
   const [itemCount, setItemCount] = useState(0);
   // let navigate = useNavigate();
   let router = useRouter();
   const getCoinsDetails = (id) => {
     router.push(`/trending/${id}`);
+  };
+  const handleCart = () => {
+    if (login) {
+    } else {
+      toast.error("Please Login First");
+    }
   };
   return (
     <>
@@ -62,7 +69,7 @@ const TrendingCoin = ({ data }) => {
               <ButtonGroup className="px-2 mt-2">
                 <Button
                   onClick={() => {
-                    setItemCount(Math.max(itemCount - 1, 0));
+                    handleCart();
                   }}
                 >
                   {" "}
@@ -70,7 +77,7 @@ const TrendingCoin = ({ data }) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    setItemCount(itemCount + 1);
+                    handleCart();
                   }}
                 >
                   {" "}
@@ -88,6 +95,7 @@ const TrendingCoin = ({ data }) => {
             <span className="ml-2">Please Wait...</span>
           </div>
         )}
+        <Toaster reverseOrder={false} />
       </div>
     </>
   );
