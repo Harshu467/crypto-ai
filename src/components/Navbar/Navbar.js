@@ -78,7 +78,7 @@ const Navbar = () => {
                   <div
                     className={`w-[40px] select-none h-[40px] bg-white cursor-pointer border-[1px] rounded-full flex border items-center justify-center `}
                   >
-                    <span className="text-[18px] select-none cursor-pointer bg-center font-medium">
+                    <span className="text-[18px] uppercase select-none cursor-pointer bg-center font-medium">
                       {name[0]}
                     </span>
                   </div>

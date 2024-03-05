@@ -56,7 +56,6 @@ const Graph = ({ data, currency, type }) => {
 const Chart = ({ id }) => {
   const [chartData, setchartData] = useState();
   let { currency } = useContext(UserContext);
-  console.log("3",currency);
   const [type, settype] = useState("prices");
   const [days, setdays] = useState(7);
   const getChartData = async (id) => {
@@ -66,14 +65,12 @@ const Chart = ({ id }) => {
       )
         .then((res) => res.json())
         .then((json) => json);
-      console.log(data);
       let convertedData = data[type].map((item) => {
         return {
           date: new Date(item[0]).toLocaleDateString(),
           [type]: item[1],
         };
       });
-      console.log(convertedData);
       setchartData(convertedData);
     } catch (error) {
       console.log(error);

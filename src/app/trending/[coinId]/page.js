@@ -41,8 +41,63 @@ const TrendingCoin = () => {
     currency,
     setCoinData,
     login,
+    coinCart,
+    decreaseCoinCart,
+    addCoinCart,
   } = useContext(UserContext);
-  const [itemCount, setItemCount] = useState(0);
+  let foundCoin = coinCart.find((x) => x.id === coinId)
+    ? coinCart.find((x) => x.id === coinId)
+    : { quantity: 0 };
+  if (foundCoin.quantity !== undefined && foundCoin !== undefined) {
+    console.log("Found", foundCoin);
+  } else {
+    console.log("Not Found", foundCoin);
+    foundCoin = { quantity: 0 };
+  }
+  const [coinCount, setCoinCount] = useState(foundCoin.quantity);
+  const handleCartIncrement = async () => {
+    if (login) {
+      console.log("Add to Cart");
+      try {
+        const result = await addCoinCart(coinId);
+        console.log("Result", result);
+        if (result && result.success) {
+          console.log("Add to Cart", result);
+          setCoinCount(coinCount + 1);
+          toast.success(result.message);
+        } else {
+          let exist = coinCart.find((x) => x.id === coinId);
+          if (exist) {
+            setCoinCount(exist.quantity);
+            toast.success("Coin Added to Cart");
+          } else {
+            toast.error("Unable to Add to Cart");
+          }
+        }
+      } catch (error) {
+        console.log("Error", error);
+        toast.error("An error occurred while adding to cart");
+      }
+    } else {
+      toast.error("Please Login First");
+    }
+  };
+
+  const handleCartDecrement = async () => {
+    if (login) {
+      console.log("Remove from Cart");
+      const result = await decreaseCoinCart(coinId);
+      console.log("Dec", result);
+      if (result.success) {
+        setCoinCount(coinCount - 1);
+        toast.success(result.message);
+      } else {
+        toast.error("Unable to Remove from Cart");
+      }
+    } else {
+      toast.error("Please Login First");
+    }
+  };
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
@@ -52,7 +107,6 @@ const TrendingCoin = () => {
         .then((res) => res.json())
         .then((json) => json);
       setCoinData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -353,13 +407,13 @@ const TrendingCoin = () => {
                 </h3>
               </div>
               <div className="mx-2 items-center justify-center">
-                <Badge className="" color="secondary" badgeContent={itemCount}>
+                <Badge className="" color="secondary" badgeContent={coinCount}>
                   <ShoppingCart />{" "}
                 </Badge>
                 <ButtonGroup className="px-2 mt-2">
                   <Button
                     onClick={() => {
-                      handleCart()
+                      handleCartDecrement();
                     }}
                   >
                     {" "}
@@ -367,7 +421,7 @@ const TrendingCoin = () => {
                   </Button>
                   <Button
                     onClick={() => {
-                      handleCart()
+                      handleCartIncrement();
                     }}
                   >
                     {" "}

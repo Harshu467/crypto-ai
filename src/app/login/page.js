@@ -59,10 +59,10 @@ export default function Login() {
     await setPersistence(auth, browserSessionPersistence).then(async () => {
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          toast.success("Login Success");
-          router.push("/")
+          toast.success("Login Success", {
+            duration: 5000,
+          });
+          router.push("/");
         })
         .catch((error) => {
           switch (error.code) {
@@ -106,9 +106,7 @@ export default function Login() {
         .then(async (result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
-          console.log("user", user);
           let userWithEmail = await checkEmailExists(user.email);
-          console.log("userWithEmail", userWithEmail);
           if (link && linkCredential != undefined) {
             return await linkWithCredential(result.user, linkCredential);
           }
@@ -119,6 +117,7 @@ export default function Login() {
             toast.success("Login Successfully with Google ", {
               duration: 5000,
             });
+            router.push("/");
           }
         })
         .catch(async (error) => {
@@ -172,6 +171,7 @@ export default function Login() {
             toast.success("Login Successfully with Github ", {
               duration: 5000,
             });
+            router.push("/");
           }
         })
         .catch(async (error) => {
@@ -193,144 +193,122 @@ export default function Login() {
   return (
     <>
       {/* <ThemeProvider theme={defaultTheme}> */}
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <CssBaseline />
-          <Grid
-            item
-            xs={false}
-            sm={4}
-            md={7}
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1637611331620-51149c7ceb94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8d2FsbHBhcGVyc3x8fHx8fDE3MDczMjM2Mjg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
             sx={{
-              backgroundImage:
-                "url(https://images.unsplash.com/photo-1637611331620-51149c7ceb94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8d2FsbHBhcGVyc3x8fHx8fDE3MDczMjM2Mjg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080)",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              mt: 14,
+              mb: 4,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-          />
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={5}
-            component={Paper}
-            elevation={6}
-            square
           >
-            <Box
-              sx={{
-                mt: 14,
-                mb: 4,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 6 }}
-              >
-                <TextField
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  sx={{ marginBottom: 2 }}
-                  name="email"
-                  value={data.email}
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" noValidate sx={{ mt: 6 }}>
+              <TextField
+                fullWidth
+                id="email"
+                label="Email"
+                sx={{ marginBottom: 2 }}
+                name="email"
+                value={data.email}
+                onChange={dataChange}
+                required
+              />
+              <FormControl fullWidth>
+                <InputLabel htmlFor="auth-login-password">Password</InputLabel>
+                <OutlinedInput
+                  label="Password"
+                  value={data.password}
+                  id="password"
+                  name="password"
                   onChange={dataChange}
-                  required
+                  type={values.showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        aria-label="toggle password visibility"
+                      >
+                        {values.showPassword ? (
+                          <EyeOutline />
+                        ) : (
+                          <EyeOffOutline />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="auth-login-password">
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    label="Password"
-                    value={data.password}
-                    id="password"
-                    name="password"
-                    onChange={dataChange}
-                    type={values.showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          aria-label="toggle password visibility"
-                        >
-                          {values.showPassword ? (
-                            <EyeOutline />
-                          ) : (
-                            <EyeOffOutline />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-                <Button
-                  className="login-button"
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="/register" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
+              </FormControl>
+              <Button
+                className="login-button"
+                type="submit"
+                fullWidth
+                variant="contained"
+                onSubmit={handleSubmit}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
                 </Grid>
-              </Box>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-              }}
-            >
-              <Link
-                className="cursor-pointer"
-                onClick={loginWithGithub}
-                passHref
-              >
-                <Github />
-              </Link>
-              <Link
-                className="cursor-pointer"
-                onClick={LoginWithgoogle}
-                passHref
-              >
-                <GoogleIcon />
-              </Link>
-            </Box>
-          </Grid>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+            }}
+          >
+            <Link className="cursor-pointer" onClick={loginWithGithub} passHref>
+              <Github />
+            </Link>
+            <Link className="cursor-pointer" onClick={LoginWithgoogle} passHref>
+              <GoogleIcon />
+            </Link>
+          </Box>
         </Grid>
-        <Toaster position="top-center" reverseOrder={false} />
+      </Grid>
+      <Toaster position="top-center" reverseOrder={false} />
       {/* </ThemeProvider> */}
     </>
   );

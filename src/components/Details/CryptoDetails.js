@@ -30,13 +30,10 @@ const CryptoDetails = () => {
         .then((res) => res.json())
         .then((json) => json);
       setCoinData(data);
-      console.log(data)
     } catch (error) {
       console.log(error);
     }
   };
-  
-  console.log("4",data,coinId,currency);
   useEffect(() => {
     getCoinData(coinId);
   }, [coinId]);

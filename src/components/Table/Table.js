@@ -7,7 +7,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 const SaveBtn = ({ data }) => {
   // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
-  console.log("DATA Save", data);
   const { coinCart, SaveCoinCart, login, removeCoinCart } =
     useContext(UserContext);
   const handleClick = async (e) => {
@@ -17,6 +16,7 @@ const SaveBtn = ({ data }) => {
       console.log("DOES", checkCoinExist);
       if (checkCoinExist) {
         const result = await removeCoinCart(data.id);
+        console.log("Result", result);
         if (result.success) {
           toast.success(result.message);
         } else {
@@ -47,7 +47,7 @@ const SaveBtn = ({ data }) => {
         height="24"
         viewBox="0 0 24 24"
         stroke="gray"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         className={`w-[1.5rem] ml-1.5 ${
           coinCart.some((item) => item.id === data.id)
             ? "fill-cyan"
@@ -110,7 +110,6 @@ const Table = () => {
   useEffect(() => {
     getCryptoData();
   }, [currency, sortBy, perPage, page]);
-  console.log("CryptoData", cryptoData);
   return (
     <div className="items-center w-full mx-auto">
       <div className="flex items-center flex-col mt-9 border border-gray-100 rounded ">

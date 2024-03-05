@@ -25,7 +25,6 @@ const Profile = () => {
   // const {uid}  = useParamss
   const { uid } = useParams();
   const { login, name, email } = useContext(UserContext);
-  console.log("login", login, "name", name, "email", email);
   const [values, setValues] = useState({
     showPassword: false,
   });

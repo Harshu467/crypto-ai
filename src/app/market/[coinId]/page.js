@@ -36,10 +36,27 @@ function Indicator({ currentPrice, high, low }) {
 function MarketCoin() {
   const router = useRouter();
   const { coinId } = useParams();
-  const [itemCount, setItemCount] = useState(0);
-  let { coinData: data, currency, setCoinData, coinCart } = useContext(UserContext);
 
+  let {
+    coinData: data,
+    currency,
+    setCoinData,
+    coinCart,
+    decreaseCoinCart,
+    addCoinCart,
+    login,
+  } = useContext(UserContext);
+  console.log("Cart", coinCart);
+  let foundCoin = coinCart.find((x) => x.id === coinId) ? coinCart.find((x) => x.id === coinId) : { quantity: 0 };
+  if (foundCoin.quantity !== undefined && foundCoin !== undefined) {
+    console.log("Found", foundCoin);
+  } else {
+    console.log("Not Found", foundCoin);
+    foundCoin = { quantity: 0 };
+  }
+  const [coinCount, setCoinCount] = useState(foundCoin.quantity);
   // console.log("1", coinData, currency, data);
+  
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
@@ -49,7 +66,6 @@ function MarketCoin() {
         .then((res) => res.json())
         .then((json) => json);
       setCoinData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -60,9 +76,34 @@ function MarketCoin() {
   const close = () => {
     router.push("/market");
   };
-  const handleCart = () => {
+  const handleCartIncrement = async () => {
     if (login) {
       console.log("Add to Cart");
+      const result = await addCoinCart(coinId);
+      console.log("Result", result);
+      if (result && result.success) {
+        console.log("Add to Cart", result);
+        setCoinCount(coinCount + 1);
+        toast.success(result.message);
+      } else {
+        toast.error("Unable to Add to Cart")
+        // toast.error(result.message);
+      }
+    } else {
+      toast.error("Please Login First");
+    }
+  };
+  const handleCartDecrement = async () => {
+    if (login) {
+      console.log("Remove from Cart");
+      const result = await decreaseCoinCart(coinId);
+      console.log("Dec", result);
+      if (result.success) {
+        setCoinCount(coinCount - 1);
+        toast.success(result.message);
+      } else {
+        toast.error("Unable to Remove from Cart");
+      }
     } else {
       toast.error("Please Login First");
     }
@@ -350,13 +391,13 @@ function MarketCoin() {
                 </h3>
               </div>
               <div className="mx-2 items-center justify-center">
-                <Badge className="" color="secondary" badgeContent={coinCart.find((x)=>x.id === coinI ) }>
+                <Badge className="" color="secondary" badgeContent={coinCount}>
                   <ShoppingCart />{" "}
                 </Badge>
                 <ButtonGroup className="px-2 mt-2">
                   <Button
                     onClick={() => {
-                      handleCart();
+                      handleCartDecrement();
                     }}
                   >
                     {" "}
@@ -364,7 +405,7 @@ function MarketCoin() {
                   </Button>
                   <Button
                     onClick={() => {
-                      handleCart();
+                      handleCartIncrement();
                     }}
                   >
                     {" "}

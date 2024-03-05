@@ -4,7 +4,6 @@ import { LeftArrow, RightArrow, Submit } from "@/helpers/icons";
 import  { useContext, useRef } from "react";
 const PerPage = () => {
   const { setPerPage } = useContext(UserContext);
-  console.log("6",setPerPage);
   const inputRef = useRef(null);
 
   const handleSubmit = (e) => {

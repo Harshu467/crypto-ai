@@ -36,7 +36,7 @@ export function UserProvider({ children }) {
 
   const [coinCart, setCoinCart] = useState(initialCoinCart);
 
-  const SaveCoinCart = (cart) => {
+  const SaveCoinCart = async (cart) => {
     try {
       const coinCartItem = localStorage.getItem("coinCart")
         ? JSON.parse(localStorage.getItem("coinCart"))
@@ -57,43 +57,86 @@ export function UserProvider({ children }) {
       return { success: false, message: error };
     }
   };
-  const addCoinCart = (coin) => {
+  const addCoinCart = async (coin) => {
     try {
-      console.log("Coin", coin);
+      console.log("CoinDF", coin);
       const coinCartItem = localStorage.getItem("coinCart")
         ? JSON.parse(localStorage.getItem("coinCart"))
-        : [{}];
-      console.log("Coin Cart Item", coinCartItem);
-      const exist = coinCartItem.find((x) => x.id === coin.id);
+        : [];
+      console.log("CoinDF", coinCartItem);
+      const exist = coinCartItem.findIndex((x) => x.id === coin);
       console.log("Exist", exist);
-      if (exist) {
-        coinCartItem.map((x) =>
-          x.id === coin.id ? { ...x, quantity: x.quantity + 1 } : x
-        );
+      if (exist !== -1) {
+        console.log("YES");
+        coinCartItem[exist].quantity += 1;
+        localStorage.setItem("coinCart", JSON.stringify(coinCartItem));
+        setCoinCart(coinCartItem);
+        return { success: true, message: "Coin Added to Cart" };
       } else {
-        coinCartItem.push({ ...coin, quantity: 1 });
+        console.log("NO");
+        const API_KEY =
+          process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
+        const options = {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            x_cg_demo_api_key: API_KEY,
+          },
+        };
+        const result = await fetch(
+          `https://api.coingecko.com/api/v3/coins/${coin}?x_cg_demo_api_key=${API_KEY}`,
+          options
+        ).then(async (res) => {
+          if (res.ok) {
+            console.log("Res", res);
+            const result = await res.json();
+            console.log("Result", result);
+            const coin = {
+              id: result.id,
+              name: result.name,
+              symbol: result.symbol,
+              image: result.image.large,
+              quantity: 1,
+            };
+            console.log("Coin", coin);
+            const Add = await SaveCoinCart(coin);
+            if (Add.success && Add) {
+              console.log("Add", Add);
+              return { success: true, message: "Coin Added to Cart" };
+            } else {
+              return { success: false, message: Add.message };
+            }
+          }
+          let errorResponse = await res.json();
+          setError({ ...error, data: errorResponse.error });
+          throw new Error(errorResponse.error);
+        });
       }
-      localStorage.setItem("coinCart", JSON.stringify(coinCartItem));
-      setCoinCart(coinCartItem);
-      return { success: true, message: "Coin Added to Cart" };
     } catch (error) {
-      console.log("Error", error);
+      console.log("Error in Add Coin Cart", error);
       return { success: false, message: error };
     }
   };
+
   const decreaseCoinCart = (coin) => {
     try {
       console.log("CoinDF", coin);
       const coinCartItem = localStorage.getItem("coinCart")
         ? JSON.parse(localStorage.getItem("coinCart"))
-        : [{}];
+        : [];
       console.log("CoinDF", coinCartItem);
-      const exist = coinCartItem.find((x) => x.id === coin);
+      const exist = coinCartItem.findIndex((x) => x.id === coin);
       console.log("Exist", exist);
-      if (exist) {
-        coinCartItem.map((x) =>
-          x.id === coin ? { ...x, quantity: x.quantity - 1 } : x
-        );
+      if (exist !== -1) {
+        console.log("YES");
+        if (coinCartItem[exist].quantity > 1) {
+          coinCartItem[exist].quantity -= 1;
+        } else {
+          coinCartItem.splice(exist, 1);
+        }
+        localStorage.setItem("coinCart", JSON.stringify(coinCartItem));
+        setCoinCart(coinCartItem);
+        return { success: true, message: "Coin Removed from Cart" };
       } else {
         return { success: false, message: "Coin Not Exist in Cart" };
       }
@@ -155,7 +198,6 @@ export function UserProvider({ children }) {
 
   const userAuth = async (user) => {
     if (user) {
-      console.log("User", user);
       try {
         setToken(user.accessToken);
         setUid(user.uid);
@@ -195,6 +237,8 @@ export function UserProvider({ children }) {
       setName("");
       setLogin(false);
       Cookies.remove("userData");
+      localStorage.removeItem("coinCart");
+      setCoinCart([]);
       router.push("/login");
     });
   };
@@ -239,6 +283,7 @@ export function UserProvider({ children }) {
         coinCart,
         setCoinCart,
         getPricebyId,
+        decreaseCoinCart,
       }}
     >
       {children}

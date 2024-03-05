@@ -285,7 +285,6 @@ export default function SignUp() {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
               sx={{ mt: 6 }}
             >
               <Grid container spacing={2}>
