@@ -26,10 +26,16 @@ export function UserProvider({ children }) {
   const [login, setLogin] = useState();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const storedCoinCart = localStorage.getItem("coinCart");
-  const initialCoinCart = storedCoinCart && storedCoinCart !== "undefined" ? JSON.parse(storedCoinCart) : [];
+  let initialCoinCart = [];
+  if (typeof localStorage !== "undefined") {
+    const storedCoinCart = localStorage.getItem("coinCart");
+    if (storedCoinCart && storedCoinCart !== "undefined") {
+      initialCoinCart = JSON.parse(storedCoinCart);
+    }
+  }
+
   const [coinCart, setCoinCart] = useState(initialCoinCart);
-  
+
   const SaveCoinCart = (cart) => {
     try {
       const coinCartItem = localStorage.getItem("coinCart")
