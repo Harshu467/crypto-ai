@@ -26,11 +26,10 @@ export function UserProvider({ children }) {
   const [login, setLogin] = useState();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [coinCart, setCoinCart] = useState(
-    localStorage.getItem("coinCart")
-      ? JSON.parse(localStorage.getItem("coinCart"))
-      : []
-  );
+  const storedCoinCart = localStorage.getItem("coinCart");
+  const initialCoinCart = storedCoinCart && storedCoinCart !== "undefined" ? JSON.parse(storedCoinCart) : [];
+  const [coinCart, setCoinCart] = useState(initialCoinCart);
+  
   const SaveCoinCart = (cart) => {
     try {
       const coinCartItem = localStorage.getItem("coinCart")

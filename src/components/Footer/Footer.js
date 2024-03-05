@@ -222,7 +222,7 @@ const Footer = () => {
             <div className="copyright md:m-auto flex flex-col md:flex-row items-center text-[#E8ECEF]">
               <p className="leading-none max-sm:text-center text-[14px] mb-[1em]">
                 © {currentYear}{" "}
-                <a href={`https://cloudredux.com/`} target="_blank">
+                <a href={`/`} target="_blank">
                   CryptoCurrency
                 </a>{" "}
                 &middot; All Rights Reserved.{" "}
