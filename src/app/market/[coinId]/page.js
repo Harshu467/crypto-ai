@@ -6,6 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
 import { Add } from "@/helpers/icons";
+import { toast, Toaster } from "react-hot-toast";
 function Indicator({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
 
