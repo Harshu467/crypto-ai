@@ -27,6 +27,7 @@ const SaveBtn = ({ data }) => {
           toast.error("Coin Not Removed");
         }
       } else {
+        console.log("DAATA", data)
         const result = await SaveCoinCart(data);
         if (result.success) {
           toast.success(result.message);

@@ -151,8 +151,8 @@ export const Add = () => (
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className="lucide lucide-plus"
   >
     <path d="M5 12h14" />
@@ -169,9 +169,9 @@ export const Minus = () => (
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="lucide lucide-minus"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-minus"
   >
     <path d="M5 12h14" />
   </svg>
@@ -186,9 +186,9 @@ export const Cross = () => (
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="lucide lucide-x"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="lucide lucide-x"
   >
     <path d="M18 6 6 18" />
     <path d="m6 6 12 12" />

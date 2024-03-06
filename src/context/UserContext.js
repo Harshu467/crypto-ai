@@ -45,7 +45,8 @@ export function UserProvider({ children }) {
         id: cart.id,
         name: cart.name,
         symbol: cart.symbol,
-        image: cart.image,
+        current_price: cart.current_price ? cart.current_price : null,
+        image: cart.image ? cart.image : cart.large,
         quantity: 1,
       });
       console.log("Cart Item", coinCartItem);
@@ -172,7 +173,8 @@ export function UserProvider({ children }) {
 
   const getPricebyId = async (coinId) => {
     try {
-      const API_KEY = process.env.GECKO_API_KEY;
+      const API_KEY =
+        process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
       const options = {
         headers: {
           "Content-Type": "application/json",
@@ -185,9 +187,11 @@ export function UserProvider({ children }) {
         options
       ).then(async (res) => {
         if (res.ok) {
+          console.log("Res", res.json());
           return res.json();
         }
         let errorResponse = await res.json();
+        console.log("Error", errorResponse);
         setError({ ...error, data: errorResponse.error });
         throw new Error(errorResponse.error);
       });
