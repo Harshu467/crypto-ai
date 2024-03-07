@@ -1,9 +1,9 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import Search from "../Search/Search";
 import { DropDown, Submit } from "@/helpers/icons";
 import { UserContext } from "@/context/UserContext";
 const Filter = () => {
-  let { setCurrency, setSortBy } = useContext(UserContext);
+  let { setCurrency, setSortBy,currency } = useContext(UserContext);
   const resetFunction = () => {
     setPage(1);
     setCoinSearch("");
@@ -14,6 +14,7 @@ const Filter = () => {
     e.preventDefault();
     let val = currencyRef.current.value;
     setCurrency(val);
+    localStorage.setItem("currency", val);
     currencyRef.current.value = "";
   };
 
@@ -22,7 +23,9 @@ const Filter = () => {
     let val = e.target.value;
     setSortBy(val);
   };
-
+  useEffect(() => {
+    currencyRef.current.value = currency;
+  }, [currency]);
   return (
     <div className="w-full mt-[24px] m-auto lg:h-12 h-full lg:border-2 rounded-lg border-solid lg:border-gray-100 border-0 flex lg:flex-row flex-col lg:items-center lg:justify-between relative align-start justify-between">
       <Search />
@@ -44,7 +47,7 @@ const Filter = () => {
             type="text"
             name="currency"
             ref={currencyRef}
-            placeholder="usd"
+            placeholder={currency}
             className="w-16 text-white rounded bg-gray-200 placeholder:text-white  placeholder:text-base 
      required outline-0  border border-transparent focus:border-cyan leading-4  
      sm:text-base text-sm sm:p-0 sm:pl-2 p-1 

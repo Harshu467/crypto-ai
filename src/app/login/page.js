@@ -111,8 +111,8 @@ export default function Login() {
             return await linkWithCredential(result.user, linkCredential);
           }
           if (!userWithEmail) {
-            console.log("userWithEmail1", userWithEmail);
-            console.log("User", user.uid, user.email, user.displayName);
+            // console.log("userWithEmail1", userWithEmail);
+            // console.log("User", user.uid, user.email, user.displayName);
             await addToFirebaseUsers(user.uid, user.email, user.displayName);
             toast.success("Login Successfully with Google ", {
               duration: 5000,
@@ -192,7 +192,6 @@ export default function Login() {
 
   return (
     <>
-      {/* <ThemeProvider theme={defaultTheme}> */}
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -229,7 +228,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate sx={{ mt: 6 }}>
+            <Box noValidate sx={{ mt: 6 }}>
               <TextField
                 fullWidth
                 id="email"
@@ -309,7 +308,6 @@ export default function Login() {
         </Grid>
       </Grid>
       <Toaster position="top-center" reverseOrder={false} />
-      {/* </ThemeProvider> */}
     </>
   );
 }

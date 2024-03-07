@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { EyeOffOutline, EyeOutline } from "mdi-material-ui";
 import { useState, useContext, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { auth, db } from "../../../../firebase";
@@ -22,8 +22,13 @@ import toast, { Toaster } from "react-hot-toast";
 import { updatePassword } from "firebase/auth";
 
 const Profile = () => {
-  // const {uid}  = useParamss
-  const { uid } = useParams();
+  const router = useRouter();
+  const useParams = useParams();
+  const userId = useParams.uid;
+  const { uid } = useContext(UserContext);
+  if (uid === undefined || uid === null || uid !== userId) {
+    router.push("/login");
+  }
   const { login, name, email } = useContext(UserContext);
   const [values, setValues] = useState({
     showPassword: false,

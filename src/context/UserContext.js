@@ -10,7 +10,6 @@ export const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const router = useRouter();
-  const [currency, setCurrency] = useState("usd");
   const [perPage, setPerPage] = useState(10);
   const [cryptoData, setCryptoData] = useState(null);
   const [totalPages, setTotalPages] = useState(250);
@@ -26,14 +25,20 @@ export function UserProvider({ children }) {
   const [login, setLogin] = useState();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  let curr = "usd";
   let initialCoinCart = [];
   if (typeof localStorage !== "undefined") {
     const storedCoinCart = localStorage.getItem("coinCart");
+    const curren = localStorage.getItem("currency");
+    if (curren && curren !== "undefined") {
+      curr = curren;
+      localStorage.setItem("currency", curr);
+    }
     if (storedCoinCart && storedCoinCart !== "undefined") {
       initialCoinCart = JSON.parse(storedCoinCart);
     }
   }
-
+  const [currency, setCurrency] = useState(curr);
   const [coinCart, setCoinCart] = useState(initialCoinCart);
 
   const SaveCoinCart = async (cart) => {
@@ -47,6 +52,7 @@ export function UserProvider({ children }) {
         symbol: cart.symbol,
         current_price: cart.current_price ? cart.current_price : null,
         image: cart.image ? cart.image : cart.large,
+        current_currency: currency,
         quantity: 1,
       });
       console.log("Cart Item", coinCartItem);
@@ -96,7 +102,9 @@ export function UserProvider({ children }) {
               id: result.id,
               name: result.name,
               symbol: result.symbol,
+              current_price: result.market_data.current_price[currency],
               image: result.image.large,
+              current_currency: currency,
               quantity: 1,
             };
             console.log("Coin", coin);
@@ -251,6 +259,54 @@ export function UserProvider({ children }) {
       userAuth(user);
     });
   }, []);
+  useEffect(() => {
+    async function updatedPrice(current_price, coinId) {
+      try {
+        const API_KEY = process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
+        const options = {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            x_cg_demo_api_key: API_KEY,
+          },
+        };
+        const updated_price = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=${currency}&x_cg_demo_api_key=${API_KEY}`,
+          options
+        )
+        if(updated_price.ok){
+          const data = await updated_price.json();
+          return data[coinId][currency];
+        }
+        
+      } catch (error) {
+        console.log("Error", error);
+      }
+    }
+    if (uid) {
+      if (coinCart.length > 0) {
+        const updatedCoinCart = coinCart.map(async (item) => {
+          let updated_price = item.current_price;
+          if (item.current_currency !== currency) {
+            updated_price = await updatedPrice(item.current_price, item.id);
+          }
+          return {
+            ...item,
+            current_price: updated_price,
+            current_currency: currency,
+          };
+        });
+        Promise.all(updatedCoinCart).then((updatedCoinCartItems) => {
+          localStorage.setItem(
+            "coinCart",
+            JSON.stringify(updatedCoinCartItems)
+          );
+          setCoinCart(updatedCoinCartItems);
+        });
+      }
+    }
+  }, [currency]);
+  console.log("Cart", coinCart);
   return (
     <UserContext.Provider
       value={{

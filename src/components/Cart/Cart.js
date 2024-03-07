@@ -98,6 +98,9 @@ const DetailsCart = () => {
       console.log("Response", res)
       const data = await res.json();
       console.log("Data", data);
+      if(data.status===500){
+        toast.error(data.message);
+      }
       if (data.success) {
         console.log(data.message);
         router.push(data.url);

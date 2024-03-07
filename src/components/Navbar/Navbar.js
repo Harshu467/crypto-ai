@@ -1,5 +1,5 @@
 "use client";
-import  { Suspense, useContext } from "react";
+import  { Suspense, useContext, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
@@ -22,7 +22,8 @@ const Navbar = () => {
       path: "/trending",
     },
   ];
-
+  useEffect(() => {
+  }, [login,name,uid,handleLogout]);
   return (
     <Suspense>
       <nav className="top-0 z-10 sticky border-b border-gray-800 mx-auto bg-transparent backdrop-blur-sm">
