@@ -5,7 +5,7 @@ import Why_Use from "@/components/Why_Use/Why_Use";
 
 export default function Home() {
   return (
-    <div>
+    <div className="" >
       <Navbar />
       <Hero />  
       <Why_Use /> 
