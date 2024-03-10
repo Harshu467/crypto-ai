@@ -17,7 +17,6 @@ export default function RootLayout({ children }) {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    // Google Analytics
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QG0LVP0DK"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -30,7 +29,6 @@ export default function RootLayout({ children }) {
             `
           }}
         />
-    // Clarity
           <script
           type="text/javascript"
           dangerouslySetInnerHTML={{
