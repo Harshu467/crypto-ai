@@ -17,6 +17,20 @@ export default function RootLayout({ children }) {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    // Google Analytics
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QG0LVP0DK"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-3QG0LVP0DK');
+            `
+          }}
+        />
+    // Clarity
           <script
           type="text/javascript"
           dangerouslySetInnerHTML={{
