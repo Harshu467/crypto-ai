@@ -18,28 +18,29 @@ export default function RootLayout({ children }) {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-3QG0LVP0DK"
-        />
-        <Script>
-          {`window.dataLayer = window.dataLayer || [];
+      </Head>
+      <Script
+        id="Google Analytics"
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-3QG0LVP0DK"
+      />
+      <Script strategy="lazyOnload" >
+        {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', 'G-3QG0LVP0DK');
          `}
-        </Script>
-        <Script strategy="lazyOnload" id="clarity-script">
-          {`
+      </Script>
+      <Script strategy="lazyOnload" id="clarity-script">
+        {`
            (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "lecnxhvogt");
         `}
-        </Script>
-      </Head>
+      </Script>
       <UserProvider>
         <body className={inter.className}>
           {children}
