@@ -32,7 +32,6 @@ export async function POST(request) {
       };
     });
     try {
-
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: line_items,
@@ -49,15 +48,15 @@ export async function POST(request) {
         currency: currency,
       });
     } catch (error) {
-      console.log("Error in Stripe", error);
+      console.log("Error in Stripe2", error);
       return NextResponse.error({
-        status: 500,
-        message: error.message,
+        status: 600,
+        message: error,
         body: "Internal Server Error",
       });
     }
   } catch (error) {
-    console.log("Error in Stripe", error);
+    console.log("Error in Stripe", error.raw);
     return NextResponse.error({
       status: 500,
       message: error.message,

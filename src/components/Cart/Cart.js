@@ -98,8 +98,8 @@ const DetailsCart = () => {
       console.log("Response", res)
       const data = await res.json();
       console.log("Data", data);
-      if(data.status===500){
-        toast.error(data.message);
+      if(data.status===600){
+        toast.error("Total Amount entered exceeds the allowed limit");
       }
       if (data.success) {
         console.log(data.message);

@@ -23,8 +23,8 @@ import { updatePassword } from "firebase/auth";
 
 const Profile = () => {
   const router = useRouter();
-  const useParams = useParams();
-  const userId = useParams.uid;
+  const params = useParams();
+  const userId = params.uid;
   const { uid } = useContext(UserContext);
   if (uid === undefined || uid === null || uid !== userId) {
     router.push("/login");
