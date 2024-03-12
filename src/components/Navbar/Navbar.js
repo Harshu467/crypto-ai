@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import UserAvatar from "@/components/UserAvatar/UserAvatar";
 import Loader from "../Loader/Loader";
+import { MenuIcon } from "@/helpers/icons";
 const Navbar = () => {
   const activePath = usePathname();
   const [profile, setProfile] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { login, name, handleLogout, uid } = useContext(UserContext);
   const handleNavbarLinkClick = () => {
     setOpen(false);
@@ -37,36 +38,40 @@ const Navbar = () => {
             <> </>
           ) : (
             <ul
-              className={`md:hidden text-gray-900 dark:text-dimWhite bg-gray-300 dark:bg-secondary absolute w-full top-[90px] z-50 py-5 pl-4 duration-500  ${
+              className={`md:hidden text-dimWhite text-[20px] font-medium bg-[#d1d5db] justify-center items-center absolute w-full top-[80px] z-50 py-8 pl-4 duration-500  ${
                 open ? "left-0" : "left-[-100%]"
               }`}
               style={{ zIndex: "1" }}
             >
-              <li>
-                <Link
-                  href="/"
-                  onClick={handleNavbarLinkClick}
-                  className={`navLink ${
-                    location.pathname === "/" ? "active" : ""
-                  }`}
+              {navLinks.map((navLink) => (
+                <li
+                  className="text-start ml-[9rem] py-[20px]"
+                  key={navLink.path}
                 >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/recommend"
-                  onClick={handleNavbarLinkClick}
-                  className={`navLink ${
-                    location.pathname === "/recommend" ? "active" : ""
-                  }`}
-                >
-                  For You
-                </Link>
-              </li>
+                  <Link
+                    href={navLink.path}
+                    onClick={handleNavbarLinkClick}
+                    className={`navLink hover:underline text-[#111827] ${
+                      location.pathname === navLink.path || navLink.path + "/"
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    {navLink.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           )}
-          <div className="item-navbar ml-[16px]">
+          <div className="item-navbar items-center gap-[16px] justify-center text-center flex md:ml-[16px]">
+            <div
+              onClick={() => {
+                setOpen(!open);
+              }}
+              className="md:hidden cursor-pointer"
+            >
+              <MenuIcon />
+            </div>
             <Link
               href="/"
               className="inline-flex h-10 items-start text-white rounded-lg font-extrabold text-[2rem]"
@@ -98,7 +103,7 @@ const Navbar = () => {
                   </div>
                 )}
                 {login === true && name != "" && (
-                  <div className="relative group cursor-pointer">
+                  <div className="relative group z-100 cursor-pointer">
                     <div
                       onClick={() => setProfile(!profile)}
                       className={`w-[40px] select-none h-[40px] bg-white cursor-pointer border-[1px] rounded-full flex border items-center justify-center  `}
