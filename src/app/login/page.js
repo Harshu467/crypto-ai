@@ -54,17 +54,23 @@ export default function Login() {
     setdata(newData);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await setPersistence(auth, browserSessionPersistence).then(async () => {
-      await signInWithEmailAndPassword(auth, email, password)
+  const handleSubmit = async () => {
+    await setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          toast.success("Login Success", {
-            duration: 5000,
-          });
-          router.push("/");
+          const user = userCredential.user;
+          if (user) {
+            console.log("user", user);
+            toast.success("Login Success", {
+              duration: 5000,
+            });
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
+          }
         })
         .catch((error) => {
+          console.log("error", error);
           switch (error.code) {
             case "auth/user-not-found":
               toast.error("User Not Found");
@@ -271,7 +277,10 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                onSubmit={handleSubmit}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In

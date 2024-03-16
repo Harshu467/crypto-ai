@@ -239,6 +239,17 @@ export function UserProvider({ children }) {
       }
     } else {
       setLogin(false);
+      if (token || uid || email || name || currency || coinCart) {
+        setToken("");
+        setUid("");
+        setEmail("");
+        setName("");
+        setLogin(false);
+        Cookies.remove("userData");
+        localStorage.removeItem("coinCart");
+        localStorage.removeItem("currency");
+        setCoinCart([]);
+      }
     }
   };
   const handleLogout = () => {
@@ -250,6 +261,7 @@ export function UserProvider({ children }) {
       setLogin(false);
       Cookies.remove("userData");
       localStorage.removeItem("coinCart");
+      localStorage.removeItem("currency");
       setCoinCart([]);
       router.push("/login");
     });
@@ -262,7 +274,8 @@ export function UserProvider({ children }) {
   useEffect(() => {
     async function updatedPrice(current_price, coinId) {
       try {
-        const API_KEY = process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
+        const API_KEY =
+          process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
         const options = {
           headers: {
             "Content-Type": "application/json",
@@ -273,12 +286,11 @@ export function UserProvider({ children }) {
         const updated_price = await fetch(
           `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=${currency}&x_cg_demo_api_key=${API_KEY}`,
           options
-        )
-        if(updated_price.ok){
+        );
+        if (updated_price.ok) {
           const data = await updated_price.json();
           return data[coinId][currency];
         }
-        
       } catch (error) {
         console.log("Error", error);
       }
