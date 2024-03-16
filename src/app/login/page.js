@@ -123,7 +123,9 @@ export default function Login() {
             toast.success("Login Successfully with Google ", {
               duration: 5000,
             });
-            router.push("/");
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
           }
         })
         .catch(async (error) => {
@@ -177,7 +179,9 @@ export default function Login() {
             toast.success("Login Successfully with Github ", {
               duration: 5000,
             });
-            router.push("/");
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
           }
         })
         .catch(async (error) => {
