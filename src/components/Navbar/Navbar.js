@@ -32,8 +32,8 @@ const Navbar = () => {
   useEffect(() => {}, [login, name, uid, handleLogout]);
   return (
     <Suspense>
-      <nav className="top-0 w-[100%] z-10 sticky border-b border-gray-800 mx-auto bg-transparent backdrop-blur-sm">
-        <div className="flex flex-row items-center  md:gap-[45rem] p-5 w-full justify-between">
+      <nav className="top-0 w-full z-10 sticky border-b border-gray-800 mx-auto bg-transparent backdrop-blur-sm">
+        <div className="flex items-center justify-between p-5">
           {!uid ? (
             <> </>
           ) : (

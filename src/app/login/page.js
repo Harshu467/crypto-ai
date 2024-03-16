@@ -60,17 +60,17 @@ export default function Login() {
         .then((userCredential) => {
           const user = userCredential.user;
           if (user) {
-            console.log("user", user);
+            // console.log("user", user);
             toast.success("Login Success", {
               duration: 5000,
             });
             setTimeout(() => {
               router.push("/");
-            }, 1000);
+            }, 5000);
           }
         })
         .catch((error) => {
-          console.log("error", error);
+          // console.log("error", error);
           switch (error.code) {
             case "auth/user-not-found":
               toast.error("User Not Found");
@@ -106,6 +106,7 @@ export default function Login() {
     event.preventDefault();
   };
   const LoginWithgoogle = async (link = true, linkCredential) => {
+    // console.log("linkCredential", linkCredential);
     const provider = new GoogleAuthProvider();
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, provider)
@@ -113,6 +114,7 @@ export default function Login() {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
           let userWithEmail = await checkEmailExists(user.email);
+          // console.log("Google",result,credential,user,userWithEmail);
           if (link && linkCredential != undefined) {
             return await linkWithCredential(result.user, linkCredential);
           }
@@ -125,11 +127,18 @@ export default function Login() {
             });
             setTimeout(() => {
               router.push("/");
-            }, 1000);
+            }, 5000);
+          } else if (result && credential) {
+            toast.success("Login Successfully with Google ", {
+              duration: 5000,
+            });
+            setTimeout(() => {
+              router.push("/");
+            }, 5000);
           }
         })
         .catch(async (error) => {
-          console.log("error here :: ", error.message);
+          // console.log("error here :: ", error.message);
           const errorCode = error.code;
           const errorMessage = error.message;
           toast.error(errorMessage);
@@ -151,7 +160,7 @@ export default function Login() {
           const user = result.user;
           let displayName = user.displayName;
           let userWithEmail = await checkEmailExists(user.email);
-          console.log("userWithEmail", userWithEmail);
+          // console.log("userWithEmail", userWithEmail);
           if (link && linkcredential != undefined) {
             return await linkWithCredential(result.user, linkcredential);
           }
@@ -165,7 +174,7 @@ export default function Login() {
           if (githubResponse.ok) {
             githubUserData = await githubResponse.json();
             displayName = githubUserData.login;
-            console.log("githubUserData", githubUserData);
+            // console.log("githubUserData", githubUserData);
           }
 
           if (!userWithEmail) {
@@ -173,7 +182,7 @@ export default function Login() {
               displayName = "User";
             } else if (user.displayName != null) {
               displayName = user.displayName;
-              console.log("displayName1", displayName);
+              // console.log("displayName1", displayName);
             }
             await addToFirebaseUsers(user.uid, user.email, displayName);
             toast.success("Login Successfully with Github ", {
@@ -181,14 +190,22 @@ export default function Login() {
             });
             setTimeout(() => {
               router.push("/");
-            }, 1000);
+            }, 5000);
+          } else if (result && credential) {
+            toast.success("Login Successfully with Github ", {
+              duration: 5000,
+            });
+            setTimeout(() => {
+              router.push("/");
+            }, 5000);
           }
         })
         .catch(async (error) => {
+          // console.log("error here :: ", error.message);
           if (error.code === "auth/account-exists-with-different-credential") {
             const cred = GithubAuthProvider.credentialFromError(error);
             var email = error.customData.email;
-            console.log("email", email);
+            // console.log("email", email);
             const providers = await fetchSignInMethodsForEmail(auth, email);
             if (providers[0] === "google.com") {
               setPersistence(auth, browserSessionPersistence).then(() => {
