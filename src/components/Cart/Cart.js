@@ -87,6 +87,11 @@ const DetailsCart = () => {
       line_items: coinCart,
     };
     console.log("Body", body);
+    if(totalPrice>999999.99)
+    {
+      toast.error("Total Amount exceeds allow limit");  
+      return;
+    }
     try {
       const res = await fetch("/api/payment", {
         method: "POST",
