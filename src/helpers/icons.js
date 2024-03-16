@@ -273,3 +273,21 @@ export const AnswerIcon = (className) => (
     <path d="M19.967 17.484A4 4 0 0 1 18 18" />
   </svg>
 );
+
+export const ChatIconGo = (className) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="28"
+    height="28"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#14ffec"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    className={` ${className}`}
+  >
+    <polyline points="15 10 20 15 15 20" />
+    <path d="M4 4v7a4 4 0 0 0 4 4h12" />
+  </svg>
+);

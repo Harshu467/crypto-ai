@@ -5,7 +5,7 @@ import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
 import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
-import { Add } from "@/helpers/icons";
+import { Add, ChatIconGo } from "@/helpers/icons";
 import { toast, Toaster } from "react-hot-toast";
 function Indicator({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
@@ -47,7 +47,9 @@ function MarketCoin() {
     login,
   } = useContext(UserContext);
   console.log("Cart", coinCart);
-  let foundCoin = coinCart.find((x) => x.id === coinId) ? coinCart.find((x) => x.id === coinId) : { quantity: 0 };
+  let foundCoin = coinCart.find((x) => x.id === coinId)
+    ? coinCart.find((x) => x.id === coinId)
+    : { quantity: 0 };
   if (foundCoin.quantity !== undefined && foundCoin !== undefined) {
     console.log("Found", foundCoin);
   } else {
@@ -56,7 +58,9 @@ function MarketCoin() {
   }
   const [coinCount, setCoinCount] = useState(foundCoin.quantity);
   // console.log("1", coinData, currency, data);
-  
+  const handleCryptoAI = async () => {
+    router.push(`/chat/${coinId}`);
+  };
   const getCoinData = async (coinid) => {
     setCoinData();
     try {
@@ -86,8 +90,7 @@ function MarketCoin() {
         setCoinCount(coinCount + 1);
         toast.success(result.message);
       } else {
-        toast.error("Unable to Add to Cart")
-        // toast.error(result.message);
+        toast.error("Unable to Add to Cart");
       }
     } else {
       toast.error("Please Login First");
@@ -363,6 +366,18 @@ function MarketCoin() {
               </div>
             </div>
             <div className="flex flex-col md:w-[55%] w-full h-[60vh] md:pl-4 pl-0 md:mt-0 mt-2 ">
+              <h2 className="text-[26px] text-center font-medium items-center justify-center m-auto text-white">
+                Chat with Crypto-AI
+                <span
+                  className="ml-4 cursor-pointer inline-block"
+                  onClick={handleCryptoAI}
+                  title="Chat with Crypto-AI"
+                  aria-label="Chat with Crypto-AI"
+                  role="button"
+                >
+                  <ChatIconGo />
+                </span>
+              </h2>
               <Chart id={data.id} />
               <div className="flex flex-col mt-4">
                 <h3 className="text-white py-1">

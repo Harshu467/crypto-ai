@@ -3,7 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Chart from "@/components/Chart/Chart";
 import { UserContext } from "@/context/UserContext";
-import { Add } from "@/helpers/icons";
+import { Add, ChatIconGo } from "@/helpers/icons";
 import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
 import toast, { Toaster } from "react-hot-toast";
@@ -379,6 +379,18 @@ const TrendingCoin = () => {
               </div>
             </div>
             <div className="flex flex-col md:w-[55%] w-full h-[60vh] md:pl-4 pl-0 md:mt-0 mt-2 ">
+              <h2 className="text-[26px] text-center font-medium items-center justify-center m-auto text-white">
+                Chat with Crypto-AI
+                <span
+                  className="ml-4 cursor-pointer inline-block"
+                  onClick={handleCryptoAI}
+                  title="Chat with Crypto-AI"
+                  aria-label="Chat with Crypto-AI"
+                  role="button"
+                >
+                  <ChatIconGo />
+                </span>
+              </h2>
               <Chart id={data.id} />
               <div className="flex flex-col mt-4">
                 <h3 className="text-white py-1">

@@ -17,7 +17,7 @@ export default function Chat() {
       sender: "bot",
     },
     {
-      question: "What is the market cap of Bitcoin? Explain in 200-300 words",
+      question: "What 2 is the market cap of Bitcoin? Explain in 200-300 words",
       sender: "user",
     },
     {
@@ -34,6 +34,7 @@ export default function Chat() {
       setMessages([...messages, { text: message, sender: "user" }]);
       messageInput.value = "";
     }
+    setMessages([...messages, { question: message, sender: "user" }]);
   };
   return (
     <>
@@ -62,7 +63,7 @@ export default function Chat() {
                       <div
                         data-orientation="horizontal"
                         role="none"
-                        className="border border-gray-200 my-4 h-[1px] w-full"
+                        className="border border-gray-200 my-6 h-[1px] w-full"
                       />
                       <div className="group relative flex items-start">
                         <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm">
@@ -70,11 +71,13 @@ export default function Chat() {
                         </div>
                         <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
                           <div className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0">
-                            {message.answer.split(/\.{3}/).map((paragraph, index) => (
-                              <p key={index} className="mb-2 last:mb-0">
-                                {paragraph}
-                              </p>
-                            ))}
+                            {message.answer
+                              .split(/\.{3}/)
+                              .map((paragraph, index) => (
+                                <p key={index} className="mb-2 last:mb-0">
+                                  {paragraph}
+                                </p>
+                              ))}
                           </div>
                         </div>
                       </div>
@@ -82,7 +85,7 @@ export default function Chat() {
                         <div
                           data-orientation="horizontal"
                           role="none"
-                          className="border border-gray-200 my-4 h-[1px] w-full"
+                          className="border border-gray-200 my-6 h-[1px] w-full"
                         />
                       )}
                     </div>
