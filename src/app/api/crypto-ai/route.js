@@ -18,8 +18,7 @@ export async function POST(request) {
     const token = requestBody.token;
     console.log("Crypto AI", requestBody);
     let toke =
-      process.env.OPENAI_API_KEY ||
-      "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";
+      process.env.OPENAI_API_KEY ;
     console.log("TOKE", toke);
     const response = await fetch(
       "https://ui5uvjekg1.execute-api.ap-south-1.amazonaws.com/Prod/hello/",
