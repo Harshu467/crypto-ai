@@ -1,11 +1,15 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
+import { UserContext } from "@/context/UserContext";
 import { AnswerIcon, EnterIcon, ProfileIcon } from "@/helpers/icons";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import { useContext, useState } from "react";
+
+const CryptoAI = "/api/crypto-ai";
 
 export default function Chat() {
   const params = useParams();
+  const { uid, token,currency } = useContext(UserContext);
   const coinId = params.coinchatId;
   const [messages, setMessages] = useState([
     {
@@ -25,11 +29,35 @@ export default function Chat() {
         " The market cap of Bitcoin is $40,000. The market cap of a cryptocurrency is calculated by multiplying the number of coins or tokens in existence by its current price. It is a common metric for judging the value of a cryptocurrency. If a cryptocurrency has a high market cap, it is likely to be less volatile than a cryptocurrency with a low market cap. Market cap is also used to compare the value of different cryptocurrencies. For example, the market cap of Bitcoin is higher than the market cap of Ethereum. This means that Bitcoin is more valuable than Ethereum. The market cap of a cryptocurrency can change over time. It can increase or decrease depending on the price of the cryptocurrency and the number of coins or tokens in existence. The market cap of a cryptocurrency is an important metric for investors and traders. It can help them make informed decisions about which cryptocurrencies to buy or sell.",
     },
   ]);
-
-  const handleMessageSubmit = (e) => {
+  const handleMessageSubmit = async (e) => {
     e.preventDefault();
     const messageInput = e.target.elements.message;
     const message = messageInput.value.trim();
+    try {
+      const body = {
+        message,
+        coinId,
+        uid,
+        currency: currency,
+        token: token,
+      };
+      console.log("BODY", body, token);
+      const response = await fetch(
+        CryptoAI,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("FROM LURL", data);
+    } catch (e) {
+      console.log("Error in handleMessageSubmit", e);
+    }
     if (message) {
       setMessages([...messages, { text: message, sender: "user" }]);
       messageInput.value = "";

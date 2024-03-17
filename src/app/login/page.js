@@ -21,7 +21,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -35,9 +35,11 @@ import { auth } from "../../../firebase";
 import { Github, GoogleIcon } from "@/helpers/icons";
 import { addToFirebaseUsers, checkEmailExists } from "@/utils/commonFunctions";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/context/UserContext";
 const defaultTheme = createTheme();
 
 export default function Login() {
+  const {token,setToken} = useContext(UserContext)
   const [values, setValues] = useState({
     showPassword: false,
   });
@@ -61,12 +63,18 @@ export default function Login() {
           const user = userCredential.user;
           if (user) {
             // console.log("user", user);
-            toast.success("Login Success", {
-              duration: 5000,
-            });
-            setTimeout(() => {
-              router.push("/");
-            }, 5000);
+            user.getIdToken()
+            .then((idToken) => {
+              if(token===undefined){
+                setToken(idToken);
+              }
+              toast.success("Login Success", {
+                duration: 5000,
+              });
+              setTimeout(() => {
+                router.push("/");
+              }, 5000);
+            })
           }
         })
         .catch((error) => {

@@ -202,9 +202,9 @@ export const MenuIcon = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#ffffff"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <line x1="4" x2="20" y1="12" y2="12" />
@@ -221,9 +221,9 @@ export const EnterIcon = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#000000"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <polyline points="9 10 4 15 9 20" />
@@ -239,9 +239,9 @@ export const ProfileIcon = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#ffffff"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <circle cx="12" cy="8" r="5" />
@@ -257,9 +257,9 @@ export const AnswerIcon = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#f66151"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
@@ -282,9 +282,9 @@ export const ChatIconGo = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#14ffec"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <polyline points="15 10 20 15 15 20" />

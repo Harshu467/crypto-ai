@@ -211,7 +211,8 @@ export function UserProvider({ children }) {
   const userAuth = async (user) => {
     if (user) {
       try {
-        setToken(user.accessToken);
+        const userToken = user.accessToken;
+        setToken(userToken);
         setUid(user.uid);
         const userData = await getUserData(user.uid);
         if (!userData.success) {
@@ -233,15 +234,14 @@ export function UserProvider({ children }) {
           setUid(userData.uid);
           setLogin(true);
         }
+        console.log("TOKEN",userToken);
       } catch (error) {
         console.log("Error", error);
         setLogin(false);
       }
     } else {
       setLogin(false);
-      if (token || uid || email || name || currency || coinCart) {
-        setToken("");
-        setUid("");
+      if (email || name || currency || coinCart) {
         setEmail("");
         setName("");
         setLogin(false);
@@ -270,6 +270,7 @@ export function UserProvider({ children }) {
     onAuthStateChanged(auth, async (user) => {
       userAuth(user);
     });
+    console.log("TOKEn",token);
   }, []);
   useEffect(() => {
     async function updatedPrice(current_price, coinId) {
@@ -356,6 +357,8 @@ export function UserProvider({ children }) {
         setCoinCart,
         getPricebyId,
         decreaseCoinCart,
+        setToken,
+        token,
       }}
     >
       {children}
