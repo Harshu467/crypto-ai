@@ -336,10 +336,10 @@ export default function Login() {
               gap: 2,
             }}
           >
-            <Link className="cursor-pointer" onClick={loginWithGithub} passhref>
+            <Link className="cursor-pointer" onClick={loginWithGithub} passhref="true">
               <Github />
             </Link>
-            <Link className="cursor-pointer" onClick={LoginWithgoogle} passhref>
+            <Link className="cursor-pointer" onClick={LoginWithgoogle} passhref="true">
               <GoogleIcon />
             </Link>
           </Box>
