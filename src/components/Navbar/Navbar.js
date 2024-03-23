@@ -10,9 +10,14 @@ const Navbar = () => {
   const activePath = usePathname();
   const [profile, setProfile] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
   const { login, name, handleLogout, uid } = useContext(UserContext);
   const handleNavbarLinkClick = () => {
     setOpen(false);
+  };
+  const handleMenuOpen = () => {
+    console.log("open", open);
+    setOpen(!open);
   };
 
   const navLinks = [
@@ -30,15 +35,35 @@ const Navbar = () => {
     },
   ];
   useEffect(() => {}, [login, name, uid, handleLogout]);
+  const useWindowDimensions = () => {
+    const [windowDimensions, setWindowDimensions] = useState({
+      width: undefined,
+      height: undefined,
+    });
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount
+
+    return windowDimensions;
+  };
+  const { width, height } = useWindowDimensions();
   return (
     <Suspense>
       <nav className="top-0 w-full z-10 sticky border-b border-gray-800 mx-auto bg-transparent backdrop-blur-sm">
         <div className="flex items-center justify-between p-5">
-          {!uid ? (
+          {width > 769 ? (
             <> </>
           ) : (
             <ul
-              className={`md:hidden text-dimWhite text-[20px] font-medium bg-[#d1d5db] justify-center items-center absolute w-full top-[80px] z-50 py-8 pl-4 duration-500  ${
+              className={`text-dimWhite text-[20px] font-medium bg-[#d1d5db] justify-center items-center absolute w-full top-[80px] z-50 py-8 pl-4 duration-500  ${
                 open ? "left-0" : "left-[-100%]"
               }`}
               style={{ zIndex: "1" }}
@@ -51,8 +76,8 @@ const Navbar = () => {
                   <Link
                     href={navLink.path}
                     onClick={handleNavbarLinkClick}
-                    className={`navLink hover:underline text-[#111827] ${
-                      location.pathname === navLink.path || navLink.path + "/"
+                    className={`navLink hover:underline text-[#111827] 
+                    ${activePath === navLink.path || navLink.path + "/"
                         ? "active"
                         : ""
                     }`}
@@ -64,13 +89,8 @@ const Navbar = () => {
             </ul>
           )}
           <div className="item-navbar items-center gap-[16px] justify-center text-center flex md:ml-[16px]">
-            <div
-              onClick={() => {
-                setOpen(!open);
-              }}
-              className="md:hidden cursor-pointer"
-            >
-              <MenuIcon />
+            <div className="md:hidden cursor-pointer" onClick={()=>{handleMenuOpen()}}>
+              <MenuIcon className="w-6 h-6 text-white" />
             </div>
             <Link
               href="/"

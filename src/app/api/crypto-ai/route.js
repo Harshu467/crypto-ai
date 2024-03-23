@@ -21,29 +21,24 @@ export async function POST(request) {
       process.env.OPENAI_API_KEY ;
     console.log("TOKE", toke);
     const response = await fetch(
-      "https://ui5uvjekg1.execute-api.ap-south-1.amazonaws.com/Prod/hello/",
+      "https://lag34l4tb7ksrybvte6ufukhpq0sdjvc.lambda-url.ap-south-1.on.aws/",
       {
         method: "POST",
         body: JSON.stringify(
             {
                 message: message,
                 currency: currency,
-                coinId: coinId,
+                coin: coinId,
                 uid: uid,
             }
         ),
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   "Access-Control-Allow-Origin": "*",
-        //   Authorization: `AuthToken ${token} `,
-        // },
       }
     );
     const data = await response.json();
-    console.log("FROM LURL", data);
+    console.log("FROM LURL", data,data.data.choices[0].message.content);
     return NextResponse.json({
       success: true,
-      message: "Message Sent",
+      message: data.data.choices[0].message.content,
       status: 200,
     });
   } catch (error) {

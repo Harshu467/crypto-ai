@@ -9,31 +9,22 @@ const CryptoAI = "/api/crypto-ai";
 
 export default function Chat() {
   const params = useParams();
-  const { uid, token,currency } = useContext(UserContext);
+  const { uid, token, currency } = useContext(UserContext);
   const coinId = params.coinchatId;
-  const [messages, setMessages] = useState([
-    {
-      question: "Hello, What is bitcoin Price?",
-      sender: "user",
-    },
-    {
-      answer: "The current price of Bitcoin is $40,000",
-      sender: "bot",
-    },
-    {
-      question: "What 2 is the market cap of Bitcoin? Explain in 200-300 words",
-      sender: "user",
-    },
-    {
-      answer:
-        " The market cap of Bitcoin is $40,000. The market cap of a cryptocurrency is calculated by multiplying the number of coins or tokens in existence by its current price. It is a common metric for judging the value of a cryptocurrency. If a cryptocurrency has a high market cap, it is likely to be less volatile than a cryptocurrency with a low market cap. Market cap is also used to compare the value of different cryptocurrencies. For example, the market cap of Bitcoin is higher than the market cap of Ethereum. This means that Bitcoin is more valuable than Ethereum. The market cap of a cryptocurrency can change over time. It can increase or decrease depending on the price of the cryptocurrency and the number of coins or tokens in existence. The market cap of a cryptocurrency is an important metric for investors and traders. It can help them make informed decisions about which cryptocurrencies to buy or sell.",
-    },
-  ]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [messages, setMessages] = useState([]);
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
     const messageInput = e.target.elements.message;
     const message = messageInput.value.trim();
+    if (!message) return;
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { question: message, sender: "user" },
+    ]);
+    messageInput.value = "";
     try {
+      setIsTyping(true);
       const body = {
         message,
         coinId,
@@ -42,27 +33,70 @@ export default function Chat() {
         token: token,
       };
       console.log("BODY", body, token);
-      const response = await fetch(
-        CryptoAI,
-        {
+      const response = await fetch(CryptoAI, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      const data = await response.json();
+      console.log("FROM LURL", data);
+      if (data.success) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { answer: data.message, sender: "assistant" },
+        ]);
+      }
+    } catch (e) {
+      console.log("Error in handleMessageSubmit", e);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+  const handlePromptClick = async (prompt) => {
+    try {
+      const message = prompt;
+      if (!message) return;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { question: message, sender: "user" },
+      ]);
+      try {
+        setIsTyping(true);
+        const body = {
+          message,
+          coinId,
+          uid,
+          currency: currency,
+          token: token,
+        };
+        console.log("BODY", body, token);
+        const response = await fetch(CryptoAI, {
           method: "POST",
           body: JSON.stringify(body),
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
+        });
+        const data = await response.json();
+        console.log("FROM LURL", data);
+        if (data.success) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { answer: data.message, sender: "assistant" },
+          ]);
         }
-      );
-      const data = await response.json();
-      console.log("FROM LURL", data);
-    } catch (e) {
-      console.log("Error in handleMessageSubmit", e);
+      } catch (e) {
+        console.log("Error in handleMessageSubmit", e);
+      } finally {
+        setIsTyping(false);
+      }
+    } catch (error) {
+      console.log("Error in handlePromptClick", error);
     }
-    if (message) {
-      setMessages([...messages, { text: message, sender: "user" }]);
-      messageInput.value = "";
-    }
-    setMessages([...messages, { question: message, sender: "user" }]);
   };
   return (
     <>
@@ -73,10 +107,10 @@ export default function Chat() {
             {messages.map((message, index) => (
               <div
                 key={index}
-                className="relative overflow-auto mx-auto max-w-2xl px-4 text-[#cccccc]"
+                className="relative overflow-auto mx-auto max-w-2xl px-4"
               >
                 {message.sender === "user" && (
-                  <div className="group relative flex items-start">
+                  <div className="group relative flex items-start text-[#cccccc]">
                     <div className="flex size-[25px] shrink-0 select-none items-center justify-center rounded-md border bg-background shadow-sm">
                       <ProfileIcon />
                     </div>
@@ -85,42 +119,54 @@ export default function Chat() {
                     </div>
                   </div>
                 )}
-                <div>
-                  {message.answer && (
-                    <div>
+                {message.sender === "assistant" && (
+                  <div>
+                    <div
+                      data-orientation="horizontal"
+                      role="none"
+                      className="border border-gray-200 my-6 h-[1px] w-full"
+                    />
+                    <div className="group relative flex items-start">
+                      <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm">
+                        <AnswerIcon />
+                      </div>
+                      <div className="ml-4 flex-1 space-y-2 overflow-hidden text-[#cccccc] px-1">
+                        <div
+                          className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                          dangerouslySetInnerHTML={{__html: message.answer}}
+                        />
+                      </div>
+                    </div>
+                    {index !== messages.length - 1 && (
                       <div
                         data-orientation="horizontal"
                         role="none"
                         className="border border-gray-200 my-6 h-[1px] w-full"
                       />
-                      <div className="group relative flex items-start">
-                        <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm">
-                          <AnswerIcon />
-                        </div>
-                        <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
-                          <div className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0">
-                            {message.answer
-                              .split(/\.{3}/)
-                              .map((paragraph, index) => (
-                                <p key={index} className="mb-2 last:mb-0">
-                                  {paragraph}
-                                </p>
-                              ))}
-                          </div>
-                        </div>
-                      </div>
-                      {index !== messages.length - 1 && (
-                        <div
-                          data-orientation="horizontal"
-                          role="none"
-                          className="border border-gray-200 my-6 h-[1px] w-full"
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
+            {isTyping && (
+              <div className="relative overflow-auto mx-auto max-w-2xl px-4 text-[#cccccc]">
+                <div
+                  data-orientation="horizontal"
+                  role="none"
+                  className="border border-gray-200 my-6 h-[1px] w-full"
+                />
+                <div className="group relative flex items-start">
+                  <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm">
+                    <AnswerIcon />
+                  </div>
+                  <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
+                    <div className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0">
+                      Typing...
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="mx-auto max-w-2xl px-4">
@@ -144,7 +190,16 @@ export default function Chat() {
         <div className="fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-muted/30 from-0% to-muted/30 to-50% duration-300 ease-in-out animate-in dark:from-background/10 dark:from-10% dark:to-background/80 peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
           <div className="mx-auto sm:max-w-2xl sm:px-4">
             <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
-              <div className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block">
+              <div
+                onClick={() => {
+                  handlePromptClick(
+                    `Is ${
+                      coinId.charAt(0).toUpperCase() + coinId.slice(1)
+                    }  a worthy Investment Option?`
+                  );
+                }}
+                className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block"
+              >
                 <div className="text-sm font-semibold text-white">
                   {`Is ${
                     coinId.charAt(0).toUpperCase() + coinId.slice(1)
@@ -152,7 +207,15 @@ export default function Chat() {
                 </div>
                 <div className="text-sm text-zinc-600">Investment Option?</div>
               </div>
-              <div className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block">
+              <div
+                onClick={() => {
+                  handlePromptClick(`Understanding
+                  ${
+                    coinId.charAt(0).toUpperCase() + coinId.slice(1)
+                  } Investment Potential`);
+                }}
+                className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block"
+              >
                 <div className="text-sm font-semibold text-white">
                   Understanding{" "}
                   {`${coinId.charAt(0).toUpperCase() + coinId.slice(1)}`}&apos;s
