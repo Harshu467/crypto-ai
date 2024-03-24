@@ -39,7 +39,7 @@ const Hero = () => {
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <section className="sm:max-w-[19.5rem] md:max-w-[24.5rem] tab:max-w-[28rem] lg:max-w-[30rem]">
             <div
-              className="text-4xl font-bold sm:text-[5vw] md:text-[2px] lg:leading-[5.5rem] lg:text-[5rem] text-white"
+              className="text-4xl font-bold sm:text-[5vw] md:text-[20px] lg:leading-[5.5rem] lg:text-[5rem] text-white"
            >
               Learn.Invest. Grow.
             </div>

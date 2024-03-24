@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useContext, useState } from "react";
 
 const CryptoAI = "/api/crypto-ai";
-
 export default function Chat() {
   const params = useParams();
   const { uid, token, currency } = useContext(UserContext);
@@ -46,7 +45,7 @@ export default function Chat() {
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { answer: data.message, sender: "assistant" },
+          { answer: data.answer, sender: "assistant" },
         ]);
       }
     } catch (e) {
@@ -86,7 +85,7 @@ export default function Chat() {
         if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
-            { answer: data.message, sender: "assistant" },
+            { answer: data.answer, sender: "assistant" },
           ]);
         }
       } catch (e) {
@@ -133,7 +132,7 @@ export default function Chat() {
                       <div className="ml-4 flex-1 space-y-2 overflow-hidden text-[#cccccc] px-1">
                         <div
                           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
-                          dangerouslySetInnerHTML={{__html: message.answer}}
+                          dangerouslySetInnerHTML={{ __html: message.answer }}
                         />
                       </div>
                     </div>

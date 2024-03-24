@@ -18,8 +18,11 @@ const DetailsCart = () => {
   } = useContext(UserContext);
   let CartItem = coinCart;
   const router = useRouter();
-  // Check if current price is there if null then call getPricebyId else return price
   useEffect(() => {
+    if (login === false) {
+      toast.error("Please Login to view Cart");
+      router.push("/login");
+    }
     const fetchPrice = async () => {
       const updatedItems = await CartItem.map(async (item) => {
         if (item.current_price === null) {

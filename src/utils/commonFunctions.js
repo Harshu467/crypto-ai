@@ -68,3 +68,20 @@ export const getUserData = async (uid) => {
     return  {success: false, error: error};
   }
 };
+
+export const addTransaction = async (uid, coinData,currency) => {
+  try {
+    console.log("coinData",coinData);
+    const transactionRef = await collection(db, "transactions");
+    const transactionDoc = await transactionRef.get(uid);
+    if(transactionDoc){
+      
+    } else {
+      await setDoc(doc(transactionRef, uid), {
+        
+      });
+    }
+  } catch (error) {
+    console.error("Error adding transaction: ", error); 
+  }
+};
