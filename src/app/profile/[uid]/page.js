@@ -27,17 +27,19 @@ import {
 import { auth, db } from "../../../../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { updatePassword } from "firebase/auth";
-import { PaymentFailed, PaymentSuccess } from "@/helpers/icons";
+import { NoTransaction, PaymentFailed, PaymentSuccess } from "@/helpers/icons";
+import { addTransactions, getTransactions } from "@/utils/commonFunctions";
 
 const Profile = () => {
   const router = useRouter();
   const params = useParams();
   const userId = params.uid;
-  const { uid } = useContext(UserContext);
+  const { uid, coinCart ,setCoinCart} = useContext(UserContext);
   // if (uid === undefined || uid === null || uid !== userId) {
   //   router.push("/login");
   // }
   const { login, name, email } = useContext(UserContext);
+  const [transactions, setTransactions] = useState([]);
   const [values, setValues] = useState({
     showPassword: false,
   });
@@ -145,8 +147,7 @@ const Profile = () => {
       });
     }
   }, [login]);
-  const [newName, setNewName] = useState(data.Name);
-  //console.log("NewName", newName);
+  const [newName, setNewName] = useState(name);
   const dataChange = (event) => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setdata(newData);
@@ -170,6 +171,8 @@ const Profile = () => {
     if (success === "true") {
       setModalMessage("Payment successful");
       setPaymentSuccess(true);
+      setCoinCart([]);
+      localStorage.removeItem("coinCart");
     } else if (success === "false") {
       setModalMessage("Payment failed");
       setPaymentSuccess(false);
@@ -179,6 +182,57 @@ const Profile = () => {
     //console.log("Modal Message", modalMessage);
     //console.log("Success", success);
   }, [params]);
+  const getData = async () => {
+    const data = await getTransactions(uid);
+    if (data.success) {
+      setTransactions(data.data);
+    } else {
+      console.error("Error fetching transactions");
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, [uid]);
+  const generatedText = (
+    name,
+    symbol,
+    currency,
+    current_price,
+    quantity,
+    timestamp
+  ) => {
+    // Define an array of exciting verbs
+    const verbs = ["snatched up", "scored", "bagged", "landed", "claimed"];
+
+    // Randomly select a verb from the array
+    const randomVerb = verbs[Math.floor(Math.random() * verbs.length)];
+
+    // Define an array of enthusiastic adjectives
+    const adjectives = [
+      "awesome",
+      "fantastic",
+      "amazing",
+      "incredible",
+      "stellar",
+    ];
+
+    // Randomly select an adjective from the array
+    const randomAdjective =
+      adjectives[Math.floor(Math.random() * adjectives.length)];
+
+    // Generate the formatted text
+    const text = `Woohoo! 🎉 You just ${randomVerb} ${name} (${symbol}) for ${new Intl.NumberFormat(
+      "en-IN",
+      {
+        style: "currency",
+        currency: currency,
+      }
+    ).format(
+      current_price
+    )} each! You're on fire! 🔥 You've added ${quantity} to your collection. What a ${randomAdjective} choice! 🚀`;
+
+    return text;
+  };
 
   return (
     <>
@@ -198,24 +252,26 @@ const Profile = () => {
           >
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField
-                  id="Name"
-                  name="Name"
-                  label="Full Name"
-                  variant="filled"
-                  value={newName}
-                  onChange={(e) => {
-                    setNewName(e.target.value);
-                  }}
-                  required
-                  fullWidth
-                  sx={{
-                    bgcolor: "gray",
-                    color: "white",
-                    borderColor: "white",
-                    borderRadius: "5px",
-                  }}
-                />
+                {typeof newName !== "undefined" && (
+                  <TextField
+                    id="Name"
+                    name="Name"
+                    label="Full Name"
+                    variant="filled"
+                    value={newName}
+                    onChange={(e) => {
+                      setNewName(e.target.value);
+                    }}
+                    required
+                    fullWidth
+                    sx={{
+                      bgcolor: "gray",
+                      color: "white",
+                      borderColor: "white",
+                      borderRadius: "5px",
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -290,54 +346,143 @@ const Profile = () => {
             </Button>
           </Box>
         </div>
-        <div className="w-full md:w-3/4 md:mx-2 flex flex-col rounded-md "></div>
-      </section>
-      {(modalOpen===true && paymentSuccess!==undefined && paymentSuccess!==null) && (
-        <div
-          className={`fixed z-10 inset-0 overflow-y-auto ${
-            modalOpen ? "" : "hidden"
-          }`}
-        >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            &#8203;
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-              <div>
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                  {paymentSuccess ? (
-                    <PaymentSuccess className="h-6 w-6 text-green-600" />
-                  ) : (
-                    <PaymentFailed className="h-6 w-6 text-red-600" />
-                  )}
-                </div>
-                <div className="mt-3 text-center sm:mt-5">
-                  <h3
-                    className="text-lg leading-6 font-medium text-gray-900"
-                    id="modal-title"
-                  >
-                    {!paymentSuccess ? "Failed" : "Success"}
-                  </h3>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">{modalMessage}</p>
+        <div className="w-full md:w-3/4 md:mx-2 flex flex-col rounded-md ">
+          {transactions.length > 0 ? (
+            transactions.map((transaction, index) => (
+              <div
+                key={index}
+                className="w-100 my-1 p-4 mb-4 text-white hover:border-[white] border border-gray-800"
+                style={{
+                  borderRadius: "10px",
+                  minHeight: "100px",
+                }}
+              >
+                <div className=" flex  p-4 relative">
+                  <div className="items-start pr-[20px]">
+                    <img
+                      src={transaction.image}
+                      alt={transaction.name}
+                      className="w-16 h-16"
+                    />
+                  </div>
+                  <div className="flex flex-row items-center justify-between">
+                    <p className="capitalize text-lg/5 font-bold basis-full">
+                      {transaction.name}
+                    </p>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-                    onClick={() => setModalOpen(false)}
-                  >
-                    Go back
-                  </button>
+                <div className="flex items-center justify-between px-[18px]">
+                  <p className="text-sm text-gray-400">
+                    {transaction &&
+                      generatedText(
+                        transaction.name,
+                        transaction.symbol,
+                        transaction.current_currency,
+                        transaction.current_price,
+                        transaction.quantity,
+                        transaction.timestamp.seconds
+                      )}
+                  </p>
+                </div>
+                <div className="flex border-t border-gray-600 pt-4 flex-col md:flex-row md:items-center m-4 gap-2 md:gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    <p className="text-xs text-[#e94560] border-[#e94560] cursor-pointer border-[1px] font-semibold inline-block py-1 px-2 uppercase rounded-full mr-2">
+                      Symbol: {transaction.symbol}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <p className="text-xs cursor-pointer text-[green] border-[1px] border-[green] font-semibold inline-block py-1 px-2 uppercase rounded-full mr-2">
+                      Buy at:{" "}
+                      {new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: transaction.current_currency,
+                      }).format(transaction.current_price)}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <p className="text-xs text-[yellow] border-[yellow] cursor-pointer border-[1px] font-semibold inline-block py-1 px-2 uppercase rounded-full mr-2">
+                      Quantity: {transaction.quantity}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <p className="text-xs text-[#a66efc] border-[#a66efc] cursor-pointer border-[1px] font-semibold inline-block py-1 px-2 uppercase rounded-full mr-2">
+                      Buy Time:{" "}
+                      {new Date(
+                        transaction.timestamp.seconds * 1000
+                      ).toLocaleString(undefined, {
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center">
+              <NoTransaction className="h-20 w-20 text-gray-400" />
+              <p className="text-white text-[22px] text-center mb-2">
+                No transactions found !
+              </p>
+              <p className="text-gray-400 text-sm text-center">
+                It looks like you haven't made any transactions yet. <br /> Why
+                not explore more opportunities to grow your portfolio?
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+      {modalOpen === true &&
+        paymentSuccess !== undefined &&
+        paymentSuccess !== null && (
+          <div
+            className={`fixed z-10 inset-0 overflow-y-auto ${
+              modalOpen ? "" : "hidden"
+            }`}
+          >
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 transition-opacity">
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+              &#8203;
+              <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div>
+                  <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    {paymentSuccess ? (
+                      <PaymentSuccess className="h-6 w-6 text-green-600" />
+                    ) : (
+                      <PaymentFailed className="h-6 w-6 text-red-600" />
+                    )}
+                  </div>
+                  <div className="mt-3 text-center sm:mt-5">
+                    <h3
+                      className="text-lg leading-6 font-medium text-gray-900"
+                      id="modal-title"
+                    >
+                      {!paymentSuccess ? "Failed" : "Success"}
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{modalMessage}</p>
+                    </div>
+                  </div>
+                  <div className="mt-5 sm:mt-6">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                      onClick={() => setModalOpen(false)}
+                    >
+                      Go back
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       <Footer />
       <Toaster position="top-center" reverseOrder={false} />
     </>

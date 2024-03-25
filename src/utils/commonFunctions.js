@@ -61,27 +61,71 @@ export const getUserData = async (uid) => {
       userSnapshot.forEach((doc) => {
         data = doc.data();
       });
-      return {success:true,data:data};
+      return { success: true, data: data };
     }
   } catch (error) {
     console.error("Error getting user data: ", error);
-    return  {success: false, error: error};
+    return { success: false, error: error };
+  }
+};
+export const addTransactions = async (uid, coinData) => {
+  try {
+    const transactionDocRef = doc(db, "transactions", uid);
+    const timestamp = serverTimestamp(); // Get server timestamp
+
+    console.log("Adding new transaction...");
+
+    // Create a new document if it doesn't exist
+    if (!(await transactionExists(uid))) {
+      await setDoc(transactionDocRef, {});
+    }
+
+    // Add each coin as a new document in a subcollection
+    const coinsCollectionRef = collection(transactionDocRef, "coins");
+    coinData.forEach(async (coin) => {
+      const newCoinData = {
+        name: coin.name,
+        symbol: coin.symbol,
+        current_price: coin.current_price,
+        image: coin.image,
+        current_currency: coin.current_currency,
+        quantity: coin.quantity,
+        timestamp: timestamp, // Add timestamp to each coin's data
+      };
+      await addDoc(coinsCollectionRef, newCoinData);
+    });
+
+    console.log("Transaction added successfully!");
+    return { success: true, response: "Transaction added successfully!" };
+  } catch (error) {
+    console.error("Error adding transaction: ", error);
+    return { success: false, error: error };
   }
 };
 
-export const addTransaction = async (uid, coinData,currency) => {
+// Function to check if transaction document exists
+const transactionExists = async (uid) => {
+  const transactionDocRef = doc(db, "transactions", uid);
+  const snapshot = await getDoc(transactionDocRef);
+  return snapshot.exists();
+};
+export const getTransactions = async (uid) => {
   try {
-    //console.log("coinData",coinData);
-    const transactionRef = await collection(db, "transactions");
-    const transactionDoc = await transactionRef.get(uid);
-    if(transactionDoc){
-      
-    } else {
-      await setDoc(doc(transactionRef, uid), {
-        
-      });
-    }
+    console.log("Getting transactions...");
+    const coinsData = [];
+    console.log("uid: ", uid);
+    console.log("coinsData: ", coinsData)
+    const transactionDocRef = collection(db, "transactions", uid, "coins");
+    console.log("transactionDocRef: ", transactionDocRef);
+    const snapshot = await getDocs(transactionDocRef);
+    console.log("snapshot: ", snapshot);
+    snapshot.forEach((doc) => {
+      coinsData.push(doc.data());
+    });
+    console.log("Transactions retrieved successfully!");
+    return { success: true, data: coinsData };
   } catch (error) {
-    console.error("Error adding transaction: ", error); 
+    console.error("Error getting transactions: ", error);
+    return { success: false, error: error };
   }
 };

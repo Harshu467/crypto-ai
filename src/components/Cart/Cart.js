@@ -120,6 +120,7 @@ const DetailsCart = () => {
       //console.log("Error in Checkout", error);
     }
   };
+  console.log("CoinCart", coinCart);
   return (
     <>
       <section className="cart-items">

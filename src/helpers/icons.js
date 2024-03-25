@@ -301,7 +301,7 @@ export const PaymentSuccess = (className) => (
     fill="none"
     stroke="#15803d"
     strokeWidth="2"
-    stroke-linecap="round"
+    strokeLinecap="round"
     strokeLinejoin="round"
     className={` ${className}`}
   >
@@ -319,12 +319,31 @@ export const PaymentFailed = (className) => (
     fill="none"
     stroke="#e6194b"
     strokeWidth="2"
-    stroke-linecap="round"
+    strokeLinecap="round"
     strokeLinejoin="round"
     className={` ${className}`}
   >
     <circle cx="12" cy="12" r="10" />
     <path d="m15 9-6 6" />
     <path d="m9 9 6 6" />
+  </svg>
+);
+
+export const NoTransaction = (className) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="78"
+    height="78"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="red"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    className={` ${className}`}
+  >
+    <path d="m8 11 2 2 4-4" />
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.3-4.3" />
   </svg>
 );
