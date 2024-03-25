@@ -13,6 +13,7 @@ export async function POST(request) {
     const requestBody = await request.json();
     const amount = Math.round(requestBody.amount * 100);
     const currency = requestBody.currency; // Method Not Allowed
+    const uid = requestBody.uid;
     console.log("Amount", requestBody);
     const line_items = requestBody.line_items.map((item) => {
       console.log("Item", item);
@@ -36,8 +37,8 @@ export async function POST(request) {
         payment_method_types: ["card"],
         line_items: line_items,
         mode: "payment",
-        success_url: "http://localhost:3000/success",
-        cancel_url: "http://localhost:3000/cancel",
+        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
+        cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
       });
       console.log("Session", session.url);
       return NextResponse.json({

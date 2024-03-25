@@ -16,19 +16,27 @@ import { EyeOffOutline, EyeOutline } from "mdi-material-ui";
 import { useState, useContext, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { auth, db } from "../../../../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { updatePassword } from "firebase/auth";
+import { PaymentFailed, PaymentSuccess } from "@/helpers/icons";
 
 const Profile = () => {
   const router = useRouter();
   const params = useParams();
   const userId = params.uid;
   const { uid } = useContext(UserContext);
-  if (uid === undefined || uid === null || uid !== userId) {
-    router.push("/login");
-  }
+  // if (uid === undefined || uid === null || uid !== userId) {
+  //   router.push("/login");
+  // }
   const { login, name, email } = useContext(UserContext);
   const [values, setValues] = useState({
     showPassword: false,
@@ -72,28 +80,28 @@ const Profile = () => {
   // };
   const updateName = async (uid, newName) => {
     try {
-        const userQuery = query(collection(db, "users"), where("uid", "==", uid));
-        const userSnapshot = await getDocs(userQuery);
-        if (userSnapshot.empty) {
-            toast.error("User not found");
-            return;
+      const userQuery = query(collection(db, "users"), where("uid", "==", uid));
+      const userSnapshot = await getDocs(userQuery);
+      if (userSnapshot.empty) {
+        toast.error("User not found");
+        return;
+      }
+      userSnapshot.forEach(async (doc) => {
+        try {
+          await updateDoc(doc.ref, {
+            name: newName,
+          });
+          toast.success("Name updated successfully");
+        } catch (error) {
+          console.error("Error updating name:", error);
+          toast.error("Failed to update name");
         }
-        userSnapshot.forEach(async (doc) => {
-            try {
-                await updateDoc(doc.ref, {
-                    name: newName,
-                });
-                toast.success("Name updated successfully");
-            } catch (error) {
-                console.error("Error updating name:", error);
-                toast.error("Failed to update name");
-            }
-        });
+      });
     } catch (error) {
-        console.error("Error querying for user:", error);
-        toast.error("Failed to update name");
+      console.error("Error querying for user:", error);
+      toast.error("Failed to update name");
     }
-};
+  };
 
   const updatePass = async (uid, password) => {
     let user = auth.currentUser;
@@ -150,6 +158,27 @@ const Profile = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState();
+  const [modalMessage, setModalMessage] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get("success");
+    console.log("Success", success);
+    if (success === "true") {
+      setModalMessage("Payment successful");
+      setPaymentSuccess(true);
+    } else if (success === "false") {
+      setModalMessage("Payment failed");
+      setPaymentSuccess(false);
+    }
+    setModalOpen(success !== undefined);
+    console.log("Modal Open", modalOpen);
+    console.log("Modal Message", modalMessage);
+    console.log("Success", success);
+  }, [params]);
 
   return (
     <>
@@ -263,6 +292,50 @@ const Profile = () => {
         </div>
         <div className="w-full md:w-3/4 md:mx-2 flex flex-col rounded-md "></div>
       </section>
+      <div
+        className={`fixed z-10 inset-0 overflow-y-auto ${
+          modalOpen ? "" : "hidden"
+        }`}
+      >
+        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="fixed inset-0 transition-opacity">
+            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          </div>
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+          &#8203;
+          <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+            <div>
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                {paymentSuccess ? (
+                  <PaymentSuccess className="h-6 w-6 text-green-600" />
+                ) : (
+                  <PaymentFailed className="h-6 w-6 text-red-600" />
+                )}
+              </div>
+              <div className="mt-3 text-center sm:mt-5">
+                <h3
+                  className="text-lg leading-6 font-medium text-gray-900"
+                  id="modal-title"
+                >
+                  {!paymentSuccess ? "Failed" : "Success"}
+                </h3>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">{modalMessage}</p>
+                </div>
+              </div>
+              <div className="mt-5 sm:mt-6">
+                <button
+                  type="button"
+                  className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                  onClick={() => setModalOpen(false)}
+                >
+                  Go back
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <Footer />
       <Toaster position="top-center" reverseOrder={false} />
     </>

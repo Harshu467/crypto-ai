@@ -291,3 +291,40 @@ export const ChatIconGo = (className) => (
     <path d="M4 4v7a4 4 0 0 0 4 4h12" />
   </svg>
 );
+
+export const PaymentSuccess = (className) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="44"
+    height="44"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#15803d"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    className={` ${className}`}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+export const PaymentFailed = (className) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="44"
+    height="44"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#e6194b"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    className={` ${className}`}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </svg>
+);
