@@ -41,11 +41,11 @@ export default function Chat() {
         },
       });
       const data = await response.json();
-      //console.log("FROM LURL", data);
+      // console.log("FROM LURL", data);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { answer: data.answer, sender: "assistant" },
+          { answer: data.message, sender: "assistant" },
         ]);
       }
     } catch (e) {
@@ -85,7 +85,7 @@ export default function Chat() {
         if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
-            { answer: data.answer, sender: "assistant" },
+            { answer: data.message, sender: "assistant" },
           ]);
         }
       } catch (e) {
@@ -97,6 +97,7 @@ export default function Chat() {
       //console.log("Error in handlePromptClick", error);
     }
   };
+  // console.log("Message", messages)
   return (
     <>
       <Navbar />
