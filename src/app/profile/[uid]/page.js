@@ -292,50 +292,52 @@ const Profile = () => {
         </div>
         <div className="w-full md:w-3/4 md:mx-2 flex flex-col rounded-md "></div>
       </section>
-      <div
-        className={`fixed z-10 inset-0 overflow-y-auto ${
-          modalOpen ? "" : "hidden"
-        }`}
-      >
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-          <div className="fixed inset-0 transition-opacity">
-            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </div>
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-          &#8203;
-          <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-            <div>
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                {paymentSuccess ? (
-                  <PaymentSuccess className="h-6 w-6 text-green-600" />
-                ) : (
-                  <PaymentFailed className="h-6 w-6 text-red-600" />
-                )}
-              </div>
-              <div className="mt-3 text-center sm:mt-5">
-                <h3
-                  className="text-lg leading-6 font-medium text-gray-900"
-                  id="modal-title"
-                >
-                  {!paymentSuccess ? "Failed" : "Success"}
-                </h3>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">{modalMessage}</p>
+      {(modalOpen===true && paymentSuccess!==undefined && paymentSuccess!==null) && (
+        <div
+          className={`fixed z-10 inset-0 overflow-y-auto ${
+            modalOpen ? "" : "hidden"
+          }`}
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
+            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+              <div>
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                  {paymentSuccess ? (
+                    <PaymentSuccess className="h-6 w-6 text-green-600" />
+                  ) : (
+                    <PaymentFailed className="h-6 w-6 text-red-600" />
+                  )}
                 </div>
-              </div>
-              <div className="mt-5 sm:mt-6">
-                <button
-                  type="button"
-                  className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-                  onClick={() => setModalOpen(false)}
-                >
-                  Go back
-                </button>
+                <div className="mt-3 text-center sm:mt-5">
+                  <h3
+                    className="text-lg leading-6 font-medium text-gray-900"
+                    id="modal-title"
+                  >
+                    {!paymentSuccess ? "Failed" : "Success"}
+                  </h3>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">{modalMessage}</p>
+                  </div>
+                </div>
+                <div className="mt-5 sm:mt-6">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                    onClick={() => setModalOpen(false)}
+                  >
+                    Go back
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <Footer />
       <Toaster position="top-center" reverseOrder={false} />
     </>
