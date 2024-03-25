@@ -15,6 +15,7 @@ const DetailsCart = () => {
     login,
     currency,
     getPricebyId,
+    uid,
   } = useContext(UserContext);
   let CartItem = coinCart;
   const router = useRouter();
@@ -86,6 +87,7 @@ const DetailsCart = () => {
     //console.log("Checkout");
     const body = {
       amount: totalPrice,
+      uid:uid,
       currency: currency,
       line_items: coinCart,
     };
