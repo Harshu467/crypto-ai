@@ -46,18 +46,18 @@ function MarketCoin() {
     addCoinCart,
     login,
   } = useContext(UserContext);
-  console.log("Cart", coinCart);
+  //console.log("Cart", coinCart);
   let foundCoin = coinCart.find((x) => x.id === coinId)
     ? coinCart.find((x) => x.id === coinId)
     : { quantity: 0 };
   if (foundCoin.quantity !== undefined && foundCoin !== undefined) {
-    console.log("Found", foundCoin);
+    //console.log("Found", foundCoin);
   } else {
-    console.log("Not Found", foundCoin);
+    //console.log("Not Found", foundCoin);
     foundCoin = { quantity: 0 };
   }
   const [coinCount, setCoinCount] = useState(foundCoin.quantity);
-  // console.log("1", coinData, currency, data);
+  // //console.log("1", coinData, currency, data);
   const handleCryptoAI = async () => {
     router.push(`/chat/${coinId}`);
   };
@@ -71,7 +71,7 @@ function MarketCoin() {
         .then((json) => json);
       setCoinData(data);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   useEffect(() => {
@@ -82,11 +82,11 @@ function MarketCoin() {
   };
   const handleCartIncrement = async () => {
     if (login) {
-      console.log("Add to Cart");
+      //console.log("Add to Cart");
       const result = await addCoinCart(coinId);
-      console.log("Result", result);
+      //console.log("Result", result);
       if (result && result.success) {
-        console.log("Add to Cart", result);
+        //console.log("Add to Cart", result);
         setCoinCount(coinCount + 1);
         toast.success(result.message);
       } else {
@@ -98,9 +98,9 @@ function MarketCoin() {
   };
   const handleCartDecrement = async () => {
     if (login) {
-      console.log("Remove from Cart");
+      //console.log("Remove from Cart");
       const result = await decreaseCoinCart(coinId);
-      console.log("Dec", result);
+      //console.log("Dec", result);
       if (result.success) {
         setCoinCount(coinCount - 1);
         toast.success(result.message);

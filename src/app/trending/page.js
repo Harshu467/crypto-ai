@@ -17,7 +17,7 @@ const Trending = () => {
         .then((json) => json);
       setTrendData(data.coins);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   useEffect(() => {

@@ -49,20 +49,20 @@ const TrendingCoin = () => {
     ? coinCart.find((x) => x.id === coinId)
     : { quantity: 0 };
   if (foundCoin.quantity !== undefined && foundCoin !== undefined) {
-    console.log("Found", foundCoin);
+    //console.log("Found", foundCoin);
   } else {
-    console.log("Not Found", foundCoin);
+    //console.log("Not Found", foundCoin);
     foundCoin = { quantity: 0 };
   }
   const [coinCount, setCoinCount] = useState(foundCoin.quantity);
   const handleCartIncrement = async () => {
     if (login) {
-      console.log("Add to Cart");
+      //console.log("Add to Cart");
       try {
         const result = await addCoinCart(coinId);
-        console.log("Result", result);
+        //console.log("Result", result);
         if (result && result.success) {
-          console.log("Add to Cart", result);
+          //console.log("Add to Cart", result);
           setCoinCount(coinCount + 1);
           toast.success(result.message);
         } else {
@@ -75,7 +75,7 @@ const TrendingCoin = () => {
           }
         }
       } catch (error) {
-        console.log("Error", error);
+        //console.log("Error", error);
         toast.error("An error occurred while adding to cart");
       }
     } else {
@@ -85,9 +85,9 @@ const TrendingCoin = () => {
 
   const handleCartDecrement = async () => {
     if (login) {
-      console.log("Remove from Cart");
+      //console.log("Remove from Cart");
       const result = await decreaseCoinCart(coinId);
-      console.log("Dec", result);
+      //console.log("Dec", result);
       if (result.success) {
         setCoinCount(coinCount - 1);
         toast.success(result.message);
@@ -108,7 +108,7 @@ const TrendingCoin = () => {
         .then((json) => json);
       setCoinData(data);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   useEffect(() => {
@@ -119,7 +119,7 @@ const TrendingCoin = () => {
   };
   const handleCart = () => {
     if (login) {
-      console.log("Add to cart");
+      //console.log("Add to cart");
     } else {
       toast.error("Please Login First");
     }

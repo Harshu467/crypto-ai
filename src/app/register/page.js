@@ -114,10 +114,10 @@ export default function SignUp() {
     e.preventDefault();
     const formIsValid = validateForm();
     if (!formIsValid) {
-      console.log("Form is invalid");
+      //console.log("Form is invalid");
       return;
     } else {
-      console.log("Form is valid");
+      //console.log("Form is valid");
       await setPersistence(auth, browserSessionPersistence).then(async () => {
         await createUserWithEmailAndPassword(auth, email, password)
           .then(async (userCredential) => {
@@ -161,15 +161,15 @@ export default function SignUp() {
         .then(async (result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
-          console.log("user", user);
+          //console.log("user", user);
           let userWithEmail = await checkEmailExists(user.email);
-          console.log("userWithEmail", userWithEmail);
+          //console.log("userWithEmail", userWithEmail);
           if (link && linkCredential != undefined) {
             return await linkWithCredential(result.user, linkCredential);
           }
           if (!userWithEmail) {
-            console.log("userWithEmail1", userWithEmail);
-            console.log("User", user.uid, user.email, user.displayName);
+            //console.log("userWithEmail1", userWithEmail);
+            //console.log("User", user.uid, user.email, user.displayName);
             await addToFirebaseUsers(user.uid, user.email, user.displayName);
             toast.success("SignUp Successfully with Google ", {
               duration: 5000,
@@ -177,7 +177,7 @@ export default function SignUp() {
           }
         })
         .catch(async (error) => {
-          console.log("error here :: ", error.message);
+          //console.log("error here :: ", error.message);
           const errorCode = error.code;
           const errorMessage = error.message;
           toast.error(errorMessage);
@@ -199,7 +199,7 @@ export default function SignUp() {
           const user = result.user;
           let displayName = user.displayName;
           let userWithEmail = await checkEmailExists(user.email);
-          console.log("userWithEmail", userWithEmail);
+          //console.log("userWithEmail", userWithEmail);
           if (link && linkcredential != undefined) {
             return await linkWithCredential(result.user, linkcredential);
           }
@@ -213,7 +213,7 @@ export default function SignUp() {
           if (githubResponse.ok) {
             githubUserData = await githubResponse.json();
             displayName = githubUserData.login;
-            console.log("githubUserData", githubUserData);
+            //console.log("githubUserData", githubUserData);
           }
 
           if (!userWithEmail) {
@@ -221,7 +221,7 @@ export default function SignUp() {
               displayName = "User";
             } else if (user.displayName != null) {
               displayName = user.displayName;
-              console.log("displayName1", displayName);
+              //console.log("displayName1", displayName);
             }
             await addToFirebaseUsers(user.uid, user.email, displayName);
             toast.success("SignUp Successfully with Github ", {
@@ -233,7 +233,7 @@ export default function SignUp() {
           if (error.code === "auth/account-exists-with-different-credential") {
             const cred = GithubAuthProvider.credentialFromError(error);
             var email = error.customData.email;
-            console.log("email", email);
+            //console.log("email", email);
             const providers = await fetchSignInMethodsForEmail(auth, email);
             if (providers[0] === "google.com") {
               setPersistence(auth, browserSessionPersistence).then(() => {

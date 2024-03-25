@@ -47,12 +47,12 @@ const DetailsCart = () => {
     if (coinCart.find((i) => i.id === item.id)) {
       const res = await addCoinCart(item.id);
       if (res.success) {
-        console.log("Item added to cart");
+        //console.log("Item added to cart");
       } else {
-        console.log("Item not added to cart");
+        //console.log("Item not added to cart");
       }
     } else {
-      console.log("Item not found");
+      //console.log("Item not found");
       toast.error("Item not found");
     }
   };
@@ -60,12 +60,12 @@ const DetailsCart = () => {
     if (coinCart.find((i) => i.id === item.id)) {
       const res = await decreaseCoinCart(item.id);
       if (res.success) {
-        console.log("Item removed from cart");
+        //console.log("Item removed from cart");
       } else {
-        console.log("Item not removed from cart");
+        //console.log("Item not removed from cart");
       }
     } else {
-      console.log("Item not found");
+      //console.log("Item not found");
       toast.error("Item not found");
     }
   };
@@ -73,23 +73,23 @@ const DetailsCart = () => {
     if (coinCart.find((i) => i.id === item.id)) {
       const res = await removeCoinCart(item.id);
       if (res.success) {
-        console.log("Item removed from cart");
+        //console.log("Item removed from cart");
       } else {
-        console.log("Item not removed from cart");
+        //console.log("Item not removed from cart");
       }
     } else {
-      console.log("Item not found");
+      //console.log("Item not found");
       toast.error("Item not found");
     }
   };
   const checkOut = async () => {
-    console.log("Checkout");
+    //console.log("Checkout");
     const body = {
       amount: totalPrice,
       currency: currency,
       line_items: coinCart,
     };
-    console.log("Body", body);
+    //console.log("Body", body);
     if(totalPrice>999999.99)
     {
       toast.error("Total Amount exceeds allow limit");  
@@ -103,21 +103,21 @@ const DetailsCart = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("Response", res)
+      //console.log("Response", res)
       const data = await res.json();
-      console.log("Data", data);
+      //console.log("Data", data);
       if(data.status===600){
         toast.error("Total Amount entered exceeds the allowed limit");
       }
       if (data.success) {
-        console.log(data.message);
+        //console.log(data.message);
         router.push(data.url);
       } else {
         toast.error(data.message);
-        console.log(data.message);
+        //console.log(data.message);
       }
     } catch (error) {
-      console.log("Error in Checkout", error);
+      //console.log("Error in Checkout", error);
     }
   };
   return (

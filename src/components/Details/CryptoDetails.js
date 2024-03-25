@@ -31,7 +31,7 @@ const CryptoDetails = () => {
         .then((json) => json);
       setCoinData(data);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   useEffect(() => {

@@ -130,7 +130,7 @@ const Profile = () => {
     e.preventDefault();
     const formIsValid = validateForm();
     if (!formIsValid) {
-      console.log("form is not valid");
+      //console.log("form is not valid");
       return;
     } else {
       await updateName(uid, newName);
@@ -146,7 +146,7 @@ const Profile = () => {
     }
   }, [login]);
   const [newName, setNewName] = useState(data.Name);
-  console.log("NewName", newName);
+  //console.log("NewName", newName);
   const dataChange = (event) => {
     const newData = { ...data, [event.target.name]: event.target.value };
     setdata(newData);
@@ -166,7 +166,7 @@ const Profile = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get("success");
-    console.log("Success", success);
+    //console.log("Success", success);
     if (success === "true") {
       setModalMessage("Payment successful");
       setPaymentSuccess(true);
@@ -175,9 +175,9 @@ const Profile = () => {
       setPaymentSuccess(false);
     }
     setModalOpen(success !== undefined);
-    console.log("Modal Open", modalOpen);
-    console.log("Modal Message", modalMessage);
-    console.log("Success", success);
+    //console.log("Modal Open", modalOpen);
+    //console.log("Modal Message", modalMessage);
+    //console.log("Success", success);
   }, [params]);
 
   return (

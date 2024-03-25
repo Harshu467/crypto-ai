@@ -16,7 +16,7 @@ const Navbar = () => {
     setOpen(false);
   };
   const handleMenuOpen = () => {
-    console.log("open", open);
+    //console.log("open", open);
     setOpen(!open);
   };
 

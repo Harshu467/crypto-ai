@@ -73,7 +73,7 @@ const Chart = ({ id }) => {
       });
       setchartData(convertedData);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   useEffect(() => {

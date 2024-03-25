@@ -16,10 +16,10 @@ export async function POST(request) {
     const uid = requestBody.uid;
     const currency = requestBody.currency;
     const token = requestBody.token;
-    console.log("Crypto AI", requestBody);
+    //console.log("Crypto AI", requestBody);
     let toke =
       process.env.OPENAI_API_KEY ;
-    console.log("TOKE", toke);
+    //console.log("TOKE", toke);
     const response = await fetch(
       "https://lag34l4tb7ksrybvte6ufukhpq0sdjvc.lambda-url.ap-south-1.on.aws/",
       {
@@ -35,14 +35,14 @@ export async function POST(request) {
       }
     );
     const data = await response.json();
-    console.log("FROM LURL", data,data.data.choices[0].message.content);
+    //console.log("FROM LURL", data,data.data.choices[0].message.content);
     return NextResponse.json({
       success: true,
       message: data.data.choices[0].message.content,
       status: 200,
     });
   } catch (error) {
-    console.log("Error in Crypto AI", error);
+    //console.log("Error in Crypto AI", error);
     return NextResponse.error({
       status: 500,
       message:"Internal Server Error" ,

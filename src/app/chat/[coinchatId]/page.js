@@ -31,7 +31,7 @@ export default function Chat() {
         currency: currency,
         token: token,
       };
-      console.log("BODY", body, token);
+      //console.log("BODY", body, token);
       const response = await fetch(CryptoAI, {
         method: "POST",
         body: JSON.stringify(body),
@@ -41,7 +41,7 @@ export default function Chat() {
         },
       });
       const data = await response.json();
-      console.log("FROM LURL", data);
+      //console.log("FROM LURL", data);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -49,7 +49,7 @@ export default function Chat() {
         ]);
       }
     } catch (e) {
-      console.log("Error in handleMessageSubmit", e);
+      //console.log("Error in handleMessageSubmit", e);
     } finally {
       setIsTyping(false);
     }
@@ -71,7 +71,7 @@ export default function Chat() {
           currency: currency,
           token: token,
         };
-        console.log("BODY", body, token);
+        //console.log("BODY", body, token);
         const response = await fetch(CryptoAI, {
           method: "POST",
           body: JSON.stringify(body),
@@ -81,7 +81,7 @@ export default function Chat() {
           },
         });
         const data = await response.json();
-        console.log("FROM LURL", data);
+        //console.log("FROM LURL", data);
         if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -89,12 +89,12 @@ export default function Chat() {
           ]);
         }
       } catch (e) {
-        console.log("Error in handleMessageSubmit", e);
+        //console.log("Error in handleMessageSubmit", e);
       } finally {
         setIsTyping(false);
       }
     } catch (error) {
-      console.log("Error in handlePromptClick", error);
+      //console.log("Error in handlePromptClick", error);
     }
   };
   return (

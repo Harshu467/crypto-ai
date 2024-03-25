@@ -71,7 +71,7 @@ export const getUserData = async (uid) => {
 
 export const addTransaction = async (uid, coinData,currency) => {
   try {
-    console.log("coinData",coinData);
+    //console.log("coinData",coinData);
     const transactionRef = await collection(db, "transactions");
     const transactionDoc = await transactionRef.get(uid);
     if(transactionDoc){

@@ -11,20 +11,20 @@ const SaveBtn = ({ data }) => {
     useContext(UserContext);
   const handleClick = async (e) => {
     if (login) {
-      console.log("IS", coinCart);
+      //console.log("IS", coinCart);
       const checkCoinExist = coinCart.some((item) => item.id === data.id);
-      console.log("DOES", checkCoinExist);
+      //console.log("DOES", checkCoinExist);
       if (checkCoinExist) {
         const result = await removeCoinCart(data.id);
-        console.log("Result", result);
+        //console.log("Result", result);
         if (result.success) {
           toast.success(result.message);
         } else {
-          console.log("Error", result);
+          //console.log("Error", result);
           toast.error("Coin Not Removed");
         }
       } else {
-        console.log("DAATA", data)
+        //console.log("DAATA", data)
         const result = await SaveCoinCart(data);
         if (result.success) {
           toast.success(result.message);
@@ -82,7 +82,7 @@ const Table = () => {
     try {
       const API_KEY =
         process.env.GECKO_API_KEY || "CG-yrQuW6GRJKsLw1FTBdZ8RrpF";
-      console.log("API_KEY", API_KEY);
+      //console.log("API_KEY", API_KEY);
       const options = {
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const Table = () => {
         .then((json) => json);
       setCryptoData(data);
     } catch (error) {
-      console.log("ERROR", error);
+      //console.log("ERROR", error);
     }
   };
   useEffect(() => {

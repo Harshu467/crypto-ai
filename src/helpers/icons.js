@@ -300,9 +300,9 @@ export const PaymentSuccess = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#15803d"
-    stroke-width="2"
+    strokeWidth="2"
     stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <circle cx="12" cy="12" r="10" />
@@ -318,9 +318,9 @@ export const PaymentFailed = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#e6194b"
-    stroke-width="2"
+    strokeWidth="2"
     stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <circle cx="12" cy="12" r="10" />

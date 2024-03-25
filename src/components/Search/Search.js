@@ -96,7 +96,7 @@ const Search = () => {
         .then((json) => json);
       setSearchData(data.coins);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   const debounceFunc = debounce(function (val) {

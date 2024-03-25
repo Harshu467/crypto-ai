@@ -14,9 +14,9 @@ export async function POST(request) {
     const amount = Math.round(requestBody.amount * 100);
     const currency = requestBody.currency; // Method Not Allowed
     const uid = requestBody.uid;
-    console.log("Amount", requestBody);
+    //console.log("Amount", requestBody);
     const line_items = requestBody.line_items.map((item) => {
-      console.log("Item", item);
+      //console.log("Item", item);
       return {
         price_data: {
           currency: currency,
@@ -40,7 +40,7 @@ export async function POST(request) {
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
       });
-      console.log("Session", session.url);
+      //console.log("Session", session.url);
       return NextResponse.json({
         success: true,
         url: session.url,
@@ -49,7 +49,7 @@ export async function POST(request) {
         currency: currency,
       });
     } catch (error) {
-      console.log("Error in Stripe2", error);
+      //console.log("Error in Stripe2", error);
       return NextResponse.error({
         status: 600,
         message: error,
@@ -57,7 +57,7 @@ export async function POST(request) {
       });
     }
   } catch (error) {
-    console.log("Error in Stripe", error.raw);
+    //console.log("Error in Stripe", error.raw);
     return NextResponse.error({
       status: 500,
       message: error.message,

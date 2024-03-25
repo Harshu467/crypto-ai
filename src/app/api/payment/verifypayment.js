@@ -24,11 +24,11 @@ const webhookHandler = async (req, res) => {
       switch (event.type) {
         case "payment_intent.succeeded":
           const paymentIntent = event.data.object;
-          console.log("PaymentIntent was successful!");
+          //console.log("PaymentIntent was successful!");
           break;
         case "payment_intent.payment_failed":
           const paymentFailed = event.data.object;
-          console.log("PaymentIntent was failed!");
+          //console.log("PaymentIntent was failed!");
           return NextResponse.error({
             status: 400,
             message: "PaymentIntent was failed",
@@ -40,12 +40,12 @@ const webhookHandler = async (req, res) => {
             event.data.object.id
           );
           if (session.payment_status === "paid") {
-            console.log("Payment was successful!");
+            //console.log("Payment was successful!");
           }
-          console.log("Checkout session completed!");
+          //console.log("Checkout session completed!");
           break;
         default:
-          console.log(`Unhandled event type ${event.type}`);
+          //console.log(`Unhandled event type ${event.type}`);
           return NextResponse.error({
             status: 400,
             message: "Unhandled event type",
@@ -53,7 +53,7 @@ const webhookHandler = async (req, res) => {
           });
       }
     } catch (error) {
-      console.log("Error in Stripe", error);
+      //console.log("Error in Stripe", error);
       return NextResponse.error({
         status: 600,
         message: error,
