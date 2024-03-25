@@ -428,7 +428,7 @@ const Profile = () => {
                 No transactions found !
               </p>
               <p className="text-gray-400 text-sm text-center">
-                It looks like you haven't made any transactions yet. <br /> Why
+                It looks like you have not made any transactions yet. <br /> Why
                 not explore more opportunities to grow your portfolio?
               </p>
             </div>
