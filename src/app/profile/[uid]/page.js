@@ -229,7 +229,7 @@ const Profile = () => {
       }
     ).format(
       current_price
-    )} each! You're on fire! 🔥 You've added ${quantity} to your collection. What a ${randomAdjective} choice! 🚀`;
+    )} each! You are on fire! 🔥 You have added ${quantity} to your collection. What a ${randomAdjective} choice! 🚀`;
 
     return text;
   };
