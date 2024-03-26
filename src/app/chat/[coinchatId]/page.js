@@ -81,14 +81,20 @@ export default function Chat() {
             "Access-Control-Allow-Origin": "*",
           },
         });
-        const data = await response.json();
-        const m1 = data.message.data.choices[0].message.content;
-        console.log("FROM LURL", data);
-        if (data.success) {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { answer: m1, sender: "assistant" },
-          ]);
+        console.log("RESPONSE", response);
+        if (response.ok) {
+          const data = await response.json();
+          const m1 = data.message.data.choices[0].message.content;
+          console.log("FROM LURL", data);
+          if (data.success) {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              { answer: m1, sender: "assistant" },
+            ]);
+          }
+        }
+        else{
+          console.log("Eror in Response",body,response)
         }
       } catch (e) {
         console.log("Error in handleMessageSubmit", e);
