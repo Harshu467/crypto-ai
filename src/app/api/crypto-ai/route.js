@@ -38,7 +38,7 @@ export async function POST(request) {
     //console.log("FROM LURL", data,data.data.choices[0].message.content);
     return NextResponse.json({
       success: true,
-      message: data.data.choices[0].message.content,
+      message: data,
       status: 200,
     });
   } catch (error) {

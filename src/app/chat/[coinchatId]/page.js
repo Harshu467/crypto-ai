@@ -41,11 +41,12 @@ export default function Chat() {
         },
       });
       const data = await response.json();
-      console.log("FROM LURL", data);
+      const message = data.data.data.choices[0].message.content;
+      console.log("FROM LURL", data,message);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { answer: data.message, sender: "assistant" },
+          { answer: message, sender: "assistant" },
         ]);
       }
     } catch (e) {
