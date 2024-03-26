@@ -41,7 +41,7 @@ export default function Chat() {
         },
       });
       const data = await response.json();
-      // console.log("FROM LURL", data);
+      console.log("FROM LURL", data);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -81,7 +81,7 @@ export default function Chat() {
           },
         });
         const data = await response.json();
-        //console.log("FROM LURL", data);
+        console.log("FROM LURL", data);
         if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -97,7 +97,7 @@ export default function Chat() {
       //console.log("Error in handlePromptClick", error);
     }
   };
-  // console.log("Message", messages)
+  console.log("Message", messages)
   return (
     <>
       <Navbar />
