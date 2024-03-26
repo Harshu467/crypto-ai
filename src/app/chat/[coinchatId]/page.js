@@ -50,7 +50,7 @@ export default function Chat() {
         ]);
       }
     } catch (e) {
-      //console.log("Error in handleMessageSubmit", e);
+      console.log("Error in handleMessageSubmit", e);
     } finally {
       setIsTyping(false);
     }
