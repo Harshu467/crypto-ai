@@ -41,12 +41,12 @@ export default function Chat() {
         },
       });
       const data = await response.json();
-      const message = data.data.data.choices[0].message.content;
-      console.log("FROM LURL", data,message);
+      const m1 = data.message.data.choices[0].message.content;
+      console.log("FROM LURL", data, m1);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { answer: message, sender: "assistant" },
+          { answer: m1, sender: "assistant" },
         ]);
       }
     } catch (e) {
@@ -82,23 +82,24 @@ export default function Chat() {
           },
         });
         const data = await response.json();
+        const m1 = data.message.data.choices[0].message.content;
         console.log("FROM LURL", data);
         if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
-            { answer: data.message, sender: "assistant" },
+            { answer: m1, sender: "assistant" },
           ]);
         }
       } catch (e) {
-        //console.log("Error in handleMessageSubmit", e);
+        console.log("Error in handleMessageSubmit", e);
       } finally {
         setIsTyping(false);
       }
     } catch (error) {
-      //console.log("Error in handlePromptClick", error);
+      console.log("Error in handlePromptClick", error);
     }
   };
-  console.log("Message", messages)
+  console.log("Message", messages);
   return (
     <>
       <Navbar />
