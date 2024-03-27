@@ -57,7 +57,7 @@ export async function POST(request) {
       });
     }
   } catch (error) {
-    //console.log("Error in Stripe", error.raw);
+    console.log("Error in Stripe", error);
     return NextResponse.error({
       status: 500,
       message: error.message,
