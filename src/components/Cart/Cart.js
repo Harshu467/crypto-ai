@@ -5,7 +5,7 @@ import { Add, Cross, Minus } from "@/helpers/icons";
 import { UserContext } from "@/context/UserContext";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-const stripe = "/api/stripe";
+const stripe = "/api/payment";
 const DetailsCart = () => {
   const {
     coinCart,
@@ -97,7 +97,7 @@ const DetailsCart = () => {
       return;
     }
     try {
-      const res = await fetch("/api/payment", {
+      const res = await fetch(stripe, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -141,11 +141,11 @@ const DetailsCart = () => {
                   key={item.id}
                 >
                   {/* <div className="w-28 md:w-32 md:h-32 my-auto ml-[30px] h-28"> */}
-                    <img
-                      src={item.image}
-                      className="w-28 md:w-32 md:h-32 my-auto ml-[30px] h-28 object-contain"
-                      alt=""
-                    />
+                  <img
+                    src={item.image}
+                    className="w-28 md:w-32 md:h-32 my-auto ml-[30px] h-28 object-contain"
+                    alt=""
+                  />
                   {/* </div> */}
                   <div className="cart-details pl-[30px]">
                     <h3
@@ -170,7 +170,9 @@ const DetailsCart = () => {
                         currency: currency,
                       }).format(item.current_price)}{" "}
                       * {item.quantity}
-                      <span>
+                      <span style={{
+                        marginLeft: "30px",
+                      }}  >
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency: currency,
