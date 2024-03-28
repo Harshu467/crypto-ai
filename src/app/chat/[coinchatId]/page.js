@@ -4,7 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import { AnswerIcon, EnterIcon, ProfileIcon } from "@/helpers/icons";
 import { useParams } from "next/navigation";
 import { useContext, useState } from "react";
-
+export const runtime = 'edge';
 const CryptoAI = "/api/crypto-ai";
 export default function Chat() {
   const params = useParams();

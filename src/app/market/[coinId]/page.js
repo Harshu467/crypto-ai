@@ -7,6 +7,7 @@ import { Badge, Button, ButtonGroup } from "@mui/material";
 import { Remove, ShoppingCart } from "@mui/icons-material";
 import { Add, ChatIconGo } from "@/helpers/icons";
 import { toast, Toaster } from "react-hot-toast";
+export const runtime = 'edge';
 function Indicator({ currentPrice, high, low }) {
   const [green, setgreen] = useState();
 

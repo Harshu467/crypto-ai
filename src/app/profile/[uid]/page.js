@@ -29,7 +29,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { updatePassword } from "firebase/auth";
 import { NoTransaction, PaymentFailed, PaymentSuccess } from "@/helpers/icons";
 import { addTransactions, getTransactions } from "@/utils/commonFunctions";
-
+export const runtime = 'edge';
 const Profile = () => {
   const router = useRouter();
   const params = useParams();
