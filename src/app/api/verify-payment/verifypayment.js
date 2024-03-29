@@ -29,7 +29,12 @@ const webhookHandler = async (req, res) => {
       switch (event.type) {
         case "payment_intent.succeeded":
           const paymentIntent = event.data.object;
-          //console.log("PaymentIntent was successful!");
+          console.log("PaymentIntent was successful!");
+          return NextResponse.json({
+            status: 200,
+            message: "PaymentIntent was successful",
+            body: "OK",
+          });
           break;
         case "payment_intent.payment_failed":
           const paymentFailed = event.data.object;
