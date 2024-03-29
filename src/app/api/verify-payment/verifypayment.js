@@ -1,6 +1,9 @@
 import { stripe } from "@utils/stripe";
 import { NextResponse } from "next/server";
-
+import getRawBody from "raw-body";
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2020-08-27",
+});
 export const config = {
   runtime: "edge",
   unstable_allowDynamic: ["**/node_modules/function-bind/**"],
@@ -10,16 +13,18 @@ export const config = {
 };
 
 const webhookHandler = async (req, res) => {
-  const body = await (await req.blob()).text();
+  console.log("Webhook called", req);
   const sig = req.headers.get("stripe-signature");
   if (req.method === "POST") {
+    const rawBody = await getRawBody(req);
     let event;
     try {
       event = stripe.webhooks.constructEventAsync(
-        body,
+        rawBody,
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+      console.log("Event", event);
       // Handle the event
       switch (event.type) {
         case "payment_intent.succeeded":
@@ -37,10 +42,21 @@ const webhookHandler = async (req, res) => {
           break;
         case "checkout.session.completed":
           const session = await stripe.checkout.sessions.retrieve(
-            event.data.object.id
+            event.data.object.id,
+            {
+              expand: ["line_items"],
+            }
           );
+          const lineItems = session.line_items;
+          if(!lineItems){
+            return NextResponse.error({
+              status: 500,
+              message: "No line items found",
+              body: "Bad Request",
+            });
+          }
           if (session.payment_status === "paid") {
-            //console.log("Payment was successful!");
+            console.log("Payment was successful!");
           }
           //console.log("Checkout session completed!");
           break;
@@ -60,7 +76,7 @@ const webhookHandler = async (req, res) => {
         body: "Internal Server Error",
       });
     }
-  } else if(req.method !== "POST") {
+  } else if (req.method !== "POST") {
     return NextResponse.error({
       status: 400,
       message: "Method not allowed",
