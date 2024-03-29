@@ -1,9 +1,9 @@
 import { stripe } from "@utils/stripe";
 import { NextResponse } from "next/server";
 import getRawBody from "raw-body";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2020-08-27",
-});
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+//   apiVersion: "2020-08-27",
+// });
 export const config = {
   runtime: "edge",
   unstable_allowDynamic: ["**/node_modules/function-bind/**"],
