@@ -1,5 +1,5 @@
 import { stripe } from "@utils/stripe";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import getRawBody from "raw-body";
 // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 //   apiVersion: "2020-08-27",
@@ -12,15 +12,16 @@ export const config = {
   },
 };
 
-const webhookHandler = async (req, res) => {
+export async function POST(req, res){
   console.log("Webhook called", req);
+  const body = await req.text();
   const sig = req.headers.get("stripe-signature");
   if (req.method === "POST") {
     const rawBody = await getRawBody(req);
     let event;
     try {
       event = stripe.webhooks.constructEventAsync(
-        rawBody,
+        body,
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
@@ -65,6 +66,8 @@ const webhookHandler = async (req, res) => {
           }
           //console.log("Checkout session completed!");
           break;
+        case "payment_intent.created":
+          
         default:
           //console.log(`Unhandled event type ${event.type}`);
           return NextResponse.error({
@@ -90,4 +93,3 @@ const webhookHandler = async (req, res) => {
   }
 };
 
-export default webhookHandler;
