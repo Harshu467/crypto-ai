@@ -34,38 +34,40 @@ export async function POST(request) {
     console.log("Session", session);
     if (!session?.metadata?.userId) {
       console.error("No user ID in metadata");
-      return new Response({ error: "No user ID in metadata" }, { status: 400 });
-    }
-    if(event.type === "payment_intent.created") {
-      console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent created", status: 200 });
+      return new Response(`No user ID in metadata ${session.metadata.userId}`, {
+        status: 400,
+      });
     }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent created", status: 200 });
+      return new Response(`Payment intent created`, { status: 200 });
+    }
+    if (event.type === "payment_intent.created") {
+      console.log("Updating user subscription details");
+      return new Response(`Payment Intent Created`, { status: 200 });
     }
     if (event.type === "payment_intent.processing") {
       console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent processing", status: 200 });
+      return new Response(`Payment intent processing`, { status: 200 });
     }
     if (event.type === "payment_intent.succeeded") {
       console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent succeeded", status: 200 });
+      return new Response(`Payment intent succeeded`, { status: 200 });
     }
     if (event.type === "payment_intent.payment_failed") {
       console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent failed", status: 400 });
+      return new Response(`Payment Intent Failed`, { status: 400 });
     }
     if (event.type === "payment_intent.canceled") {
       console.log("Updating user subscription details");
-      return new Response({ message: "Payment intent canceled", status: 400 });
+      return new Response(`Payment Intent Canceled`, { status: 400 });
     }
     if (event.type === "checkout.session.completed") {
       const subscription = await stripe.subscriptions.retrieve(
         session.subscription
       );
       console.log("Updating user subscription details");
-      return new Response({ message: "Checkout session completed", status: 200 });
+      return new Response(`Updating user Subscription`, { status: 200 });
     }
 
     if (event.type === "invoice.payment_succeeded") {
@@ -76,12 +78,11 @@ export async function POST(request) {
 
       // Update the price id and set the new period end.
       console.log("Updating user subscription details");
-      return new Response({ message: "Invoice payment succeeded", status: 200 });
+      return new Response(`Invoice payment succeeded`, { status: 200 });
     }
-  }
-  else {
+  } else {
     console.log("Unhandled event");
-    return new Response({ message: "Unhandled event", status: 400 });
+    return new Response(`Unhandled Event`, { status: 400 });
   }
-  return new Response({ message: "Unhandled event", status: 400 });
+  return new Response(`Unhandled event`, { status: 400 });
 }
