@@ -29,12 +29,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { updatePassword } from "firebase/auth";
 import { NoTransaction, PaymentFailed, PaymentSuccess } from "@/helpers/icons";
 import { addTransactions, getTransactions } from "@/utils/commonFunctions";
-export const runtime = 'edge';
+export const runtime = "edge";
 const Profile = () => {
   const router = useRouter();
   const params = useParams();
   const userId = params.uid;
-  const { uid, coinCart ,setCoinCart} = useContext(UserContext);
+  const { uid, coinCart, setCoinCart } = useContext(UserContext);
   // if (uid === undefined || uid === null || uid !== userId) {
   //   router.push("/login");
   // }

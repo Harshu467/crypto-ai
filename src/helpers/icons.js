@@ -337,9 +337,9 @@ export const NoTransaction = (className) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="red"
-    stroke-width="2"
+    strokeWidth="2"
     stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinejoin="round"
     className={` ${className}`}
   >
     <path d="m8 11 2 2 4-4" />
