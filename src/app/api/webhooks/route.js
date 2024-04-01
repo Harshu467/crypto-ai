@@ -32,12 +32,12 @@ export async function POST(request) {
 
     const session = event.data.object;
     console.log("Session", session);
-    if (!session?.metadata?.userId) {
-      console.error("No user ID in metadata");
-      return new Response(`No user ID in metadata ${session.metadata.userId}`, {
-        status: 400,
-      });
-    }
+    // if (!session?.metadata?.userId) {
+    //   console.error("No user ID in metadata");
+    //   return new Response(`No user ID in metadata ${session.metadata.userId}`, {
+    //     status: 400,
+    //   });
+    // }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
       return new Response(`Payment intent created`, { status: 200 });
