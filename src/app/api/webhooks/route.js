@@ -23,7 +23,7 @@ export async function POST(request) {
   } catch (err) {
     return new Response(
       `Webhook Error: ${err instanceof Error ? err.message : "Unknown Error"}`,
-      { status: 400 }
+      { status: 400,msg: `${signature}`}
     );
   }
 
@@ -32,6 +32,14 @@ export async function POST(request) {
   if (!session?.metadata?.userId) {
     console.error("No user ID in metadata");
     NextResponse.json({ error: "No user ID in metadata" }, { status: 400 });
+  }
+  if(event.type === "payment_intent.created"){
+    console.log("Updating user subscription details");
+    NextResponse.json({ message: "Payment intent created",status: 200});
+  }
+  if(event.type === "payment_intent.processing"){
+    console.log("Updating user subscription details");
+    NextResponse.json({ message: "Payment intent processing",status: 200});
   }
   if (event.type === "payment_intent.succeeded") {
     console.log("Updating user subscription details");
