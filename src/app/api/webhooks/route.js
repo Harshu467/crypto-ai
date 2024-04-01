@@ -1,8 +1,9 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-export const runtime = "edge";
 export const config = {
+  runtime:"edge",
+  unstable_allowDynamic: ['**/node_modules/function-bind/**'],
   api: {
     bodyParser: false,
   },
