@@ -338,7 +338,7 @@ export const NoTransaction = (className) => (
     fill="none"
     stroke="red"
     strokeWidth="2"
-    stroke-linecap="round"
+    strokeLinecap="round"
     strokeLinejoin="round"
     className={` ${className}`}
   >

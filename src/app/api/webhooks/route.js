@@ -40,11 +40,7 @@ export async function POST(request) {
     // }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent created id: ${session?.metadata?.userId} `, { status: 200 });
-    }
-    if (event.type === "payment_intent.created") {
-      console.log("Updating user subscription details");
-      return new Response(`Payment Intent Created id: ${session?.metadata?.userId}`, { status: 200 });
+      return new Response(`Payment intent created  `, { status: 200 });
     }
     if (event.type === "payment_intent.processing") {
       console.log("Updating user subscription details");
@@ -52,7 +48,7 @@ export async function POST(request) {
     }
     if (event.type === "payment_intent.succeeded") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent succeeded id: ${session?.metadata?.userId}`, { status: 200 });
+      return new Response(`Payment intent succeeded `, { status: 200 });
     }
     if (event.type === "payment_intent.payment_failed") {
       console.log("Updating user subscription details");
@@ -61,24 +57,6 @@ export async function POST(request) {
     if (event.type === "payment_intent.canceled") {
       console.log("Updating user subscription details");
       return new Response(`Payment Intent Canceled`, { status: 400 });
-    }
-    if (event.type === "checkout.session.completed") {
-      const subscription = await stripe.subscriptions.retrieve(
-        session.subscription
-      );
-      console.log("Updating user subscription details");
-      return new Response(`Updating user Subscription`, { status: 200 });
-    }
-
-    if (event.type === "invoice.payment_succeeded") {
-      // Retrieve the subscription details from Stripe.
-      const subscription = await stripe.subscriptions.retrieve(
-        session.subscription
-      );
-
-      // Update the price id and set the new period end.
-      console.log("Updating user subscription details");
-      return new Response(`Invoice payment succeeded`, { status: 200 });
     }
   } else {
     console.log("Unhandled event");

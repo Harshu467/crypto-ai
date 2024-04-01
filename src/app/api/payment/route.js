@@ -39,7 +39,7 @@ export async function POST(request) {
         line_items: line_items,
         mode: "payment",
         metadata:{
-          uid: uid
+          uid: uid,
         },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
@@ -61,7 +61,7 @@ export async function POST(request) {
       });
     }
   } catch (error) {
-    console.log("Error in Stripe", error);
+   //console.log("Error in Stripe", error);
     return NextResponse.error({
       status: 500,
       message: error.message,

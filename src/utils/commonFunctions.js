@@ -111,14 +111,20 @@ const transactionExists = async (uid) => {
 };
 export const getTransactions = async (uid) => {
   try {
-    console.log("Getting transactions...");
+    if(uid===undefined){  
+      return { success: false, error: "No user ID provided" };
+    }
+    // console.log("Getting transactions...");
     const coinsData = [];
-    console.log("uid: ", uid);
+    // console.log("uid: ", uid);
     console.log("coinsData: ", coinsData)
     const transactionDocRef = collection(db, "transactions", uid, "coins");
-    console.log("transactionDocRef: ", transactionDocRef);
+    if(transactionDocRef===undefined){
+      return { success: false, error: "No transaction data found" };
+    }
+    // console.log("transactionDocRef: ", transactionDocRef);
     const snapshot = await getDocs(transactionDocRef);
-    console.log("snapshot: ", snapshot);
+    // console.log("snapshot: ", snapshot);
     snapshot.forEach((doc) => {
       coinsData.push(doc.data());
     });

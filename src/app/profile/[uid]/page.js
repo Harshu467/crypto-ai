@@ -163,16 +163,23 @@ const Profile = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState();
   const [modalMessage, setModalMessage] = useState("");
-
+  const addTrans = async () => {
+    const trans = await addTransactions(uid, coinCart);
+    console.log("Transaction Data",trans);
+    if(trans.success){
+      // toast.success("Transaction added successfully");
+    } else {
+      // toast.error("Transaction failed");
+    }
+  };
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get("success");
     //console.log("Success", success);
-    if (success === "true") {
+    if (success === "true" && uid!==undefined) {
       setModalMessage("Payment successful");
       setPaymentSuccess(true);
-      setCoinCart([]);
-      localStorage.removeItem("coinCart");
+      addTrans();
     } else if (success === "false") {
       setModalMessage("Payment failed");
       setPaymentSuccess(false);
@@ -191,7 +198,9 @@ const Profile = () => {
     }
   };
   useEffect(() => {
-    getData();
+    if(uid!==undefined){
+      getData();
+    }
   }, [uid]);
   const generatedText = (
     name,
@@ -233,7 +242,10 @@ const Profile = () => {
 
     return text;
   };
-
+  const successoff = () => {
+    setModalOpen(false);
+    router.push(`/profile/${uid}`);
+  }
   return (
     <>
       <Navbar />
@@ -473,7 +485,7 @@ const Profile = () => {
                     <button
                       type="button"
                       className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-                      onClick={() => setModalOpen(false)}
+                      onClick={() => successoff()}
                     >
                       Go back
                     </button>
