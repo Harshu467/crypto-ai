@@ -25,7 +25,7 @@ export async function POST(request) {
             name: item.name,
             images: [item.image],
             metadata: {
-              id: item.id,
+              id: item?.id,
             },
           },
           unit_amount: Math.round(item.current_price * 100),
@@ -38,6 +38,9 @@ export async function POST(request) {
         payment_method_types: ["card"],
         line_items: line_items,
         mode: "payment",
+        metadata:{
+          uid: uid
+        },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
       });

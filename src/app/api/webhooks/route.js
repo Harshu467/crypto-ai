@@ -7,11 +7,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 export async function POST(request) {
   if (request.method === "POST") {
-    console.log("Webhook received");
+    // console.log("Webhook received");
     const body = await request.text();
     const signature = (await headers().get("Stripe-Signature")) ?? "";
-    console.log("Signature", signature);
-    console.log("Body", body);
+    // console.log("Signature", signature);
+    // console.log("Body", body);
     let event;
 
     try {
@@ -20,7 +20,7 @@ export async function POST(request) {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET || ""
       );
-      console.log("Event", event);
+      // console.log("Event", event);
     } catch (err) {
       return new Response(
         `Webhook Error: ${
@@ -31,7 +31,7 @@ export async function POST(request) {
     }
 
     const session = event.data.object;
-    console.log("Session", session);
+    // console.log("Session", session);
     // if (!session?.metadata?.userId) {
     //   console.error("No user ID in metadata");
     //   return new Response(`No user ID in metadata ${session.metadata.userId}`, {
@@ -40,11 +40,11 @@ export async function POST(request) {
     // }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent created`, { status: 200 });
+      return new Response(`Payment intent created id: ${session?.metadata?.userId} `, { status: 200 });
     }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response(`Payment Intent Created`, { status: 200 });
+      return new Response(`Payment Intent Created id: ${session?.metadata?.userId}`, { status: 200 });
     }
     if (event.type === "payment_intent.processing") {
       console.log("Updating user subscription details");
@@ -52,7 +52,7 @@ export async function POST(request) {
     }
     if (event.type === "payment_intent.succeeded") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent succeeded`, { status: 200 });
+      return new Response(`Payment intent succeeded id: ${session?.metadata?.userId}`, { status: 200 });
     }
     if (event.type === "payment_intent.payment_failed") {
       console.log("Updating user subscription details");
