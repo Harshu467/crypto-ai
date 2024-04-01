@@ -168,6 +168,8 @@ const Profile = () => {
     console.log("Transaction Data",trans);
     if(trans.success){
       // toast.success("Transaction added successfully");
+      localStorage.removeItem("coinCart");
+      setCoinCart([]);
     } else {
       // toast.error("Transaction failed");
     }
