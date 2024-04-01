@@ -200,7 +200,7 @@ const Profile = () => {
     }
   };
   useEffect(() => {
-    if(uid!==undefined){
+    if(uid!==undefined || modalOpen===false){
       getData();
     }
   }, [uid]);
@@ -246,6 +246,7 @@ const Profile = () => {
   };
   const successoff = () => {
     setModalOpen(false);
+    setPaymentSuccess();
     router.push(`/profile/${uid}`);
   }
   return (
