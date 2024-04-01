@@ -1,13 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-export const config = {
-  runtime:"edge",
-  unstable_allowDynamic: ['**/node_modules/function-bind/**'],
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = "edge";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-08-16",
 });
