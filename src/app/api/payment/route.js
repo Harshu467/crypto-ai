@@ -13,6 +13,7 @@ export async function POST(request) {
     }
     const requestBody = await request.json();
     const amount = Math.round(requestBody.amount * 100);
+    const email = requestBody.email;
     const currency = requestBody.currency; // Method Not Allowed
     const uid = requestBody.uid;
     //console.log("Amount", requestBody);
@@ -26,6 +27,10 @@ export async function POST(request) {
             images: [item.image],
             metadata: {
               id: item?.id,
+              quantity: item?.quantity,
+              currency: currency,
+              uid: uid,
+              email: email,
             },
           },
           unit_amount: Math.round(item.current_price * 100),
@@ -40,6 +45,8 @@ export async function POST(request) {
         mode: "payment",
         metadata:{
           uid: uid,
+          email: email,
+          currency: currency
         },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,

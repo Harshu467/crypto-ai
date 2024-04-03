@@ -16,6 +16,7 @@ const DetailsCart = () => {
     currency,
     getPricebyId,
     uid,
+    email,
   } = useContext(UserContext);
   let CartItem = coinCart;
   const router = useRouter();
@@ -90,6 +91,7 @@ const DetailsCart = () => {
       uid: uid,
       currency: currency,
       line_items: coinCart,
+      email:email,
     };
     //console.log("Body", body);
     if (totalPrice > 999999.99) {
