@@ -31,7 +31,7 @@ export async function POST(request) {
     }
 
     const session = event.data.object;
-    // console.log("Session", session);
+    console.log("Session", session);
     // if (!session?.metadata?.userId) {
     //   console.error("No user ID in metadata");
     //   return new Response(`No user ID in metadata ${session.metadata.userId}`, {
@@ -40,7 +40,7 @@ export async function POST(request) {
     // }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent created  `, { status: 200 });
+      return new Response(`Payment intent created with email ${JSON.stringify(session.metadata)} and ${event.data.object.customer_email}  `, { status: 200 ,email: session.metadata.email,email1:event.data.object.customer_email});
     }
     if (event.type === "payment_intent.processing") {
       console.log("Updating user subscription details");

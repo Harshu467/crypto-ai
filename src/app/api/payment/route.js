@@ -26,11 +26,7 @@ export async function POST(request) {
             name: item.name,
             images: [item.image],
             metadata: {
-              id: item?.id,
-              quantity: item?.quantity,
-              currency: currency,
-              uid: uid,
-              email: email,
+              id: item?.id
             },
           },
           unit_amount: Math.round(item.current_price * 100),
