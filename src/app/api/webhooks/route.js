@@ -38,9 +38,26 @@ export async function POST(request) {
     //     status: 400,
     //   });
     // }
+    if(event.type === "checkout.session.completed"){
+      console.log("Updating user subscription details");
+      return new Response(`Checkout session completed ${JSON.stringify(session)} ` , { status: 200 });
+    }
+    if(event.type === "checkout.session.expired"){
+      console.log("Updating user subscription details");
+      return new Response(`Checkout session expired ${JSON.stringify(session)} ` , { status: 200 });
+    }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
-      return new Response(`Payment intent created with email ${JSON.stringify(session.metadata)} and ${event.data.object.customer_email}  `, { status: 200 ,email: session.metadata.email,email1:event.data.object.customer_email});
+      return new Response(
+        `Payment intent created with email ${JSON.stringify(
+          session
+        )} and ${JSON.stringify(event)}  `,
+        {
+          status: 200,
+          email: session.metadata.email,
+          email1: event.data.object.customer_email,
+        }
+      );
     }
     if (event.type === "payment_intent.processing") {
       console.log("Updating user subscription details");
