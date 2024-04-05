@@ -40,7 +40,10 @@ export async function POST(request) {
     // }
     if(event.type === "checkout.session.completed"){
       console.log("Updating user subscription details");
-      return new Response(`Checkout session completed ${JSON.stringify(session)} ` , { status: 200 });
+      const id = session.id;
+      const email = session.customer_details.email;
+      const lineItems = await stripe.checkout.sessions.listLineItems(id);
+      return new Response(`Checkout session completed ${JSON.stringify(lineItems)} and ${email} ` , { status: 200 });
     }
     if(event.type === "checkout.session.expired"){
       console.log("Updating user subscription details");
