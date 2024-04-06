@@ -40,11 +40,35 @@ export async function POST(request) {
     // }
     if (event.type === "checkout.session.completed") {
       console.log("Updating user subscription details");
-      const id = session.id;
-      const email = session.customer_details.email;
-      const lineItems = await stripe.checkout.sessions.listLineItems(id);
+      const SessionId = session.id;
+      const email = session.metadata.email;
+      const uid = session.metadata.uid;
+      const payment_status = session.payment_status;
+      const totalAmount = session.amount_total;
+      const lineItems = await stripe.checkout.sessions.listLineItems(SessionId);
+      if(payment_status === "paid" && uid && email && lineItems){
+        const response = await fetch(
+          "https://jkykdc3j7r6j7oaka2plv5qcbu0phnla.lambda-url.ap-south-1.on.aws/",
+          {
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    email: email,
+                    uid: uid,
+                    lineItems: lineItems,
+                    totalAmount: totalAmount,
+                }
+            ),
+          }
+        )
+        console.log("Response", response);
+        return new Response(
+          `Checkout session completed for ${session.customer_details.name} with Email : ${email} with Response : ${response} `,
+          { status: 200 }
+        );
+      }
       return new Response(
-        `Checkout session completed ${JSON.stringify(session)} and ${JSON.stringify(lineItems)} ${email} `,
+        `Checkout session completed but Something is Missing `,
         { status: 200 }
       );
     }
@@ -90,3 +114,43 @@ export async function POST(request) {
   }
   return new Response(`Unhandled event`, { status: 400 });
 }
+
+lineItems = {
+  object: "list",
+  data: [
+    {
+      id: "li_1P2VjiI2i0Gg9RKuzVE7BOQt",
+      object: "item",
+      amount_discount: 0,
+      amount_subtotal: 333007,
+      amount_tax: 0,
+      amount_total: 333007,
+      currency: "usd",
+      description: "Lido Staked Ether",
+      price: {
+        id: "price_1P2VjiI2i0Gg9RKuorwSwx4e",
+        object: "price",
+        active: false,
+        billing_scheme: "per_unit",
+        created: 1712396434,
+        currency: "usd",
+        custom_unit_amount: null,
+        livemode: false,
+        lookup_key: null,
+        metadata: {},
+        nickname: null,
+        product: "prod_PgiZQrRzwLfzSN",
+        recurring: null,
+        tax_behavior: "unspecified",
+        tiers_mode: null,
+        transform_quantity: null,
+        type: "one_time",
+        unit_amount: 333007,
+        unit_amount_decimal: "333007",
+      },
+      quantity: 1,
+    },
+  ],
+  has_more: false,
+  url: "/v1/checkout/sessions/cs_test_a1mU0CMlA273sTTmNlg7eZo46eu7j38bJn2k6tDw6nNoQgSgJwfyeFYZs1/line_items",
+};
