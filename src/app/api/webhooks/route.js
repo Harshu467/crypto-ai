@@ -38,16 +38,22 @@ export async function POST(request) {
     //     status: 400,
     //   });
     // }
-    if(event.type === "checkout.session.completed"){
+    if (event.type === "checkout.session.completed") {
       console.log("Updating user subscription details");
       const id = session.id;
       const email = session.customer_details.email;
       const lineItems = await stripe.checkout.sessions.listLineItems(id);
-      return new Response(`Checkout session completed ${JSON.stringify(lineItems)} and ${email} ` , { status: 200 });
+      return new Response(
+        `Checkout session completed ${JSON.stringify(session)} and ${JSON.stringify(lineItems)} ${email} `,
+        { status: 200 }
+      );
     }
-    if(event.type === "checkout.session.expired"){
+    if (event.type === "checkout.session.expired") {
       console.log("Updating user subscription details");
-      return new Response(`Checkout session expired ${JSON.stringify(session)} ` , { status: 200 });
+      return new Response(
+        `Checkout session expired ${JSON.stringify(session)} `,
+        { status: 200 }
+      );
     }
     if (event.type === "payment_intent.created") {
       console.log("Updating user subscription details");
