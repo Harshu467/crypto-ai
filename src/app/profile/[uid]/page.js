@@ -163,17 +163,6 @@ const Profile = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState();
   const [modalMessage, setModalMessage] = useState("");
-  const addTrans = async () => {
-    const trans = await addTransactions(uid, coinCart);
-    console.log("Transaction Data",trans);
-    if(trans.success){
-      // toast.success("Transaction added successfully");
-      localStorage.removeItem("coinCart");
-      setCoinCart([]);
-    } else {
-      // toast.error("Transaction failed");
-    }
-  };
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get("success");
@@ -181,7 +170,6 @@ const Profile = () => {
     if (success === "true" && uid!==undefined) {
       setModalMessage("Payment successful");
       setPaymentSuccess(true);
-      addTrans();
     } else if (success === "false") {
       setModalMessage("Payment failed");
       setPaymentSuccess(false);
