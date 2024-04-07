@@ -48,7 +48,7 @@ export async function POST(request) {
       const lineItems = await stripe.checkout.sessions.listLineItems(SessionId);
       if(payment_status === "paid" && uid && email && lineItems){
         const response = await fetch(
-          "https://jkykdc3j7r6j7oaka2plv5qcbu0phnla.lambda-url.ap-south-1.on.aws/",
+          "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
           {
             method: "POST",
             body: JSON.stringify(
