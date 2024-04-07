@@ -233,9 +233,21 @@ const Profile = () => {
     return text;
   };
   const successoff = () => {
+    localStorage.removeItem("coinCart")
     setModalOpen(false);
     setPaymentSuccess();
     router.push(`/profile/${uid}`);
+  }
+  function convertTimestampToDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    console.log("TIME",formattedDate, formattedTime);
+    return `${formattedDate}  ${formattedTime}`;
   }
   return (
     <>
@@ -383,7 +395,7 @@ const Profile = () => {
                         transaction.current_currency,
                         transaction.current_price,
                         transaction.quantity,
-                        transaction.timestamp.seconds
+                        convertTimestampToDate(transaction.timestamp)
                       )}
                   </p>
                 </div>
@@ -411,13 +423,14 @@ const Profile = () => {
                     <p className="text-xs text-[#a66efc] border-[#a66efc] cursor-pointer border-[1px] font-semibold inline-block py-1 px-2 uppercase rounded-full mr-2">
                       Buy Time:{" "}
                       {new Date(
-                        transaction.timestamp.seconds * 1000
+                        convertTimestampToDate(transaction.timestamp)
                       ).toLocaleString(undefined, {
                         year: "numeric",
                         month: "numeric",
                         day: "numeric",
                         hour: "numeric",
                         minute: "numeric",
+                        hour12: true, 
                       })}
                     </p>
                   </div>
