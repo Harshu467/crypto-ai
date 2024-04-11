@@ -3,24 +3,36 @@ import Navbar from "@/components/Navbar/Navbar";
 import { UserContext } from "@/context/UserContext";
 import { AnswerIcon, EnterIcon, ProfileIcon } from "@/helpers/icons";
 import { useParams, useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import toast , { Toaster } from 'react-hot-toast';
-export const runtime = 'edge';
+import { useContext, useEffect, useState, useRef } from "react";
+import toast, { Toaster } from "react-hot-toast";
+export const runtime = "edge";
 const CryptoAI = "/api/crypto-ai";
 export default function Chat() {
+  const messageRef = useRef(null);
   const params = useParams();
   const router = useRouter();
   const { uid, token, currency } = useContext(UserContext);
   const coinId = params.coinchatId;
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState([]);
+  const scrollToBottom = () => {
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
-    if(uid === null || token === null || uid === undefined || token === undefined){
+    console.log("UID", uid, token);
+    if (
+      uid === null ||
+      token === null ||
+      uid === undefined ||
+      token === undefined ||
+      uid === "" ||
+      token === ""
+    ) {
+      console.log("No UID or Token")
       toast.error("You need to login to use this feature");
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
+      router.push("/login");
+      return;
     }
     const messageInput = e.target.elements.message;
     const message = messageInput.value.trim();
@@ -65,11 +77,19 @@ export default function Chat() {
   };
   const handlePromptClick = async (prompt) => {
     try {
-      if(uid === null || token === null || uid === undefined || token === undefined){
+      console.log("UID", uid, token);
+      if (
+        uid === null ||
+        token === null ||
+        uid === undefined ||
+        token === undefined ||
+        uid === "" ||
+        token === ""
+      ) {
+        console.log("No UID or Token")
         toast.error("You need to login to use this feature");
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+        router.push("/login");
+        return;
       }
       const message = prompt;
       if (!message) return;
@@ -106,9 +126,8 @@ export default function Chat() {
               { answer: m1, sender: "assistant" },
             ]);
           }
-        }
-        else{
-          console.log("Eror in Response",body,response)
+        } else {
+          console.log("Eror in Response", body, response);
         }
       } catch (e) {
         console.log("Error in handleMessageSubmit", e);
@@ -120,6 +139,10 @@ export default function Chat() {
     }
   };
   // console.log("Message", messages);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <>
       <Navbar />
@@ -209,6 +232,7 @@ export default function Chat() {
             </div>
           </div>
         )}
+        <div ref={messageRef} />
         <div className="fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-muted/30 from-0% to-muted/30 to-50% duration-300 ease-in-out animate-in dark:from-background/10 dark:from-10% dark:to-background/80 peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
           <div className="mx-auto sm:max-w-2xl sm:px-4">
             <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
