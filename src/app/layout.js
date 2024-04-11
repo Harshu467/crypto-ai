@@ -25,7 +25,13 @@ export default function RootLayout({ children }) {
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-3QG0LVP0DK"
       />
-      <Script id="Google Analytics " strategy="lazyOnload" >
+      <Script
+        id="Google Adsense"
+        crossorigin="anonymous"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4866836342494252"
+      />
+      <Script id="Google Analytics " strategy="lazyOnload">
         {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
