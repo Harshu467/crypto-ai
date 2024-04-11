@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="google-adsense-account" content="ca-pub-4866836342494252">
+        <meta name="google-adsense-account" content="ca-pub-4866836342494252" />
       </Head>
       <Script
         id="Google Analytics"
