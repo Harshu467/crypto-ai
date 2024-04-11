@@ -16,6 +16,12 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
+    if(uid === null || token === null || uid === undefined || token === undefined){
+      toast.error("You need to login to use this feature");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    }
     const messageInput = e.target.elements.message;
     const message = messageInput.value.trim();
     if (!message) return;
@@ -59,6 +65,12 @@ export default function Chat() {
   };
   const handlePromptClick = async (prompt) => {
     try {
+      if(uid === null || token === null || uid === undefined || token === undefined){
+        toast.error("You need to login to use this feature");
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      }
       const message = prompt;
       if (!message) return;
       setMessages((prevMessages) => [
@@ -107,12 +119,6 @@ export default function Chat() {
       console.log("Error in handlePromptClick", error);
     }
   };
-  useEffect(() => {
-    if(!uid){
-      toast.error("Please Login to continue");
-      router.push("/login");
-    }
-  }, [uid]);
   // console.log("Message", messages);
   return (
     <>
