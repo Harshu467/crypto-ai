@@ -31,6 +31,12 @@ export default function RootLayout({ children }) {
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4866836342494252"
       />
+      <Script
+        id="amp-auto-ads"
+        custom-element="amp-auto-ads"
+        async
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"
+      ></Script>
       <Script id="Google Analytics " strategy="lazyOnload">
         {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -50,6 +56,10 @@ export default function RootLayout({ children }) {
       </Script>
       <UserProvider>
         <body className={inter.className}>
+          <amp-auto-ads
+            type="adsense"
+            data-ad-client="ca-pub-4866836342494252"
+          ></amp-auto-ads>
           {children}
           <Analytics />
         </body>
