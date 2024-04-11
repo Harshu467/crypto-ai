@@ -275,10 +275,25 @@ export const AnswerIcon = (className) => (
 );
 
 export const ChatIconGo = (className) => (
+  // <svg
+  //   xmlns="http://www.w3.org/2000/svg"
+  //   width="28"
+  //   height="28"
+  //   viewBox="0 0 24 24"
+  //   fill="none"
+  //   stroke="#14ffec"
+  //   strokeWidth="2"
+  //   strokeLinecap="round"
+  //   strokeLinejoin="round"
+  //   className={` ${className}`}
+  // >
+  //   <polyline points="15 10 20 15 15 20" />
+  //   <path d="M4 4v7a4 4 0 0 0 4 4h12" />
+  // </svg>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="28"
-    height="28"
+    width="24"
+    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="#14ffec"
@@ -287,8 +302,12 @@ export const ChatIconGo = (className) => (
     strokeLinejoin="round"
     className={` ${className}`}
   >
-    <polyline points="15 10 20 15 15 20" />
-    <path d="M4 4v7a4 4 0 0 0 4 4h12" />
+    <path d="M12 8V4H8" />
+    <rect width="16" height="12" x="4" y="8" rx="2" />
+    <path d="M2 14h2" />
+    <path d="M20 14h2" />
+    <path d="M15 13v2" />
+    <path d="M9 13v2" />
   </svg>
 );
 

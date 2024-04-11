@@ -2,12 +2,14 @@
 import Navbar from "@/components/Navbar/Navbar";
 import { UserContext } from "@/context/UserContext";
 import { AnswerIcon, EnterIcon, ProfileIcon } from "@/helpers/icons";
-import { useParams } from "next/navigation";
-import { useContext, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import toast , { Toaster } from 'react-hot-toast';
 export const runtime = 'edge';
 const CryptoAI = "/api/crypto-ai";
 export default function Chat() {
   const params = useParams();
+  const router = useRouter();
   const { uid, token, currency } = useContext(UserContext);
   const coinId = params.coinchatId;
   const [isTyping, setIsTyping] = useState(false);
@@ -105,7 +107,13 @@ export default function Chat() {
       console.log("Error in handlePromptClick", error);
     }
   };
-  console.log("Message", messages);
+  useEffect(() => {
+    if(!uid){
+      toast.error("Please Login to continue");
+      router.push("/login");
+    }
+  }, [uid]);
+  // console.log("Message", messages);
   return (
     <>
       <Navbar />
@@ -264,6 +272,7 @@ export default function Chat() {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
