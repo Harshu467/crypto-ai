@@ -29,7 +29,7 @@ export default function Chat() {
       uid === "" ||
       token === ""
     ) {
-      console.log("No UID or Token")
+      console.log("No UID or Token");
       toast.error("You need to login to use this feature");
       router.push("/login");
       return;
@@ -86,7 +86,7 @@ export default function Chat() {
         uid === "" ||
         token === ""
       ) {
-        console.log("No UID or Token")
+        console.log("No UID or Token");
         toast.error("You need to login to use this feature");
         router.push("/login");
         return;
@@ -238,11 +238,13 @@ export default function Chat() {
             <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
               <div
                 onClick={() => {
-                  handlePromptClick(
-                    `Is ${
-                      coinId.charAt(0).toUpperCase() + coinId.slice(1)
-                    }  a worthy Investment Option?`
-                  );
+                  if (!isTyping) {
+                    handlePromptClick(
+                      `Is ${
+                        coinId.charAt(0).toUpperCase() + coinId.slice(1)
+                      }  a worthy Investment Option?`
+                    );
+                  }
                 }}
                 className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block"
               >
@@ -255,10 +257,12 @@ export default function Chat() {
               </div>
               <div
                 onClick={() => {
-                  handlePromptClick(`Understanding
-                  ${
-                    coinId.charAt(0).toUpperCase() + coinId.slice(1)
-                  } Investment Potential`);
+                  if (!isTyping) {
+                    handlePromptClick(`Understanding
+                    ${
+                      coinId.charAt(0).toUpperCase() + coinId.slice(1)
+                    } Investment Potential`);
+                  }
                 }}
                 className="cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 hidden md:block"
               >
@@ -273,16 +277,17 @@ export default function Chat() {
             </div>
             <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
               <form onSubmit={handleMessageSubmit}>
-                <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
+                <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
                   <textarea
                     tabIndex="0"
-                    placeholder="Send a message."
+                    placeholder="Ask a Question."
                     className="min-h-[60px] text-white w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
                     spellCheck="false"
                     autoComplete="off"
                     autoCorrect="off"
                     name="message"
                     rows="1"
+                    disabled={isTyping}
                     style={{ height: "66px !important" }}
                   ></textarea>
                   <div className="absolute right-0 top-[13px] sm:right-4">
