@@ -37,10 +37,19 @@ const Trending = () => {
           className="w-full flex lg:flex-row flex-col items-center flex-wrap justify-evenly py-8 border
        border-gray-100 rounded min-h-[60vh] "
         >
-          {trendData &&
+          {trendData ? (
             trendData.map((coin) => (
               <TrendingCoin key={data.coin_id} data={coin.item} />
-            ))}
+            ))
+          ) : (
+            <div className="w-full min-h-[60vh] flex justify-center items-center">
+              <div
+                className="w-8 h-8 border-4 border-cyan rounded-full border-b-gray-200 animate-spin"
+                role="status"
+              />
+              <span className="ml-2 text-white">Please Wait...</span>
+            </div>
+          )}
           <button
             className="w-[2rem] ml-4 hover:scale-110 transition-all transition-ease absolute right-0 -top-10"
             onClick={resetTrendingResult}
