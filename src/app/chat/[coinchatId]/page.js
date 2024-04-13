@@ -115,11 +115,11 @@ export default function Chat() {
             "Access-Control-Allow-Origin": "*",
           },
         });
-        console.log("RESPONSE", response);
+        // console.log("RESPONSE", response);
         if (response.ok) {
           const data = await response.json();
           const m1 = data.message.data.choices[0].message.content;
-          console.log("FROM LURL", data);
+          // console.log("FROM LURL", data);
           if (data.success) {
             setMessages((prevMessages) => [
               ...prevMessages,
