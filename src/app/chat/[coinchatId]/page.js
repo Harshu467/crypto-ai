@@ -62,7 +62,7 @@ export default function Chat() {
       });
       const data = await response.json();
       const m1 = data.message.data.choices[0].message.content;
-      console.log("FROM LURL", data, m1);
+      // console.log("FROM LURL", data, m1);
       if (data.success) {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -139,7 +139,7 @@ export default function Chat() {
     }
   };
   // console.log("Message", messages);
-  useEffect(() => {
+  useEffect(() => { 
     scrollToBottom();
   }, [messages]);
 
@@ -192,7 +192,7 @@ export default function Chat() {
                   </div>
                 )}
               </div>
-            ))}
+            ))}         
             {isTyping && (
               <div className="relative overflow-auto mx-auto max-w-2xl px-4 text-[#cccccc]">
                 <div
@@ -206,7 +206,7 @@ export default function Chat() {
                   </div>
                   <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
                     <div className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0">
-                      Typing...
+                      Generating Response...
                     </div>
                   </div>
                 </div>
