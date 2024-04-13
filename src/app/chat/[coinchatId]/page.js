@@ -20,7 +20,7 @@ export default function Chat() {
   };
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
-    console.log("UID", uid, token);
+    // console.log("UID", uid, token);
     if (
       uid === null ||
       token === null ||
@@ -86,7 +86,7 @@ export default function Chat() {
         uid === "" ||
         token === ""
       ) {
-        console.log("No UID or Token");
+        // console.log("No UID or Token");
         toast.error("You need to login to use this feature");
         router.push("/login");
         return;
