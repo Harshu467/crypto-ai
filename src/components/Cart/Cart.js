@@ -35,6 +35,12 @@ const DetailsCart = () => {
         }
         return item;
       });
+      console.log("UI",updatedItems);
+      console.log("LS",CartItem)
+      if(updatedItems !== CartItem){
+        console.log("Not Equal")
+        localStorage.setItem("coinCart", JSON.stringify(updatedItems));
+      }
       CartItem = updatedItems;
     };
     if (typeof window !== "undefined") {
