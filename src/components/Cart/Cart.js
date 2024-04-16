@@ -29,18 +29,13 @@ const DetailsCart = () => {
       const updatedItems = await CartItem.map(async (item) => {
         if (item.current_price === null) {
           const res = await getPricebyId(item.id);
+          console.log("RES",res)
           if (res.success) {
             item.current_price = res.data.market_data.current_price;
           }
         }
         return item;
       });
-      console.log("UI",updatedItems);
-      console.log("LS",CartItem)
-      if(updatedItems !== CartItem){
-        console.log("Not Equal")
-        localStorage.setItem("coinCart", JSON.stringify(updatedItems));
-      }
       CartItem = updatedItems;
     };
     if (typeof window !== "undefined") {
@@ -97,7 +92,7 @@ const DetailsCart = () => {
       uid: uid,
       currency: currency,
       line_items: coinCart,
-      email:email,
+      email: email,
     };
     //console.log("Body", body);
     if (totalPrice > 999999.99) {
@@ -178,9 +173,11 @@ const DetailsCart = () => {
                         currency: currency,
                       }).format(item.current_price)}{" "}
                       * {item.quantity}
-                      <span style={{
-                        marginLeft: "30px",
-                      }}  >
+                      <span
+                        style={{
+                          marginLeft: "30px",
+                        }}
+                      >
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency: currency,
