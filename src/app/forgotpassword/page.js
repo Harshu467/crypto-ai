@@ -11,32 +11,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import {
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import EyeOutline from "mdi-material-ui/EyeOutline";
-import EyeOffOutline from "mdi-material-ui/EyeOffOutline";
 import { Toaster, toast } from "react-hot-toast";
-import {
-  browserSessionPersistence,
-  createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  linkWithCredential,
-  setPersistence,
-  signInWithPopup,
-} from "firebase/auth";
 import { auth } from "../../../firebase";
 import {
   addToFirebaseUsers,
   checkEmailExists,
 } from "../../utils/commonFunctions";
 import { useRouter } from "next/navigation";
+import { sendPasswordResetEmail } from "firebase/auth";
 const defaultTheme = createTheme();
 
 export default function ForgotPassword() {
@@ -82,6 +64,22 @@ export default function ForgotPassword() {
       return;
     } else {
       //console.log("Form is valid");
+      const emailExist = await checkEmailExists(email);
+      if(!emailExist){
+        toast.error("Email does not exist");
+        router.push("/register");
+        return;
+      }
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          toast.success("Please check your email for password reset link.");
+          router.push("/login");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          toast.error(errorMessage);
+        });
     }
   };
 
@@ -106,24 +104,32 @@ export default function ForgotPassword() {
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={18}
+          sm={12}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
-              mt: 8,
+              mt: 12,
               mx: 2,
               mb: 4,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              textAlign:"center"
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: "auto", mb: 4, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Forgot Password
             </Typography>
-            <Box component="form" noValidate sx={{  }}>
+            <Box component="form" noValidate sx={{ mt: 8 , mx:8,}}>
               <Grid container spacing={2}>
                 <Grid item xs={24}>
                   <TextField
@@ -150,7 +156,7 @@ export default function ForgotPassword() {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link href="/login" variant="body2">
-                    Already have an account? Sign in
+                    Back to Sign-In
                   </Link>
                 </Grid>
               </Grid>
