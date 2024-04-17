@@ -41,6 +41,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 Watch the project demo below:
 
-[[!Project Demo]](https://github.com/Harshu467/crypto-ai/assets/89975347/9cb2a66f-8be9-42c3-afa6-f4fd0fb5e2df)
-
-
+[![Crypto-AI Demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
