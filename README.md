@@ -29,8 +29,20 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Additional Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Engineered a robust authentication system enabling seamless sign-in and sign-up processes, with support for email, Google, and GitHub authentication methods.
+- Provided users with comprehensive data on the latest cryptocurrencies, including live price updates, market volume, and detailed historical graphs for informed decision-making.
+- Integrated Stripe payment processing for effortless cryptocurrency purchases, enabling users to add cryptocurrencies to their cart and securely complete transactions within the platform.
+- Implemented an AI chatbot to deliver personalized recommendations and predictive insights, aiding users in making informed investment decisions tailored to their preferences and risk appetite.
+- Technologies Used: Next.js, AWS, CloudFlare, Firebase, Tailwind CSS, Chart.js, API Integration, Clarity.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Project Demo
+
+Watch the project demo below:
+
+
+<video width="560" height="315" controls>
+  <source src="https://youtu.be/hHFE0C6T9Fw?feature=shared" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
