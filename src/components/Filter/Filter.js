@@ -2,20 +2,191 @@ import { useContext, useEffect, useRef } from "react";
 import Search from "../Search/Search";
 import { DropDown, Submit } from "@/helpers/icons";
 import { UserContext } from "@/context/UserContext";
+import toast, { Toaster } from "react-hot-toast";
 const Filter = () => {
-  let { setCurrency, setSortBy,currency } = useContext(UserContext);
+  let { setCurrency, setSortBy, currency } = useContext(UserContext);
   const resetFunction = () => {
     setPage(1);
     setCoinSearch("");
   };
   const currencyRef = useRef(null);
-
+  const allCurrencies = [
+    "aed",
+    "afn",
+    "all",
+    "amd",
+    "ang",
+    "aoa",
+    "ars",
+    "aud",
+    "awg",
+    "azn",
+    "bam",
+    "bbd",
+    "bdt",
+    "bgn",
+    "bhd",
+    "bif",
+    "bmd",
+    "bnd",
+    "bob",
+    "brl",
+    "bsd",
+    "btn",
+    "bwp",
+    "byn",
+    "bzd",
+    "cad",
+    "cdf",
+    "chf",
+    "clp",
+    "cny",
+    "cop",
+    "crc",
+    "cup",
+    "cve",
+    "czk",
+    "djf",
+    "dkk",
+    "dop",
+    "dzd",
+    "egp",
+    "ern",
+    "etb",
+    "eur",
+    "fjd",
+    "fkp",
+    "fok",
+    "gbp",
+    "gel",
+    "ggp",
+    "ghs",
+    "gip",
+    "gmd",
+    "gnf",
+    "gtq",
+    "gyd",
+    "hkd",
+    "hnl",
+    "hrk",
+    "htg",
+    "huf",
+    "idr",
+    "ils",
+    "imp",
+    "inr",
+    "iqd",
+    "irr",
+    "isk",
+    "jep",
+    "jmd",
+    "jod",
+    "jpy",
+    "kes",
+    "kgs",
+    "khr",
+    "kid",
+    "kmf",
+    "krw",
+    "kwd",
+    "kyd",
+    "kzt",
+    "lak",
+    "lbp",
+    "lkr",
+    "lrd",
+    "lsl",
+    "lyd",
+    "mad",
+    "mdl",
+    "mga",
+    "mkd",
+    "mmk",
+    "mnt",
+    "mop",
+    "mru",
+    "mur",
+    "mvr",
+    "mwk",
+    "mxn",
+    "myr",
+    "mzn",
+    "nad",
+    "ngn",
+    "nio",
+    "nok",
+    "npr",
+    "nzd",
+    "omr",
+    "pab",
+    "pen",
+    "pgk",
+    "php",
+    "pkr",
+    "pln",
+    "pyg",
+    "qar",
+    "ron",
+    "rsd",
+    "rub",
+    "rwf",
+    "sar",
+    "sbd",
+    "scr",
+    "sdg",
+    "sek",
+    "sgd",
+    "shp",
+    "sll",
+    "sos",
+    "srd",
+    "ssp",
+    "stn",
+    "syp",
+    "szl",
+    "thb",
+    "tjs",
+    "tmt",
+    "tnd",
+    "top",
+    "try",
+    "ttd",
+    "tvd",
+    "twd",
+    "tzs",
+    "uah",
+    "ugx",
+    "usd",
+    "uyu",
+    "uzs",
+    "ves",
+    "vnd",
+    "vuv",
+    "wst",
+    "xaf",
+    "xcd",
+    "xdr",
+    "xof",
+    "xpf",
+    "yer",
+    "zar",
+    "zmw",
+  ];
+  const isValidCurrency = (currency) => {
+    return allCurrencies.includes(currency);
+  };
   const handleCurrencySubmit = (e) => {
     e.preventDefault();
-    let val = currencyRef.current.value;
-    setCurrency(val);
-    localStorage.setItem("currency", val);
-    currencyRef.current.value = "";
+    let val = currencyRef.current.value.trim().toLowerCase();
+    if (isValidCurrency(val)) {
+      setCurrency(val);
+      localStorage.setItem("currency", val);
+      currencyRef.current.value = "";
+    } else {
+      toast.error("Invalid currency! Please enter valid currency code.");
+      currencyRef.current.value = "";
+      setCurrency("usd");
+    }
   };
 
   const handleSort = (e) => {
@@ -102,6 +273,7 @@ const Filter = () => {
           </svg>
         </button>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import React, { useContext, useState } from "react";
 import debounce from "lodash.debounce";
 import { SearchIcon } from "@/helpers/icons";
 import { UserContext } from "@/context/UserContext";
 const SearchInput = ({ handleSearch }) => {
-  let {setSearchData, setCoinSearch,setSearchText,searchText,searchData} = useContext(UserContext);
-  
+  let { setSearchData, setCoinSearch, setSearchText, searchText, searchData } =
+    useContext(UserContext);
 
   let handleInput = (e) => {
     e.preventDefault();
@@ -65,6 +65,12 @@ backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-20
                 </li>
               );
             })
+          ) : searchData.length === 0 ? (
+            <li
+              className="flex text-white items-center ml-4 my-2 cursor-pointer"
+            >
+              <span>No Coin Available</span>
+            </li>
           ) : (
             <div
               className="w-full h-full flex justify-center items-center
