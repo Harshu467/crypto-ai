@@ -64,6 +64,29 @@ export function UserProvider({ children }) {
       return { success: false, message: error };
     }
   };
+  const SaveTrendingCoinCart = async (cart) => {
+    try {
+      const coinCartItem = localStorage.getItem("coinCart")
+        ? JSON.parse(localStorage.getItem("coinCart"))
+        : [];
+      coinCartItem.push({
+        id: cart.id,
+        name: cart.name,
+        symbol: cart.symbol,
+        current_price: cart.data.price ? parseFloat(cart.data.price).toFixed(2) : null,
+        image: cart.image ? cart.image : cart.large,
+        current_currency: currency,
+        quantity: 1,
+      });
+      //console.log("Cart Item", coinCartItem);
+      localStorage.setItem("coinCart", JSON.stringify(coinCartItem));
+      setCoinCart(coinCartItem);
+      return { success: true, message: "Coin Added to Cart" };
+    } catch (error) {
+      //console.log("Error", error);
+      return { success: false, message: error };
+    }
+  };
   const addCoinCart = async (coin) => {
     try {
       //console.log("CoinDF", coin);
@@ -359,6 +382,7 @@ export function UserProvider({ children }) {
         decreaseCoinCart,
         setToken,
         token,
+        SaveTrendingCoinCart
       }}
     >
       {children}

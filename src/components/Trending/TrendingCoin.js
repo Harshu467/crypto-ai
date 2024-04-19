@@ -1,16 +1,13 @@
 "use client";
 import { UserContext } from "@/context/UserContext";
-import { Add } from "@/helpers/icons";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 // import { useNavigate } from 'react-router-dom'
-import { Badge, Button, ButtonGroup } from "@mui/material";
-import { Remove, ShoppingCart } from "@mui/icons-material";
 import toast, { Toaster } from "react-hot-toast";
 
 const SaveBtn = ({ data }) => {
   // const { saveCoin, allCoins, removeCoin } = useContext(StorageContext);
-  const { coinCart, SaveCoinCart, login, removeCoinCart } =
+  const { coinCart, SaveCoinCart, login, removeCoinCart,SaveTrendingCoinCart } =
     useContext(UserContext);
   const handleClick = async (e) => {
     if (login) {
@@ -28,7 +25,7 @@ const SaveBtn = ({ data }) => {
         }
       } else {
         //console.log("DAATA", data)
-        const result = await SaveCoinCart(data);
+        const result = await SaveTrendingCoinCart(data);
         if (result.success) {
           toast.success(result.message);
         } else {
@@ -73,12 +70,7 @@ const TrendingCoin = ({ data }) => {
   const getCoinsDetails = (id) => {
     router.push(`/trending/${id}`);
   };
-  const handleCart = () => {
-    if (login) {
-    } else {
-      toast.error("Please Login First");
-    }
-  };
+  // console.log("DATA", data);
   return (
     <>
       <div
@@ -99,15 +91,12 @@ const TrendingCoin = ({ data }) => {
                 <span className="text-cyan">{data.market_cap_rank}</span>
               </h3>
               <h3 className="txt-base flex items-center my-0.5">
-                <span className="text-gray-100 capitalize">
-                  Price [In BTC] :&nbsp;{" "}
-                </span>
+                <span className="text-gray-100 capitalize">Price :&nbsp; </span>
                 <span className="text-cyan">
                   {new Intl.NumberFormat("en-IN", {
                     style: "currency",
-                    currency: "btc",
-                    maximumSignificantDigits: 5,
-                  }).format(data.price_btc)}
+                    currency: currency ,
+                  }).format(data.data.price)}
                 </span>
               </h3>
               <h3 className="txt-base flex items-center my-0.5">
@@ -120,7 +109,7 @@ const TrendingCoin = ({ data }) => {
                 className="absolute lg:top-2/4 top-4 lg:-right-12 -right-6 -translate-y-2/4  lg:w-[35%] w-[5rem] h-auto rounded-full"
               />
             </div>
-            <div className="items-center justify-center" >
+            <div className="items-center justify-center">
               <span className="text-gray-100 capitalize">Add to Cart : </span>
               <SaveBtn data={data} />
             </div>

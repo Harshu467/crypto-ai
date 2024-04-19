@@ -124,6 +124,9 @@ const TrendingCoin = () => {
       toast.error("Please Login First");
     }
   };
+  const handleCryptoAI = async () => {
+    router.push(`/chat/${coinId}`);
+  };
   return (
     <div
       className="fixed top-0 w-full h-full bg-gray-200 bg-opacity-30 first-letter:

@@ -29,7 +29,7 @@ const DetailsCart = () => {
       const updatedItems = await CartItem.map(async (item) => {
         if (item.current_price === null) {
           const res = await getPricebyId(item.id);
-          console.log("RES",res)
+          // console.log("RES",res)
           if (res.success) {
             item.current_price = res.data.market_data.current_price;
           }
