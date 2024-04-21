@@ -1,14 +1,9 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
-import ScrollBottom from "@/components/ScrollBottom/ScrollBottom";
+import ScrollBottom from "@/components/ScrollDown/ScrollBottom";
 import Speak from "@/components/Speak/Speak";
 import { UserContext } from "@/context/UserContext";
-import {
-  AnswerIcon,
-  Copy,
-  EnterIcon,
-  ProfileIcon,
-} from "@/helpers/icons";
+import { AnswerIcon, Copy, EnterIcon, ProfileIcon } from "@/helpers/icons";
 import { Button } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState, useRef } from "react";
@@ -316,7 +311,7 @@ export default function Chat() {
               </div>
             </div>
             <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
-              {/* <Button
+              <Button
                 onClick={() => {
                   window.scrollTo(0, document.body.scrollHeight);
                 }}
@@ -324,8 +319,8 @@ export default function Chat() {
                   isAtBottom ? "opacity-0" : "opacity-100"
                 }`}
               >
-                <ScrollBottom/>
-              </Button> */}
+                <ScrollBottom />
+              </Button>
               <form onSubmit={handleMessageSubmit}>
                 <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
                   <textarea
