@@ -7,12 +7,12 @@ import {
   Copy,
   EnterIcon,
   ProfileIcon,
-  ScrollToBottom,
 } from "@/helpers/icons";
 import { Button } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import ScrollToBottom from "@/components/ScrolltoBottom/ScrollToBottom";
 export const runtime = "edge";
 const CryptoAI = "/api/crypto-ai";
 export default function Chat() {
@@ -324,7 +324,7 @@ export default function Chat() {
                   isAtBottom ? "opacity-0" : "opacity-100"
                 }`}
               >
-                < ScrollToBottom />
+                <ScrollToBottom />
               </Button> */}
               <form onSubmit={handleMessageSubmit}>
                 <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
