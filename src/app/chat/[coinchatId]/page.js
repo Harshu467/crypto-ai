@@ -1,7 +1,15 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
+import Speak from "@/components/Speak/Speak";
 import { UserContext } from "@/context/UserContext";
-import { AnswerIcon, EnterIcon, ProfileIcon } from "@/helpers/icons";
+import {
+  AnswerIcon,
+  Copy,
+  EnterIcon,
+  ProfileIcon,
+  ScrollToBottom,
+} from "@/helpers/icons";
+import { Button } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -139,9 +147,32 @@ export default function Chat() {
     }
   };
   // console.log("Message", messages);
-  useEffect(() => { 
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechSynth, setSpeechSynth] = useState(null);
+
+  const startSpeaking = (text) => {
+    setIsSpeaking(true);
+    const synth = window.speechSynthesis;
+    const speechText = new SpeechSynthesisUtterance(text);
+    speechText.lang = "en-US"; // Hardcoded language
+    speechText.rate = 1; // Hardcoded speech rate
+    synth.speak(speechText);
+    setSpeechSynth(synth);
+  };
+
+  const stopSpeaking = () => {
+    if (speechSynth !== null) {
+      speechSynth.cancel();
+      setIsSpeaking(false);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text.replace(/(<([^>]+)>)/gi, ""));
+  };
 
   return (
     <>
@@ -180,6 +211,15 @@ export default function Chat() {
                           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                           dangerouslySetInnerHTML={{ __html: message.answer }}
                         />
+                        <div className="flex justify-between px-[16px] py-[7px]  gap-2 mt-2">
+                          <Speak message={message.answer} />
+                          <button
+                            onClick={() => copyToClipboard(message.answer)}
+                            className="text-sm font-semibold text-white bg-primary rounded-md px-2 py-1 hover:bg-primary-dark"
+                          >
+                            <Copy />
+                          </button>
+                        </div>
                       </div>
                     </div>
                     {index !== messages.length - 1 && (
@@ -192,7 +232,7 @@ export default function Chat() {
                   </div>
                 )}
               </div>
-            ))}         
+            ))}
             {isTyping && (
               <div className="relative overflow-auto mx-auto max-w-2xl px-4 text-[#cccccc]">
                 <div
@@ -276,6 +316,16 @@ export default function Chat() {
               </div>
             </div>
             <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
+              {/* <Button
+                onClick={() => {
+                  window.scrollTo(0, document.body.scrollHeight);
+                }}
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9 absolute right-4 top-1 z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2 ${
+                  isAtBottom ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                < ScrollToBottom />
+              </Button> */}
               <form onSubmit={handleMessageSubmit}>
                 <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
                   <textarea
