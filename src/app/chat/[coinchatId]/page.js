@@ -311,7 +311,7 @@ export default function Chat() {
               </div>
             </div>
             <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
-              <Button
+              {/* <Button
                 onClick={() => {
                   window.scrollTo(0, document.body.scrollHeight);
                 }}
@@ -320,7 +320,7 @@ export default function Chat() {
                 }`}
               >
                 <ScrollBottom />
-              </Button>
+              </Button> */}
               <form onSubmit={handleMessageSubmit}>
                 <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
                   <textarea
