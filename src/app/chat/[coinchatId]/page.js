@@ -152,8 +152,8 @@ export default function Chat() {
     setIsSpeaking(true);
     const synth = window.speechSynthesis;
     const speechText = new SpeechSynthesisUtterance(text);
-    speechText.lang = "en-US"; // Hardcoded language
-    speechText.rate = 1; // Hardcoded speech rate
+    speechText.lang = "en-US";
+    speechText.rate = 1;
     synth.speak(speechText);
     setSpeechSynth(synth);
   };
@@ -172,7 +172,7 @@ export default function Chat() {
   return (
     <>
       <Navbar />
-      <div className="group w-full md:max-h-[calc(100vh-290px)] max-h-[calc(100vh-220px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">
+      <div className="group w-full md:max-h-[calc(100vh-290px)] max-h-[calc(100vh-220px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">   
         {messages.length > 0 ? (
           <div>
             {messages.map((message, index) => (
