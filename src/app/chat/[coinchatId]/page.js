@@ -78,6 +78,20 @@ export default function Chat() {
       setIsTyping(false);
     }
   };
+  const languageOptions = [
+    { label: "English", value: "en-US" },
+    { label: "Spanish", value: "es-ES" },
+    // Add more language options as needed
+  ];
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    languageOptions[0].value
+  );
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
+    // Perform any additional actions based on the selected language if needed
+  };
+
   const handlePromptClick = async (prompt) => {
     try {
       // console.log("UID", uid, token);
@@ -172,7 +186,7 @@ export default function Chat() {
   return (
     <>
       <Navbar />
-      <div className="group w-full md:max-h-[calc(100vh-290px)] max-h-[calc(100vh-220px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">   
+      <div className="group w-full md:max-h-[calc(100vh-290px)] max-h-[calc(100vh-220px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">
         {messages.length > 0 ? (
           <div>
             {messages.map((message, index) => (

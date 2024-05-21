@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-export const runtime = 'edge';
+const CONVERSE_LAYER =
+  "https://hwj5d7n4usoyhh65pel5jwix340kndac.lambda-url.ap-south-1.on.aws/";
+export const runtime = "edge";
 export async function POST(request) {
   try {
     if (request.method !== "POST") {
@@ -17,23 +19,17 @@ export async function POST(request) {
     const currency = requestBody.currency;
     const token = requestBody.token;
     //console.log("Crypto AI", requestBody);
-    let toke =
-      process.env.OPENAI_API_KEY ;
+    let toke = process.env.OPENAI_API_KEY;
     //console.log("TOKE", toke);
-    const response = await fetch(
-      "https://lag34l4tb7ksrybvte6ufukhpq0sdjvc.lambda-url.ap-south-1.on.aws/",
-      {
-        method: "POST",
-        body: JSON.stringify(
-            {
-                message: message,
-                currency: currency,
-                coin: coinId,
-                uid: uid,
-            }
-        ),
-      }
-    );
+    const response = await fetch(CONVERSE_LAYER, {
+      method: "POST",
+      body: JSON.stringify({
+        message: message,
+        currency: currency,
+        coin: coinId,
+        uid: uid,
+      }),
+    });
     const data = await response.json();
     //console.log("FROM LURL", data,data.data.choices[0].message.content);
     return NextResponse.json({
@@ -45,7 +41,7 @@ export async function POST(request) {
     //console.log("Error in Crypto AI", error);
     return NextResponse.error({
       status: 500,
-      message:"Internal Server Error" ,
+      message: "Internal Server Error",
       success: false,
     });
   }
