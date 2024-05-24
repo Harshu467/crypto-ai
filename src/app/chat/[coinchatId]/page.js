@@ -1,13 +1,20 @@
 "use client";
+import React from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ScrollBottom from "@/components/ScrollDown/ScrollBottom";
 import Speak from "@/components/Speak/Speak";
 import { UserContext } from "@/context/UserContext";
 import { AnswerIcon, Copy, EnterIcon, ProfileIcon } from "@/helpers/icons";
-import { Button } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 export const runtime = "edge";
 const CryptoAI = "/api/crypto-ai";
 export default function Chat() {
@@ -18,6 +25,9 @@ export default function Chat() {
   const coinId = params.coinchatId;
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [selectedTone, setSelectedTone] = useState("Select Tone");
+  const [selectedLanguage, setSelectedLanguage] = useState("Select Language");
+
   const scrollToBottom = () => {
     messageRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -37,6 +47,13 @@ export default function Chat() {
       router.push("/login");
       return;
     }
+    if (
+      selectedTone === "Select Tone" ||
+      selectedLanguage === "Select Language"
+    ) {
+      setSelectedTone("Neutral");
+      setSelectedLanguage("English");
+    }
     const messageInput = e.target.elements.message;
     const message = messageInput.value.trim();
     if (!message) return;
@@ -53,6 +70,8 @@ export default function Chat() {
         uid,
         currency: currency,
         token: token,
+        tone: selectedTone,
+        language: selectedLanguage,
       };
       //console.log("BODY", body, token);
       const response = await fetch(CryptoAI, {
@@ -78,19 +97,6 @@ export default function Chat() {
       setIsTyping(false);
     }
   };
-  const languageOptions = [
-    { label: "English", value: "en-US" },
-    { label: "Spanish", value: "es-ES" },
-    // Add more language options as needed
-  ];
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    languageOptions[0].value
-  );
-
-  const handleLanguageChange = (e) => {
-    setSelectedLanguage(e.target.value);
-    // Perform any additional actions based on the selected language if needed
-  };
 
   const handlePromptClick = async (prompt) => {
     try {
@@ -108,7 +114,15 @@ export default function Chat() {
         router.push("/login");
         return;
       }
+      if (
+        selectedTone === "Select Tone" ||
+        selectedLanguage === "Select Language"
+      ) {
+        setSelectedTone("Neutral");
+        setSelectedLanguage("English");
+      }
       const message = prompt;
+      console.log("PROMPT", selectedLanguage, selectedTone);
       if (!message) return;
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -122,6 +136,8 @@ export default function Chat() {
           uid,
           currency: currency,
           token: token,
+          tone: selectedTone,
+          language: selectedLanguage,
         };
         //console.log("BODY", body, token);
         const response = await fetch(CryptoAI, {
@@ -182,11 +198,14 @@ export default function Chat() {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text.replace(/(<([^>]+)>)/gi, ""));
   };
-
+  useEffect(() => {
+    console.log("Selected Tone", selectedTone);
+    console.log("Selected Language", selectedLanguage);
+  }, [selectedTone, selectedLanguage]);
   return (
     <>
       <Navbar />
-      <div className="group w-full md:max-h-[calc(100vh-290px)] max-h-[calc(100vh-220px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">
+      <div className="group w-full md:max-h-[calc(100vh-350px)] max-h-[calc(100vh-250px)] overflow-auto pl-0 duration-300 ease-in-out animate-in pt-[20px]">
         {messages.length > 0 ? (
           <div>
             {messages.map((message, index) => (
@@ -284,7 +303,7 @@ export default function Chat() {
         <div ref={messageRef} />
         <div className="fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-muted/30 from-0% to-muted/30 to-50% duration-300 ease-in-out animate-in dark:from-background/10 dark:from-10% dark:to-background/80 peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
           <div className="mx-auto sm:max-w-2xl sm:px-4">
-            <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
+            <div className="mb-4 pt-[6px] grid grid-cols-2 gap-2 px-4 sm:px-0">
               <div
                 onClick={() => {
                   if (!isTyping) {
@@ -324,8 +343,7 @@ export default function Chat() {
                 </div>
               </div>
             </div>
-            <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
-              {/* <Button
+            {/* <Button
                 onClick={() => {
                   window.scrollTo(0, document.body.scrollHeight);
                 }}
@@ -335,6 +353,80 @@ export default function Chat() {
               >
                 <ScrollBottom />
               </Button> */}
+            <div className="space-y-4 border-t pt-[1.5rem] bg-background px-4 pb-2 shadow-lg sm:rounded-t-xl sm:border md:pb-4">
+              <div className="flex justify-between pb-[2px]">
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button
+                      style={{
+                        textAlign: "center",
+                      }}
+                      variant="bordered"
+                      className="capitalize bg-[#000000] text-[white] border rounded-[3px] pl-[18px] pr-[18px] pt-[8px] pb-[8px]"
+                    >
+                      {selectedTone}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    className="bg-[#000000] border text-[white]"
+                    aria-label="Tone Selection"
+                    variant="flat"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    selectedKeys={selectedTone}
+                    onSelectionChange={(keys) =>
+                      setSelectedTone(keys.values().next().value)
+                    }
+                  >
+                    <DropdownItem key="Friendly">Friendly</DropdownItem>
+                    <DropdownItem key="Humorous">Humorous</DropdownItem>
+                    <DropdownItem key="Neutral">Neutral</DropdownItem>
+                    <DropdownItem key="Poetic">Poetic</DropdownItem>
+                    <DropdownItem key="Professional">Professional</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button
+                      className="border text-[white] bg-[#000000] capitalize pl-[18px] pr-[18px] pt-[8px] pb-[8px] rounded-[3px]"
+                      style={{
+                        textAlign: "center",
+                      }}
+                      variant="bordered"
+                    >
+                      {selectedLanguage}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    className="bg-[#000000] border text-[white] w-[140px] p-[4px] "
+                    aria-label="Language Selection"
+                    variant="flat"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    selectedKeys={selectedLanguage}
+                    onSelectionChange={(keys) =>
+                      setSelectedLanguage(keys.values().next().value)
+                    }
+                  >
+                    <DropdownItem key="Chinese">Chinese</DropdownItem>
+                    <DropdownItem key="English">English</DropdownItem>
+                    <DropdownItem key="French">French</DropdownItem>
+                    <DropdownItem key="German">German</DropdownItem>
+                    <DropdownItem key="Gujarati">Gujarati</DropdownItem>
+                    <DropdownItem key="Hindi">Hindi</DropdownItem>
+                    <DropdownItem key="Italian">Italian</DropdownItem>
+                    <DropdownItem key="Japanese">Japanese</DropdownItem>
+                    <DropdownItem key="Kannada">Kannada</DropdownItem>
+                    <DropdownItem key="Marathi">Marathi</DropdownItem>
+                    <DropdownItem key="Portuguese">Portuguese</DropdownItem>
+                    <DropdownItem key="Russian">Russian</DropdownItem>
+                    <DropdownItem key="Sanskrit">Sanskrit</DropdownItem>
+                    <DropdownItem key="Spanish">Spanish</DropdownItem>
+                    <DropdownItem key="Tamil">Tamil</DropdownItem>
+                    <DropdownItem key="Telugu">Telugu</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
               <form onSubmit={handleMessageSubmit}>
                 <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
                   <textarea
