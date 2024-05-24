@@ -43,9 +43,9 @@ const Speak = ({ message }) => {
   };
 
   const onClickPause = () => {
-    console.log("onClickPause");
+    // console.log("onClickPause");
     if (synth.speaking) {
-      console.log("Pausing speech synthesis...");
+      // console.log("Pausing speech synthesis...");
       synth.pause();
       setIsSpeaking(false);
     }

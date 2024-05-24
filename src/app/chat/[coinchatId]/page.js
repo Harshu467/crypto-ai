@@ -122,7 +122,7 @@ export default function Chat() {
         setSelectedLanguage("English");
       }
       const message = prompt;
-      console.log("PROMPT", selectedLanguage, selectedTone);
+      // console.log("PROMPT", selectedLanguage, selectedTone);
       if (!message) return;
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -199,8 +199,8 @@ export default function Chat() {
     navigator.clipboard.writeText(text.replace(/(<([^>]+)>)/gi, ""));
   };
   useEffect(() => {
-    console.log("Selected Tone", selectedTone);
-    console.log("Selected Language", selectedLanguage);
+    // console.log("Selected Tone", selectedTone);
+    // console.log("Selected Language", selectedLanguage);
   }, [selectedTone, selectedLanguage]);
   return (
     <>

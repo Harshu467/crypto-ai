@@ -31,7 +31,7 @@ export async function POST(request) {
     }
 
     const session = event.data.object;
-    console.log("Session", session);
+    // console.log("Session", session);
     // if (!session?.metadata?.userId) {
     //   console.error("No user ID in metadata");
     //   return new Response(`No user ID in metadata ${session.metadata.userId}`, {
@@ -39,7 +39,7 @@ export async function POST(request) {
     //   });
     // }
     if (event.type === "checkout.session.completed") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       const SessionId = session.id;
       const email = session.metadata.email;
       const uid = session.metadata.uid;
@@ -61,7 +61,7 @@ export async function POST(request) {
             ),
           }
         )
-        console.log("Response", response);
+        // console.log("Response", response);
         return new Response(
           `Checkout session completed for ${session.customer_details.name} with Email : ${email} with Response : ${response} `,
           { status: 200 }
@@ -73,14 +73,14 @@ export async function POST(request) {
       );
     }
     if (event.type === "checkout.session.expired") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(
         `Checkout session expired ${JSON.stringify(session)} `,
         { status: 200 }
       );
     }
     if (event.type === "payment_intent.created") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(
         `Payment intent created with email ${JSON.stringify(
           session
@@ -93,23 +93,23 @@ export async function POST(request) {
       );
     }
     if (event.type === "payment_intent.processing") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(`Payment intent processing`, { status: 200 });
     }
     if (event.type === "payment_intent.succeeded") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(`Payment intent succeeded `, { status: 200 });
     }
     if (event.type === "payment_intent.payment_failed") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(`Payment Intent Failed`, { status: 400 });
     }
     if (event.type === "payment_intent.canceled") {
-      console.log("Updating user subscription details");
+      // console.log("Updating user subscription details");
       return new Response(`Payment Intent Canceled`, { status: 400 });
     }
   } else {
-    console.log("Unhandled event");
+    // console.log("Unhandled event");
     return new Response(`Unhandled Event`, { status: 400 });
   }
   return new Response(`Unhandled event`, { status: 400 });

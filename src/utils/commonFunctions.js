@@ -73,7 +73,7 @@ export const addTransactions = async (uid, coinData) => {
     const transactionDocRef = doc(db, "transactions", uid);
     const timestamp = serverTimestamp(); // Get server timestamp
 
-    console.log("Adding new transaction...");
+    // console.log("Adding new transaction...");
 
     // Create a new document if it doesn't exist
     if (!(await transactionExists(uid))) {
@@ -95,7 +95,7 @@ export const addTransactions = async (uid, coinData) => {
       await addDoc(coinsCollectionRef, newCoinData);
     });
 
-    console.log("Transaction added successfully!");
+    // console.log("Transaction added successfully!");
     return { success: true, response: "Transaction added successfully!" };
   } catch (error) {
     console.error("Error adding transaction: ", error);
@@ -117,7 +117,7 @@ export const getTransactions = async (uid) => {
     // console.log("Getting transactions...");
     const coinsData = [];
     // console.log("uid: ", uid);
-    console.log("coinsData: ", coinsData)
+    // console.log("coinsData: ", coinsData)
     const transactionDocRef = collection(db, "transactions", uid, "coins");
     if(transactionDocRef===undefined){
       return { success: false, error: "No transaction data found" };
@@ -128,7 +128,7 @@ export const getTransactions = async (uid) => {
     snapshot.forEach((doc) => {
       coinsData.push(doc.data());
     });
-    console.log("Transactions retrieved successfully!");
+    // console.log("Transactions retrieved successfully!");
     return { success: true, data: coinsData };
   } catch (error) {
     console.error("Error getting transactions: ", error);
