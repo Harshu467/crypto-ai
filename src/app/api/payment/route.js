@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export const runtime = 'edge';
+export const runtime = "edge";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
@@ -18,7 +18,7 @@ export async function POST(request) {
     const uid = requestBody.uid;
     //console.log("Amount", requestBody);
     const line_items = requestBody.line_items.map((item) => {
-      //console.log("Item", item);
+      console.log("Item", item);
       return {
         price_data: {
           currency: currency,
@@ -26,7 +26,8 @@ export async function POST(request) {
             name: item.name,
             images: [item.image],
             metadata: {
-              id: item?.id
+              id: item?.id,
+              coinImage: item?.image,
             },
           },
           unit_amount: Math.round(item.current_price * 100),
@@ -39,10 +40,11 @@ export async function POST(request) {
         payment_method_types: ["card"],
         line_items: line_items,
         mode: "payment",
-        metadata:{
+        metadata: {
           uid: uid,
           email: email,
-          currency: currency
+          currency: currency,
+          coinImage: line_items[0].price_data.product_data.metadata.coinImage,
         },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
@@ -64,7 +66,7 @@ export async function POST(request) {
       });
     }
   } catch (error) {
-   //console.log("Error in Stripe", error);
+    //console.log("Error in Stripe", error);
     return NextResponse.error({
       status: 500,
       message: error.message,

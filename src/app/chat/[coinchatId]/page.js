@@ -65,13 +65,12 @@ export default function Chat() {
     try {
       setIsTyping(true);
       const body = {
+        tone: selectedTone,
+        language: selectedLanguage,
+        currency: currency,
         message,
         coinId,
         uid,
-        currency: currency,
-        token: token,
-        tone: selectedTone,
-        language: selectedLanguage,
       };
       //console.log("BODY", body, token);
       const response = await fetch(CryptoAI, {
@@ -131,13 +130,12 @@ export default function Chat() {
       try {
         setIsTyping(true);
         const body = {
+          tone: selectedTone,
+          language: selectedLanguage,
+          currency: currency,
           message,
           coinId,
           uid,
-          currency: currency,
-          token: token,
-          tone: selectedTone,
-          language: selectedLanguage,
         };
         //console.log("BODY", body, token);
         const response = await fetch(CryptoAI, {
