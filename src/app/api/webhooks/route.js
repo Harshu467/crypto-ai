@@ -31,7 +31,7 @@ export async function POST(request) {
     }
 
     const session = event.data.object;
-    // console.log("Session", session);
+    console.log("Session", session);
     // if (!session?.metadata?.userId) {
     //   console.error("No user ID in metadata");
     //   return new Response(`No user ID in metadata ${session.metadata.userId}`, {
@@ -45,8 +45,9 @@ export async function POST(request) {
       const uid = session.metadata.uid;
       const payment_status = session.payment_status;
       const totalAmount = session.amount_total;
-      const lineItems = await stripe.checkout.sessions.listLineItems(SessionId);
-      if(payment_status === "paid" && uid && email && lineItems){
+      const lineItems = await stripe.checkout.sessions.lisLineItems(SessionId);
+      // const metadata = await stripe.checkout.sessions.retrieve(SessionId);
+      if(payment_status === "paid" && uid && email && lineItems ){
         const response = await fetch(
           "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
           {
@@ -56,7 +57,7 @@ export async function POST(request) {
                     email: email,
                     uid: uid,
                     lineItems: lineItems,
-                    totalAmount: totalAmount,
+                    totalAmount: totalAmount, 
                 }
             ),
           }

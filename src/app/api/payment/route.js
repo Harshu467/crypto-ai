@@ -17,8 +17,10 @@ export async function POST(request) {
     const currency = requestBody.currency; // Method Not Allowed
     const uid = requestBody.uid;
     //console.log("Amount", requestBody);
+    const cryptoImgs = [];
     const line_items = requestBody.line_items.map((item) => {
-      console.log("Item", item);
+      // console.log("Item", item);
+      cryptoImgs.push(item.image);
       return {
         price_data: {
           currency: currency,
@@ -27,7 +29,6 @@ export async function POST(request) {
             images: [item.image],
             metadata: {
               id: item?.id,
-              coinImage: item?.image,
             },
           },
           unit_amount: Math.round(item.current_price * 100),
@@ -44,12 +45,15 @@ export async function POST(request) {
           uid: uid,
           email: email,
           currency: currency,
-          coinImage: line_items[0].price_data.product_data.metadata.coinImage,
+          cryptoImgs: JSON.stringify(cryptoImgs),
         },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
       });
-      //console.log("Session", session.url);
+      // const line_items = await stripe.checkout.sessions.listLineItems(session.id);
+      // console.log("Line Items", line_items);
+      // const product = await stripe.products.retrieve(line_items.data[0].price.product);
+      // console.log("Product", product);
       return NextResponse.json({
         success: true,
         url: session.url,

@@ -142,7 +142,7 @@ const Navbar = () => {
                       <ul className=" bg-gray-300 bg-secondary px-3 py-4 rounded font-light text-sm">
                         <Link href={`/profile/${uid}`}>
                           <li className="hover:underline text-[#cccccc] hover:text-[#ffffff] hover:bg-gray-200  px-4 py-2 rounded">
-                            Your Profile
+                            My Profile
                           </li>
                         </Link>
                         <Link href="/cart">
@@ -214,7 +214,7 @@ const Navbar = () => {
                     <ul className=" bg-gray-300 bg-secondary px-3 py-4 rounded font-light text-sm">
                       <Link href={`/profile/${uid}`}>
                         <li className="hover:underline text-[#cccccc] hover:text-[#ffffff] hover:bg-gray-200  px-4 py-2 rounded">
-                          Your Profile
+                          My Profile
                         </li>
                       </Link>
                       <Link href="/cart">
