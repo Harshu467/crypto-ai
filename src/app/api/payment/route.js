@@ -17,10 +17,8 @@ export async function POST(request) {
     const currency = requestBody.currency; // Method Not Allowed
     const uid = requestBody.uid;
     //console.log("Amount", requestBody);
-    const cryptoImgs = [];
     const line_items = requestBody.line_items.map((item) => {
       // console.log("Item", item);
-      cryptoImgs.push(item.image);
       return {
         price_data: {
           currency: currency,
@@ -45,7 +43,6 @@ export async function POST(request) {
           uid: uid,
           email: email,
           currency: currency,
-          cryptoImgs: JSON.stringify(cryptoImgs),
         },
         success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${uid}?success=false`,
