@@ -14,13 +14,18 @@ export async function POST(request) {
       });
     }
     const requestBody = await request.json();
+    // console.log("Request Body", requestBody)
     const coinId = requestBody.coinId;
     const message = requestBody.message;
     const uid = requestBody.uid;
     const currency = requestBody.currency;
-    const token = requestBody.token;
+    // const token = requestBody.token;
+    const tone = requestBody.tone;
+    const language = requestBody.language;
+    // console.log("TONE", tone);
+    // console.log("LANGUAGE", language);
     //console.log("Crypto AI", requestBody);
-    let toke = process.env.OPENAI_API_KEY;
+    // let toke = process.env.OPENAI_API_KEY;
     //console.log("TOKE", toke);
     const response = await fetch(CONVERSE_LAYER, {
       method: "POST",
@@ -29,6 +34,8 @@ export async function POST(request) {
         currency: currency,
         coin: coinId,
         uid: uid,
+        tone: tone,
+        language: language,
       }),
     });
     const data = await response.json();
