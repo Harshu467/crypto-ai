@@ -2,7 +2,7 @@
 import { Sound, Pause, Play, Stop } from "@/helpers/icons";
 import { useState } from "react";
 
-const Speak = ({ message }) => {
+const Speak = ({ language, message }) => {
   const [flag, setFlag] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const filteredSentence = message
@@ -10,7 +10,64 @@ const Speak = ({ message }) => {
     .replaceAll("&quot", "");
   const speech = new SpeechSynthesisUtterance();
   const synth = window.speechSynthesis;
-
+  let speechLang = language || "en-US";
+  let finalLang = "";
+  switch (speechLang) {
+    case "Hindi":
+      finalLang = "hi-IN";
+      break;
+    case "English":
+      finalLang = "en-US";
+      break;
+    case "Spanish":
+      finalLang = "es-ES";
+      break;
+    case "French":
+      finalLang = "fr-FR";
+      break;
+    case "German":
+      finalLang = "de-DE";
+      break;
+    case "Italian":
+      finalLang = "it-IT";
+      break;
+    case "Japanese":
+      finalLang = "ja-JP";
+      break;
+    case "Korean":
+      finalLang = "ko-KR";
+      break;
+    case "Chinese":
+      finalLang = "zh-CN";
+      break;
+    case "Russian":
+      finalLang = "ru-RU";
+      break;
+    case "Sanskrit":
+      finalLang = "sa-IN";
+      break;
+    case "Gujarati":
+      finalLang = "gu-IN";
+      break;
+    case "Marathi":
+      finalLang = "mr-IN";
+      break;
+    case "Kannada":
+      finalLang = "kn-IN";
+      break;
+    case "Portuguese":
+      finalLang = "pt-PT";
+      break;
+    case "Tamil":
+      finalLang = "ta-IN";
+      break;
+    case "Telugu":
+      finalLang = "te-IN";
+      break;
+    default:
+      finalLang = "en-IN";
+      break;
+  }
   const onClickPlay = () => {
     if (!isSpeaking) {
       synth.cancel(speech);
@@ -21,7 +78,10 @@ const Speak = ({ message }) => {
       setIsSpeaking(true);
       var voices = synth.getVoices();
       // speech.voice = voices[3]
-      speech.lang = "en-US";
+      speech.lang =
+        finalLang || finalLang !== "" || finalLang !== undefined
+          ? finalLang
+          : "en-IN";
       speech.text = filteredSentence;
       speech.volume = 1;
       speech.rate = 1.1;
@@ -50,7 +110,6 @@ const Speak = ({ message }) => {
       setIsSpeaking(false);
     }
   };
-  
 
   function onClickStop() {
     if (flag) {

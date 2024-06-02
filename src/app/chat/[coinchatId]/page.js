@@ -238,7 +238,7 @@ export default function Chat() {
                           dangerouslySetInnerHTML={{ __html: message.answer }}
                         />
                         <div className="flex justify-between px-[16px] py-[7px]  gap-2 mt-2">
-                          <Speak message={message.answer} />
+                          <Speak language={selectedLanguage} message={message.answer} />
                           <button
                             onClick={() => copyToClipboard(message.answer)}
                             className="text-sm font-semibold text-white bg-primary rounded-md px-2 py-1 hover:bg-primary-dark"

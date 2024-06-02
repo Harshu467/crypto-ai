@@ -22,6 +22,7 @@ const SearchInput = ({ handleSearch }) => {
     setSearchText("");
     setSearchData();
   };
+  // console.log("SD", searchData);
   return (
     <>
       <form
@@ -48,7 +49,7 @@ overflow-x-hidden py-2 bg-gray-200 bg-opacity-60
 backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-200
 "
         >
-          {searchData ? (
+          {searchData && searchData!==null ? (
             searchData.map((coin) => {
               return (
                 <li
@@ -65,7 +66,7 @@ backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-20
                 </li>
               );
             })
-          ) : searchData.length === 0 ? (
+          ) : searchData?.length === 0 && searchData!==null  ? (
             <li
               className="flex text-white items-center ml-4 my-2 cursor-pointer"
             >
@@ -73,8 +74,7 @@ backdrop-blur-md scrollbar-thin scrollbar-thumb-gray-100 scrollbar-track-gray-20
             </li>
           ) : (
             <div
-              className="w-full h-full flex justify-center items-center
-             "
+              className="w-full h-full flex justify-center items-center"
             >
               <div
                 className="w-8 h-8 border-4 border-cyan rounded-full
@@ -101,8 +101,9 @@ const Search = () => {
         .then((res) => res.json())
         .then((json) => json);
       setSearchData(data.coins);
+      // console.log("C",data.coins)
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
   const debounceFunc = debounce(function (val) {
