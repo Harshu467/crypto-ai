@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 export const runtime = "edge";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2023-08-16",
+  apiVersion: "2024-04-10",
 });
 export async function POST(request) {
   if (request.method === "POST") {
@@ -46,25 +46,22 @@ export async function POST(request) {
       const payment_status = session.payment_status;
       const totalAmount = session.amount_total;
       const lineItems = await stripe.checkout.sessions.lisLineItems(SessionId);
-      // const metadata = await stripe.checkout.sessions.retrieve(SessionId);
-      if(payment_status === "paid" && uid && email && lineItems ){
+      if (payment_status === "paid" && uid && email && lineItems) {
         const response = await fetch(
           "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
           {
             method: "POST",
-            body: JSON.stringify(
-                {
-                    email: email,
-                    uid: uid,
-                    lineItems: lineItems,
-                    totalAmount: totalAmount, 
-                }
-            ),
+            body: JSON.stringify({
+              email: email,
+              uid: uid,
+              lineItems: lineItems,
+              totalAmount: totalAmount,
+            }),
           }
-        )
+        );
         // console.log("Response", response);
         return new Response(
-          `Checkout session completed for ${session.customer_details.name} with Email : ${email} with Response : ${response} `,
+          `Checkout session completed for ${session.customer_details.name} with Email : ${email}  with event type : ${event.type} `,
           { status: 200 }
         );
       }
@@ -80,12 +77,36 @@ export async function POST(request) {
         { status: 200 }
       );
     }
+    if (event.type === "checkout.session.async_payment_succeeded") {
+      const response = await fetch(
+        "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+            uid: uid,
+            lineItems: lineItems,
+            totalAmount: totalAmount,
+          }),
+        }
+      );
+      // console.log("Response", response);
+      return new Response(
+        `Checkout session completed for ${session.customer_details.name} with Email : ${email} with event type : ${event.type} `,
+        { status: 200 }
+      );
+    }
+    if (event.type === "checkout.session.async_payment_failed") {
+      // console.log("Updating user subscription details");
+      return new Response(
+        `Checkout session async payment failed for ${session.customer_details.name} with Email : ${email} with event type : ${event.type} `,
+        { status: 200 }
+      );
+    }
     if (event.type === "payment_intent.created") {
       // console.log("Updating user subscription details");
       return new Response(
-        `Payment intent created with email ${JSON.stringify(
-          session
-        )} and ${JSON.stringify(event)}  `,
+        `Payment intent created with email ${session.metadata.email} and email1 ${event.data.object.customer_email}`,
         {
           status: 200,
           email: session.metadata.email,
@@ -99,6 +120,7 @@ export async function POST(request) {
     }
     if (event.type === "payment_intent.succeeded") {
       // console.log("Updating user subscription details");
+
       return new Response(`Payment intent succeeded `, { status: 200 });
     }
     if (event.type === "payment_intent.payment_failed") {
