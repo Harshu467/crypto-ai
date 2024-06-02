@@ -40,35 +40,38 @@ export async function POST(request) {
     // }
     if (event.type === "checkout.session.completed") {
       // console.log("Updating user subscription details");
-      const SessionId = session.id;
-      const email = session.metadata.email;
-      const uid = session.metadata.uid;
-      const payment_status = session.payment_status;
-      const totalAmount = session.amount_total;
-      const lineItems = await stripe.checkout.sessions.lisLineItems(SessionId);
-      if (payment_status === "paid" && uid && email && lineItems) {
-        const response = await fetch(
-          "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: email,
-              uid: uid,
-              lineItems: lineItems,
-              totalAmount: totalAmount,
-            }),
-          }
+      try {
+        const SessionId = session.id;
+        const email = session.metadata.email;
+        const uid = session.metadata.uid;
+        const payment_status = session.payment_status;
+        const totalAmount = session.amount_total;
+        const lineItems = await stripe.checkout.sessions.lisLineItems(
+          SessionId
         );
-        // console.log("Response", response);
-        return new Response(
-          `Checkout session completed for ${session.customer_details.name} with Email : ${email}  with event type : ${event.type} `,
-          { status: 200 }
-        );
+        if (payment_status === "paid" && uid && email && lineItems) {
+          const response = await fetch(
+            "https://unmdy6znep7ojf4xqzjh5o6iwu0zszqa.lambda-url.ap-south-1.on.aws/",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: email,
+                uid: uid,
+                lineItems: lineItems,
+                totalAmount: totalAmount,
+              }),
+            }
+          );
+          // console.log("Response", response);
+          return new Response(
+            `Checkout session completed for ${session.customer_details.name} with Email : ${email}  with event type : ${event.type} `,
+            { status: 200 }
+          );
+        }
+      } catch (error) {
+        console.error("Error", error);
+        return new Response(`Error ${error}`, { status: 400 });
       }
-      return new Response(
-        `Checkout session completed but Something is Missing `,
-        { status: 200 }
-      );
     }
     if (event.type === "checkout.session.expired") {
       // console.log("Updating user subscription details");
