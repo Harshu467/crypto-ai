@@ -46,7 +46,7 @@ export async function POST(request) {
         const uid = session.metadata.uid;
         const payment_status = session.payment_status;
         const totalAmount = session.amount_total;
-        const lineItems = await stripe.checkout.sessions.lisLineItems(
+        const lineItems = await stripe.checkout.sessions.listLineItems(
           SessionId
         );
         if (payment_status === "paid" && uid && email && lineItems) {
@@ -64,7 +64,7 @@ export async function POST(request) {
           );
           // console.log("Response", response);
           return new Response(
-            `Checkout session completed for ${session.customer_details.name} with Email : ${email}  with event type : ${event.type} `,
+            `Checkout session completed  with Email : ${email} with event type : ${event.type} `,
             { status: 200 }
           );
         }
@@ -95,7 +95,7 @@ export async function POST(request) {
       );
       // console.log("Response", response);
       return new Response(
-        `Checkout session completed for ${session.customer_details.name} with Email : ${email} with event type : ${event.type} `,
+        `Checkout session completed with Email : ${email} with event type : ${event.type} `,
         { status: 200 }
       );
     }
