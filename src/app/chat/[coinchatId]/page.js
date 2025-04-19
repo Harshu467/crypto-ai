@@ -149,8 +149,23 @@ export default function Chat() {
         // console.log("RESPONSE", response);
         if (response.ok) {
           const data = await response.json();
-          const m1 = data.message.data.choices[0].message.content;
+          // const m1 = data.message.data.choices[0].message.content;
           // console.log("FROM LURL", data);
+          const choices = data?.message?.data?.choices;
+
+          if (!choices || !choices[0]?.message?.content) {
+            // Show error message in chat if choices are missing or invalid
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                answer:
+                  "🚧 Oops! Our crypto chatbot is currently unavailable. We are working to get it back online as soon as possible. In the meantime, feel free to check back later or contact support if you need help. Thanks for your patience! 🙏",
+                sender: "assistant",
+              },
+            ]);
+            return;
+          }
+          const m1 = choices[0].message.content;
           if (data.success) {
             setMessages((prevMessages) => [
               ...prevMessages,
@@ -158,7 +173,7 @@ export default function Chat() {
             ]);
           }
         } else {
-          console.log("Eror in Response", body, response);
+          console.log("Error in Response", body, response);
         }
       } catch (e) {
         console.log("Error in handleMessageSubmit", e);
